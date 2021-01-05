@@ -1,4 +1,4 @@
-export default breakpoints = {
+export default {
   sm: '576px',
   md: '768px',
   lg: '992px',
