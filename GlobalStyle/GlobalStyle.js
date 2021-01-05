@@ -11,4 +11,14 @@ export const GlobalStyle = createGlobalStyle`
   body {
     background-color: var(--body-bg);
   }
+
+
+  :focus {
+    outline: 0;
+    box-shadow: 0px 0px 0px 1px var(--accent-text-light) !important;
+  }
+
+  :disabled {
+    background-color: var(--disabled) !important;
+  }
 `;
