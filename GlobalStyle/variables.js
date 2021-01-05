@@ -16,6 +16,8 @@ export const variables = css`
     --text-dark: #404040;
     --accent-text-light: #92e8b1;
     --accent-text-dark: #12542a;
+    --danger-dark: #691616;
+    --danger: #7e1b1b;
 
     /* typography */
     --body-text: 16px;
