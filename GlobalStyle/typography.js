@@ -34,17 +34,13 @@ export const typography = css`
 
   h1,
   h2,
-  h3,
-  h4,
-  h5 {
-    margin: calc(var(--baseline) * 2) 0 var(--baseline);
+  h3 {
     font-weight: 500;
     line-height: 1.3;
     color: var(--text-dark);
   }
 
   h1 {
-    margin-top: 0;
     font-size: 2.369rem;
   }
 
