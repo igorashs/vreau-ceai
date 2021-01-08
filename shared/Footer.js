@@ -15,7 +15,7 @@ const blockLinkList = [
         path: '/about',
         text: 'vreau ceai',
         label: 'Deschideți pagina cu informații despre noi',
-        Icon: PhoneSvg,
+        Icon: null,
         accent: true
       }
     ]
