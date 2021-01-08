@@ -23,5 +23,6 @@ export const variables = css`
     --body-text: 16px;
     --body-line-height: 1.75;
     --baseline: calc(var(--body-text) * var(--body-line-height));
+    --max-text-width: 720px;
   }
 `;

@@ -5,7 +5,7 @@ import { withBaseLayout } from '@layouts/BaseLayout';
 import breakpoints from 'GlobalStyle/breakpoints';
 
 const Wrapper = styled.div`
-  max-width: 720px;
+  max-width: var(--max-text-width);
 
   h1,
   p {
