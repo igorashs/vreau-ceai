@@ -113,15 +113,9 @@ export function Header() {
           </NavToggle>
           <Nav hide={isHidden}>
             <NavList>
-              {links.current.map(({ path, text, label, Icon, accent }) => (
-                <NavListItem key={path}>
-                  <StyledLink
-                    href={path}
-                    text={text}
-                    label={label}
-                    Icon={Icon}
-                    accent={accent}
-                  />
+              {links.current.map((link) => (
+                <NavListItem key={link.href}>
+                  <StyledLink {...link} />
                 </NavListItem>
               ))}
             </NavList>

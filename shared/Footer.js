@@ -85,21 +85,15 @@ export function Footer() {
       <Container>
         <footer>
           <BlockLinkList>
-            {footerBlockLinksList.map(({ path, text, label, links }) => (
-              <li key={path}>
+            {footerBlockLinksList.map(({ href, text, label, links }) => (
+              <li key={href}>
                 <LinkList>
                   <LinkListHeaderItem>
-                    <StyledLink href={path} text={text} label={label} />
+                    <StyledLink href={href} text={text} label={label} />
                   </LinkListHeaderItem>
-                  {links.map(({ path, text, label, Icon, accent }) => (
-                    <LinkListItem key={path}>
-                      <StyledLink
-                        href={path}
-                        text={text}
-                        label={label}
-                        Icon={Icon}
-                        accent={accent}
-                      />
+                  {links.map((link) => (
+                    <LinkListItem key={link.href}>
+                      <StyledLink {...link} />
                     </LinkListItem>
                   ))}
                 </LinkList>

@@ -7,7 +7,7 @@ import PackageSvg from '@icons/package.svg';
 import BriefcaseSvg from '@icons/briefcase.svg';
 
 const linkFactory = ({
-  path,
+  href,
   text,
   label,
   Icon = null,
@@ -15,7 +15,7 @@ const linkFactory = ({
   privatePath = false,
   managementPath = false
 }) => ({
-  path,
+  href,
   text,
   label,
   Icon,
@@ -25,28 +25,28 @@ const linkFactory = ({
 });
 
 export const categoriesLink = linkFactory({
-  path: '/categories',
+  href: '/categories',
   text: 'Ceai',
   label: 'Deschideți pagina cu categorii',
   accent: false
 });
 
 export const aboutLink = linkFactory({
-  path: '/about',
+  href: '/about',
   text: 'Despre',
   label: 'Deschideți pagina cu informații despre noi',
   accent: false
 });
 
 export const contactsLink = linkFactory({
-  path: '/contacts',
+  href: '/contacts',
   text: 'Contacte',
   label: 'Deschideți pagina cu contacte',
   accent: false
 });
 
 export const cartLink = linkFactory({
-  path: '/cart',
+  href: '/cart',
   text: 'Coș',
   label: 'Deschideți pagina cu coșul personal',
   Icon: CartSvg,
@@ -54,14 +54,14 @@ export const cartLink = linkFactory({
 });
 
 export const loginLink = linkFactory({
-  path: '/login',
+  href: '/login',
   text: 'Conectați-vă',
   label: 'Deschideți pagina pentru conectare',
   Icon: LoginSvg
 });
 
 export const myOrdersLink = linkFactory({
-  path: '/my-orders',
+  href: '/my-orders',
   text: 'Comenzile Mele',
   label: 'Deschideți pagina cu comenziile efectuate',
   Icon: PackageSvg,
@@ -70,7 +70,7 @@ export const myOrdersLink = linkFactory({
 });
 
 export const logoutLink = linkFactory({
-  path: '/login',
+  href: '/login',
   text: 'Deconectare',
   label: 'Deconectare din account',
   Icon: LogoutSvg,
@@ -79,7 +79,7 @@ export const logoutLink = linkFactory({
 });
 
 export const managementLink = linkFactory({
-  path: '/management',
+  href: '/management',
   text: 'Managment',
   label: 'Managment',
   Icon: BriefcaseSvg,
@@ -99,12 +99,26 @@ export const navLinks = [
   logoutLink
 ];
 
+export const phoneLink = linkFactory({
+  href: 'tel:062222222',
+  text: '062222222',
+  label: 'apelați nr de tel',
+  Icon: PhoneSvg
+});
+
+export const emailLink = linkFactory({
+  href: 'mailto:vreauceai@gmail.com',
+  text: 'vreauceai@gmail.com',
+  label: 'trimiteți email',
+  Icon: EmailSvg
+});
+
 export const footerBlockLinksList = [
   {
     ...aboutLink,
     links: [
       linkFactory({
-        path: '/about',
+        href: '/about',
         text: 'vreau ceai',
         label: 'Deschideți pagina cu informații despre noi'
       })
@@ -112,24 +126,24 @@ export const footerBlockLinksList = [
   },
   {
     ...linkFactory({
-      path: '/faq',
+      href: '/faq',
       text: 'FAQ',
       label: 'Deschideți pagina cu întrebări frecvente',
       accent: false
     }),
     links: [
       linkFactory({
-        path: '/faq#cum-comand',
+        href: '/faq#cum-comand',
         text: 'cum comand',
         label: 'Deschideți pagina cu întrebarea cum comand'
       }),
       linkFactory({
-        path: '/faq#cum-achit',
+        href: '/faq#cum-achit',
         text: 'cum achit',
         label: 'Deschideți pagina cu întrebarea cum achit'
       }),
       linkFactory({
-        path: '/faq#livrare',
+        href: '/faq#livrare',
         text: 'cum are loc livrarea',
         label: 'Deschideți pagina cu întrebarea despre cum are loc livrarea'
       })
@@ -137,19 +151,6 @@ export const footerBlockLinksList = [
   },
   {
     ...contactsLink,
-    links: [
-      linkFactory({
-        path: 'tel:062222222',
-        text: '062222222',
-        label: 'apelați nr de tel',
-        Icon: PhoneSvg
-      }),
-      linkFactory({
-        path: 'mailto:vreauceai@gmail.com',
-        text: 'vreauceai@gmail.com',
-        label: 'trimiteți email',
-        Icon: EmailSvg
-      })
-    ]
+    links: [{ ...phoneLink }, { ...emailLink }]
   }
 ];
