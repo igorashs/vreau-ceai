@@ -24,10 +24,6 @@ export const typography = css`
     text-transform: lowercase;
   }
 
-  p {
-    margin-bottom: var(--baseline);
-  }
-
   a {
     color: var(--accent-text-dark);
   }

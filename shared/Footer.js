@@ -61,10 +61,6 @@ const CopyRight = styled.div`
   text-align: center;
   font-size: 0.75rem;
 
-  p {
-    margin: 0;
-  }
-
   @media (min-width: ${breakpoints.lg}) {
     margin-top: calc(var(--baseline) * 2);
   }

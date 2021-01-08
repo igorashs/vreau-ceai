@@ -11,6 +11,9 @@ const Wrapper = styled.div`
 
   ol {
     counter-reset: item-counter;
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--baseline) / 2);
 
     li {
       display: grid;
@@ -22,10 +25,6 @@ const Wrapper = styled.div`
     li::before {
       content: counter(item-counter) '.';
     }
-  }
-
-  p {
-    margin: 0;
   }
 `;
 
