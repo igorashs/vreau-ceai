@@ -33,7 +33,7 @@ export default function Faq() {
   return (
     <>
       <Head>
-        <title>Contacte</title>
+        <title>Întrebări frecvente</title>
         <meta name="description" content="Răspunsuri la întrebări frecvente" />
       </Head>
 
