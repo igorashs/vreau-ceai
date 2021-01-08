@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import { Container } from './Container';
 import breakpoints from 'GlobalStyle/breakpoints';
-import PhoneSvg from '@/icons/phone.svg';
-import EmailSvg from '@/icons/email.svg';
+import PhoneSvg from '@icons/phone.svg';
+import EmailSvg from '@icons/email.svg';
 
 const blockLinkList = [
   {

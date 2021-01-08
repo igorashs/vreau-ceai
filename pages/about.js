@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Head from 'next/head';
 import styled from 'styled-components';
-import { withBaseLayout } from '@/Layouts/BaseLayout';
+import { withBaseLayout } from '@layouts/BaseLayout';
 import breakpoints from 'GlobalStyle/breakpoints';
 
 const Wrapper = styled.div`
