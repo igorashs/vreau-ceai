@@ -1,5 +1,5 @@
-import { GlobalStyle } from '../GlobalStyle';
-import { withLayout as withPageLayout } from '../shared/Layouts/Layout';
+import { GlobalStyle } from 'GlobalStyle';
+import { withLayout as withPageLayout } from '@/Layouts/Layout';
 
 function MyApp({ Component, pageProps }) {
   const withLayout = Component.withLayout || withPageLayout;

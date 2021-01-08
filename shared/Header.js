@@ -3,10 +3,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { IconButton } from './IconButton';
 import { Container } from './Container';
-import MenuSvg from '../assets/icons/menu.svg';
-import CartSvg from '../assets/icons/cart.svg';
-import LoginSvg from '../assets/icons/login.svg';
-import breakpoints from '../GlobalStyle/breakpoints';
+import MenuSvg from '@/icons/menu.svg';
+import CartSvg from '@/icons/cart.svg';
+import LoginSvg from '@/icons/login.svg';
+import breakpoints from 'GlobalStyle/breakpoints';
 import { useState } from 'react';
 
 const navLinks = [

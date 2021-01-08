@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import Head from 'next/head';
 import styled from 'styled-components';
-import { withBaseLayout } from '../shared/Layouts/BaseLayout';
-import breakpoints from '../GlobalStyle/breakpoints';
+import { withBaseLayout } from '@/Layouts/BaseLayout';
+import breakpoints from 'GlobalStyle/breakpoints';
 
 const Wrapper = styled.div`
   max-width: 720px;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import breakpoints from '../GlobalStyle/breakpoints';
+import breakpoints from 'GlobalStyle/breakpoints';
 
 export const Container = styled.div`
   /* mobile first */

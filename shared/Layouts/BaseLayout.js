@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { withLayout } from './Layout';
 import { Container } from '../Container';
-import breakpoints from '../../GlobalStyle/breakpoints';
+import breakpoints from 'GlobalStyle/breakpoints';
 
 const Wrapper = styled.div`
   padding-top: var(--baseline);

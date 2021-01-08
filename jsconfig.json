@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/icons/*": ["assets/icons/*"],
+      "@/Layouts/*": ["shared/Layouts/*"]
+    }
+  }
+}

@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import Link from 'next/link';
 import Head from 'next/head';
-import { Container } from '../shared/Container';
-import { ButtonLink } from '../shared/Button';
-import breakpoints from '../GlobalStyle/breakpoints';
+import { Container } from 'shared/Container';
+import { ButtonLink } from 'shared/Button';
+import breakpoints from 'GlobalStyle/breakpoints';
 
 const Hero = styled.div`
   position: relative;
