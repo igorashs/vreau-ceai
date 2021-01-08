@@ -4,50 +4,10 @@ import Image from 'next/image';
 import { IconButton } from './IconButton';
 import { Container } from './Container';
 import MenuSvg from '@icons/menu.svg';
-import CartSvg from '@icons/cart.svg';
-import LoginSvg from '@icons/login.svg';
 import breakpoints from 'GlobalStyle/breakpoints';
-import { useState } from 'react';
-
-const navLinks = [
-  {
-    path: '/categories',
-    text: 'Ceai',
-    label: 'Deschideți pagina cu categorii',
-    Icon: null,
-    accent: false
-  },
-
-  {
-    path: '/about',
-    text: 'Despre',
-    label: 'Deschideți pagina cu informații despre noi',
-    Icon: null,
-    accent: false
-  },
-  {
-    path: '/contacts',
-    text: 'Contacte',
-    label: 'Deschideți pagina cu contacte',
-    Icon: null,
-    accent: false
-  },
-
-  {
-    path: '/cart',
-    text: 'Coș',
-    label: 'Deschideți pagina cu coșul personal',
-    Icon: CartSvg,
-    accent: false
-  },
-  {
-    path: '/login',
-    text: 'Conectați-vă',
-    label: 'Deschideți pagina pentru conectare',
-    Icon: LoginSvg,
-    accent: true
-  }
-];
+import { useState, useRef } from 'react';
+import { navLinks } from 'links';
+import { StyledLink } from 'shared/StyledLink';
 
 const Wrapper = styled.div`
   display: flex;
@@ -57,6 +17,7 @@ const Wrapper = styled.div`
 
 const StyledHeader = styled.header`
   display: grid;
+  column-gap: var(--baseline);
   grid-template-columns: auto 1fr;
   grid-template-rows: calc(var(--baseline) * 2) auto;
   align-items: center;
@@ -72,7 +33,7 @@ const Nav = styled.nav`
   @media (min-width: ${breakpoints.lg}) {
     display: initial;
     grid-column: 2;
-    grid-row: 1;
+    grid-row: span 2;
     padding: 0;
     border: 0;
   }
@@ -86,9 +47,10 @@ const NavList = styled.ul`
   border-bottom: 1px solid var(--layout);
 
   @media (min-width: ${breakpoints.lg}) {
+    flex-wrap: wrap;
+    column-gap: var(--baseline);
     flex-direction: row;
     justify-content: flex-end;
-    gap: var(--baseline);
     border: 0;
   }
 `;
@@ -97,19 +59,12 @@ const NavListItem = styled.li`
   border-top: 1px solid var(--layout);
   padding: 7px 0;
 
-  a {
-    color: var(--text-light);
-    text-decoration: none;
+  @media (min-width: ${breakpoints.lg}) {
     display: flex;
     align-items: center;
-    gap: 7px;
-  }
-
-  @media (min-width: ${breakpoints.lg}) {
+    height: calc(var(--baseline) * 2);
     border: 0;
   }
-
-  ${({ accent }) => accent && ' a {color: var(--accent-text-light)}'}
 `;
 
 const Logo = styled.div`
@@ -127,6 +82,9 @@ const NavToggle = styled.div`
 
 export function Header() {
   const [isHidden, setIsHidden] = useState(true);
+
+  //TODO PrivatePaths / AdminPath (when authed)
+  const links = useRef(navLinks.filter((link) => !link.privatePath));
 
   return (
     <Wrapper>
@@ -155,14 +113,15 @@ export function Header() {
           </NavToggle>
           <Nav hide={isHidden}>
             <NavList>
-              {navLinks.map(({ path, text, label, Icon, accent }) => (
-                <NavListItem key={path} accent={accent}>
-                  <Link href={path}>
-                    <a aria-label={label}>
-                      {Icon && <Icon />}
-                      {text}
-                    </a>
-                  </Link>
+              {links.current.map(({ path, text, label, Icon, accent }) => (
+                <NavListItem key={path}>
+                  <StyledLink
+                    href={path}
+                    text={text}
+                    label={label}
+                    Icon={Icon}
+                    accent={accent}
+                  />
                 </NavListItem>
               ))}
             </NavList>

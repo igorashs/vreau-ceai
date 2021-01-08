@@ -1,75 +1,8 @@
 import styled from 'styled-components';
-import Link from 'next/link';
 import { Container } from './Container';
 import breakpoints from 'GlobalStyle/breakpoints';
-import PhoneSvg from '@icons/phone.svg';
-import EmailSvg from '@icons/email.svg';
-
-const blockLinkList = [
-  {
-    path: '/about',
-    text: 'Despre',
-    label: 'Deschideți pagina cu informații despre noi',
-    links: [
-      {
-        path: '/about',
-        text: 'vreau ceai',
-        label: 'Deschideți pagina cu informații despre noi',
-        Icon: null,
-        accent: true
-      }
-    ]
-  },
-  {
-    path: '/faq',
-    text: 'FAQ',
-    label: 'Deschideți pagina cu întrebări frecvente',
-    links: [
-      {
-        path: '/faq#cum-comand',
-        text: 'cum comand',
-        label: 'Deschideți pagina cu întrebarea cum comand',
-        Icon: null,
-        accent: true
-      },
-      {
-        path: '/faq#cum-achit',
-        text: 'cum achit',
-        label: 'Deschideți pagina cu întrebarea cum achit',
-        Icon: null,
-        accent: true
-      },
-      {
-        path: '/faq#livrare',
-        text: 'cum are loc livrarea',
-        label: 'Deschideți pagina cu întrebarea despre cum are loc livrarea',
-        Icon: null,
-        accent: true
-      }
-    ]
-  },
-  {
-    path: '/contacts',
-    text: 'Contacte',
-    label: 'Deschideți pagina cu contacte',
-    links: [
-      {
-        path: 'tel:062222222',
-        text: '062222222',
-        label: 'apelați nr de tel',
-        Icon: PhoneSvg,
-        accent: true
-      },
-      {
-        path: 'mailto:vreauceai@gmail.com',
-        text: 'vreauceai@gmail.com',
-        label: 'trimiteți email',
-        Icon: EmailSvg,
-        accent: true
-      }
-    ]
-  }
-];
+import { footerBlockLinksList } from 'links';
+import { StyledLink } from 'shared/StyledLink';
 
 const Wrapper = styled.div`
   margin-top: calc(var(--baseline) * 2);
@@ -80,13 +13,6 @@ const Wrapper = styled.div`
   @media (min-width: ${breakpoints.lg}) {
     margin-top: calc(var(--baseline) * 4);
     padding: calc(var(--baseline) * 2) 0;
-  }
-`;
-
-const StyledFooter = styled.footer`
-  a {
-    color: var(--text-light);
-    text-decoration: none;
   }
 `;
 
@@ -124,14 +50,6 @@ const LinkListItem = styled.li`
 
   @media (min-width: ${breakpoints.lg}) {
     display: initial;
-
-    a {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-
-      ${({ accent }) => accent && 'color: var(--accent-text-light);'}
-    }
   }
 `;
 
@@ -165,25 +83,23 @@ export function Footer() {
   return (
     <Wrapper>
       <Container>
-        <StyledFooter>
+        <footer>
           <BlockLinkList>
-            {blockLinkList.map(({ path, text, label, links }) => (
+            {footerBlockLinksList.map(({ path, text, label, links }) => (
               <li key={path}>
                 <LinkList>
                   <LinkListHeaderItem>
-                    <Link href={path}>
-                      <a aria-label={label}>{text}</a>
-                    </Link>
+                    <StyledLink href={path} text={text} label={label} />
                   </LinkListHeaderItem>
-
                   {links.map(({ path, text, label, Icon, accent }) => (
-                    <LinkListItem accent={accent} key={path}>
-                      <Link href={path}>
-                        <a aria-label={label}>
-                          {Icon && <Icon />}
-                          {text}
-                        </a>
-                      </Link>
+                    <LinkListItem key={path}>
+                      <StyledLink
+                        href={path}
+                        text={text}
+                        label={label}
+                        Icon={Icon}
+                        accent={accent}
+                      />
                     </LinkListItem>
                   ))}
                 </LinkList>
@@ -191,13 +107,19 @@ export function Footer() {
             ))}
           </BlockLinkList>
           <CopyRight>
-            <p>@Igorash</p>
+            <StyledLink
+              href="https://github.com/igorashs/vreau-ceai"
+              text="@Igorash"
+              label="Visit Project Repo"
+              target="_blank"
+              rel="noreferrer"
+            />
             <Divider />
             <p>
               made by <AccentWord>tea</AccentWord> nature
             </p>
           </CopyRight>
-        </StyledFooter>
+        </footer>
       </Container>
     </Wrapper>
   );
