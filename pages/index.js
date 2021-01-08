@@ -23,7 +23,7 @@ const HeroOverlay = styled.div`
 const Hgroup = styled.hgroup`
   position: relative;
   padding: calc(var(--baseline) * 2) 0;
-  max-width: 720px;
+  max-width: var(--max-text-width);
   min-height: calc(100vh - (var(--baseline) * 2));
   display: flex;
   flex-direction: column;
