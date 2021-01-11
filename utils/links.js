@@ -1,10 +1,10 @@
-import CartSvg from '@icons/cart.svg';
-import LoginSvg from '@icons/login.svg';
-import LogoutSvg from '@icons/logout.svg';
-import PhoneSvg from '@icons/phone.svg';
-import EmailSvg from '@icons/email.svg';
-import PackageSvg from '@icons/package.svg';
-import BriefcaseSvg from '@icons/briefcase.svg';
+import CartSvg from '@/icons/cart.svg';
+import LoginSvg from '@/icons/login.svg';
+import LogoutSvg from '@/icons/logout.svg';
+import PhoneSvg from '@/icons/phone.svg';
+import EmailSvg from '@/icons/email.svg';
+import PackageSvg from '@/icons/package.svg';
+import BriefcaseSvg from '@/icons/briefcase.svg';
 
 const linkFactory = ({
   href,
