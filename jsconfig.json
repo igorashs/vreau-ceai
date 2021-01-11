@@ -2,8 +2,11 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@icons/*": ["assets/icons/*"],
-      "@layouts/*": ["shared/layouts/*"]
+      "@/icons/*": ["assets/icons/*"],
+      "@/layouts/*": ["shared/layouts/*"],
+      "@/shared/*": ["shared/*"],
+      "@/utils/*": ["utils/*"],
+      "@/models/*": ["models/*"]
     }
   }
 }

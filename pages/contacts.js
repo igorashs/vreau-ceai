@@ -1,9 +1,9 @@
 import Head from 'next/head';
 import styled from 'styled-components';
-import CalendarClock from '@icons/calendar-clock.svg';
-import { withBaseLayout } from '@layouts/BaseLayout';
-import { StyledLink } from 'shared/StyledLink';
-import { phoneLink, emailLink } from 'links';
+import CalendarClock from '@/icons/calendar-clock.svg';
+import { withBaseLayout } from '@/layouts/BaseLayout';
+import { StyledLink } from '@/shared/StyledLink';
+import { phoneLink, emailLink } from '@/utils/links';
 
 const Wrapper = styled.div`
   h1 {

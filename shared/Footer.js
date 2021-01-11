@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { Container } from './Container';
 import breakpoints from 'GlobalStyle/breakpoints';
-import { footerBlockLinksList } from 'links';
-import { StyledLink } from 'shared/StyledLink';
+import { footerBlockLinksList } from '@/utils/links';
+import { StyledLink } from '@/shared/StyledLink';
 
 const Wrapper = styled.div`
   margin-top: calc(var(--baseline) * 2);

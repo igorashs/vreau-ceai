@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import styled from 'styled-components';
-import { withBaseLayout } from '@layouts/BaseLayout';
+import { withBaseLayout } from '@/layouts/BaseLayout';
 
 const Wrapper = styled.div`
   max-width: var(--max-text-width);

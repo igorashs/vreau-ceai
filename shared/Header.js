@@ -3,11 +3,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { IconButton } from './IconButton';
 import { Container } from './Container';
-import MenuSvg from '@icons/menu.svg';
+import MenuSvg from '@/icons/menu.svg';
 import breakpoints from 'GlobalStyle/breakpoints';
 import { useState, useRef } from 'react';
-import { navLinks } from 'links';
-import { StyledLink } from 'shared/StyledLink';
+import { navLinks } from '@/utils/links';
+import { StyledLink } from '@/shared/StyledLink';
 
 const Wrapper = styled.div`
   display: flex;
