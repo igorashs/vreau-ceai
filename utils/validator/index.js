@@ -1,25 +1,20 @@
-import {
-  userSignupSchema,
-  userAlreadyExistsDescription,
-  unauthorizedUserEmailDescription,
-  unauthorizedUserPasswordDescription,
-  userLoginSchema
-} from './schemas/user';
+import * as userValidation from './schemas/user';
 import { ValidationError } from 'joi';
 
 export const validateUserSignup = (user) =>
-  userSignupSchema.validateAsync(user);
+  userValidation.signupSchema.validateAsync(user);
 
-export const validateUserLogin = (user) => userLoginSchema.validateAsync(user);
+export const validateUserLogin = (user) =>
+  userValidation.loginSchema.validateAsync(user);
 
 export const throwUserAlreadyExists = () =>
-  throwValidationError(userAlreadyExistsDescription);
+  throwValidationError(userValidation.alreadyExistsDescription);
 
 export const throwUnauthorizedUserEmail = () =>
-  throwValidationError(unauthorizedUserEmailDescription);
+  throwValidationError(userValidation.unauthorizedEmailDescription);
 
 export const throwUnauthorizedUserPassword = () =>
-  throwValidationError(unauthorizedUserPasswordDescription);
+  throwValidationError(userValidation.unauthorizedPasswordDescription);
 
 export const throwValidationError = ({ message, key }) => {
   throw new ValidationError(message, [

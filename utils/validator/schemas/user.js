@@ -1,21 +1,21 @@
 import Joi from 'joi';
 
-export const userAlreadyExistsDescription = {
+export const alreadyExistsDescription = {
   message: 'utilizatorul cu acest e-mail deja există',
   key: 'email'
 };
 
-export const unauthorizedUserEmailDescription = {
+export const unauthorizedEmailDescription = {
   message: 'e-mail greșit',
   key: 'email'
 };
 
-export const unauthorizedUserPasswordDescription = {
+export const unauthorizedPasswordDescription = {
   message: 'parolă greșită',
   key: 'password'
 };
 
-export const userSignupSchema = Joi.object({
+export const signupSchema = Joi.object({
   name: Joi.string().trim().max(60).required().messages({
     'string.base': 'numele trebuie sa fie de tip text',
     'string.max': 'numele este prea lung',
@@ -43,7 +43,7 @@ export const userSignupSchema = Joi.object({
     })
 });
 
-export const userLoginSchema = Joi.object({
+export const loginSchema = Joi.object({
   email: Joi.string().email().lowercase().required().messages({
     'string.base': 'e-mailul trebuie sa fie de tip text',
     'string.email': 'e-mailul nu este valid',
