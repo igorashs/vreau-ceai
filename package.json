@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
+    "cookie": "^0.4.1",
     "joi": "^17.3.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.11",
     "next": "10.0.4",
     "react": "17.0.1",
