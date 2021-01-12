@@ -31,3 +31,14 @@ export const throwValidationError = ({ message, key }) => {
     }
   ]);
 };
+
+export const getValidationErrorDetails = (error) => {
+  if (error instanceof ValidationError) {
+    return error.details.map((d) => ({
+      message: d.message,
+      name: d.context.key
+    }));
+  }
+
+  return null;
+};
