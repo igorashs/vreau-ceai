@@ -11,9 +11,10 @@ const linkFactory = ({
   text,
   label,
   Icon = null,
-  accent = true,
+  accent = 'light',
   privatePath = false,
-  managementPath = false
+  managementPath = false,
+  underline = false
 }) => ({
   href,
   text,
@@ -21,7 +22,8 @@ const linkFactory = ({
   Icon,
   accent,
   privatePath,
-  managementPath
+  managementPath,
+  underline
 });
 
 export const categoriesLink = linkFactory({
@@ -84,7 +86,6 @@ export const managementLink = linkFactory({
   label: 'Managment',
   Icon: BriefcaseSvg,
   privatePath: true,
-  accent: true,
   managementPath: true
 });
 
