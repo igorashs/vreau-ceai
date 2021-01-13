@@ -28,7 +28,7 @@ export default async function handle(req, res) {
 
         res.setHeader('Set-Cookie', [session, auth]);
 
-        res.status(200).json({ success: true, message: 'Logare cu succes' });
+        res.status(200).json({ success: true, message: 'Conectare cu succes' });
       } catch (error) {
         const details = validator.getValidationErrorDetails(error);
 
