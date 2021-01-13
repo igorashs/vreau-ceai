@@ -2,7 +2,7 @@ import User from '@/models/User';
 import bcrypt from 'bcrypt';
 import dbConnect from '@/utils/dbConnect';
 import * as validator from '@/utils/validator';
-import { createAuthTokenCookie } from '@/utils/createAuthTokenCookie';
+import { createSession } from '@/utils/createSession';
 
 export default async function handle(req, res) {
   await dbConnect();
@@ -19,10 +19,15 @@ export default async function handle(req, res) {
         const match = await bcrypt.compare(values.password, dbUser.password);
         if (!match) validator.throwUnauthorizedUserPassword();
 
-        res.setHeader(
-          'Set-Cookie',
-          createAuthTokenCookie({ name: dbUser.name, email: dbUser.email })
-        );
+        const [session, auth] = createSession({
+          name: dbUser.name,
+          email: dbUser.email,
+          isAdmin: dbUser.isAdmin,
+          isManager: dbUser.isManager
+        });
+
+        res.setHeader('Set-Cookie', [session, auth]);
+
         res.status(200).json({ success: true, message: 'Logare cu succes' });
       } catch (error) {
         const details = validator.getValidationErrorDetails(error);

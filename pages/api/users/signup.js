@@ -2,7 +2,7 @@ import User from '@/models/User';
 import bcrypt from 'bcrypt';
 import dbConnect from '@/utils/dbConnect';
 import * as validator from '@/utils/validator';
-import { createAuthTokenCookie } from '@/utils/createAuthTokenCookie';
+import { createSession } from '@/utils/createSession';
 
 export default async function handle(req, res) {
   await dbConnect();
@@ -27,10 +27,15 @@ export default async function handle(req, res) {
         const user = new User({ ...values, password: hashedPass });
         await user.save();
 
-        res.setHeader(
-          'Set-Cookie',
-          createAuthTokenCookie({ name: user.name, email: user.email })
-        );
+        const [session, auth] = createSession({
+          name: user.name,
+          email: user.email,
+          isAdmin: user.isAdmin,
+          isManager: user.isManager
+        });
+
+        res.setHeader('Set-Cookie', [session, auth]);
+
         res
           .status(201)
           .json({ success: true, message: 'Înregistrare finalizată' });
