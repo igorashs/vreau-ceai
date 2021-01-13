@@ -21,7 +21,6 @@ export const typography = css`
   select {
     font: inherit;
     font-size: 1rem;
-    text-transform: lowercase;
   }
 
   a {
