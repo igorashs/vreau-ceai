@@ -1,9 +1,21 @@
 import { GlobalStyle } from 'GlobalStyle';
 import { withLayout as withPageLayout } from '@/layouts/Layout';
 import Head from 'next/head';
+import { useEffect } from 'react';
+import { getSession } from '@/utils/getSession';
+
+// TODO useSession
 
 function MyApp({ Component, pageProps }) {
   const withLayout = Component.withLayout || withPageLayout;
+
+  useEffect(() => {
+    if (document) {
+      const session = getSession();
+
+      console.log(session);
+    }
+  }, []);
 
   return (
     <>
