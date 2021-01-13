@@ -18,11 +18,15 @@ export const variables = css`
     --accent-text-dark: #12542a;
     --danger-dark: #691616;
     --danger: #7e1b1b;
+    --text-danger: #7e1b1b;
 
     /* typography */
     --body-text: 16px;
     --body-line-height: 1.75;
     --baseline: calc(var(--body-text) * var(--body-line-height));
     --max-text-width: 720px;
+
+    /* other */
+    --max-input-width: 290px;
   }
 `;
