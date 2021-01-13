@@ -1,8 +1,9 @@
-import Link from 'next/link';
 import Head from 'next/head';
 import styled from 'styled-components';
 import { withBaseLayout } from '@/layouts/BaseLayout';
 import breakpoints from 'GlobalStyle/breakpoints';
+import { StyledLink } from '@/shared/StyledLink';
+import { categoriesLink } from '@/utils/links';
 
 const Wrapper = styled.div`
   max-width: var(--max-text-width);
@@ -41,9 +42,14 @@ export default function About() {
           pentrucă nouă ne pasă!
         </p>
 
-        <Link href="/categories">
-          <a aria-label="Vezi Catalogul">vezi catalogul</a>
-        </Link>
+        <StyledLink
+          {...{
+            ...categoriesLink,
+            text: 'vezi catalogul',
+            accent: 'dark',
+            underline: true
+          }}
+        />
       </Wrapper>
     </>
   );

@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import Image from 'next/image';
-import Link from 'next/link';
 import Head from 'next/head';
 import { Container } from '@/shared/Container';
-import { ButtonLink } from '@/shared/Button';
+import { StyledLink } from '@/shared/StyledLink';
+import { categoriesLink } from '@/utils/links';
 import breakpoints from 'GlobalStyle/breakpoints';
 
 const Hero = styled.div`
@@ -90,11 +90,13 @@ export default function Home() {
                   Vezi produsele oferite și comandele acum! livrarea gratuită,
                   în orice regiune al Moldovei!
                 </h2>
-                <Link href="/categories" passHref>
-                  <ButtonLink aria-label="Vezi Catalogul">
-                    vezi catalogul
-                  </ButtonLink>
-                </Link>
+                <StyledLink
+                  {...{
+                    ...categoriesLink,
+                    text: 'vezi catalogul',
+                    button: true
+                  }}
+                />
               </Hgroup>
             </Container>
           </Hero>
