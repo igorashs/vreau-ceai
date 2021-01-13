@@ -13,6 +13,11 @@
 ```
 
 ```bash
+# POST a new user
+/api/users/logout
+```
+
+```bash
 # GET an user by email (auth Admin)
 /api/users?search=<USER_EMAIL>
 ```
