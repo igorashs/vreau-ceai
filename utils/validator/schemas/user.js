@@ -15,18 +15,26 @@ export const unauthorizedPasswordDescription = {
   key: 'password'
 };
 
+const email = Joi.string()
+  .email({ tlds: { allow: false } })
+  .lowercase()
+  .required()
+  .messages({
+    'string.base': 'e-mailul trebuie sa fie de tip text',
+    'string.email': 'e-mailul nu este valid',
+    'string.empty': 'e-mailul este obligatoriu',
+    'any.required': 'e-mailul este obligatoriu'
+  });
+
 export const signupSchema = Joi.object({
   name: Joi.string().trim().max(60).required().messages({
     'string.base': 'numele trebuie sa fie de tip text',
     'string.max': 'numele este prea lung',
+    'string.empty': 'numele este obligatoriu',
     'any.required': 'numele este obligatoriu'
   }),
 
-  email: Joi.string().email().lowercase().required().messages({
-    'string.base': 'e-mailul trebuie sa fie de tip text',
-    'string.email': 'e-mailul nu este valid',
-    'any.required': 'e-mailul este obligatoriu'
-  }),
+  email,
 
   password: Joi.string()
     .pattern(/^[\w\d\.]+$/u)
@@ -37,6 +45,7 @@ export const signupSchema = Joi.object({
       'string.base': 'parola trebuie sa fie de tip text',
       'string.min': 'parola trebuie să fie cel puțin din 8 caractere',
       'string.max': 'parola este prea lungă',
+      'string.empty': 'parola este obligatorie',
       'any.required': 'parola este obligatorie',
       'string.pattern.base':
         "parola este invalidă, sunt permise caractere alfanumerice și '.', '_'"
@@ -44,14 +53,11 @@ export const signupSchema = Joi.object({
 });
 
 export const loginSchema = Joi.object({
-  email: Joi.string().email().lowercase().required().messages({
-    'string.base': 'e-mailul trebuie sa fie de tip text',
-    'string.email': 'e-mailul nu este valid',
-    'any.required': 'e-mailul este obligatoriu'
-  }),
+  email,
 
   password: Joi.string().required().messages({
     'string.base': 'parola trebuie sa fie de tip text',
+    'string.empty': 'parola este obligatorie',
     'any.required': 'parola este obligatorie'
   })
 });
