@@ -49,7 +49,11 @@ export const signupSchema = Joi.object({
       'any.required': 'parola este obligatorie',
       'string.pattern.base':
         "parola este invalidă, sunt permise caractere alfanumerice și '.', '_'"
-    })
+    }),
+
+  repeat_password: Joi.any().valid(Joi.ref('password')).messages({
+    'any.only': 'parola nu coincide'
+  })
 });
 
 export const loginSchema = Joi.object({
