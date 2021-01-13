@@ -62,6 +62,12 @@ export const loginLink = linkFactory({
   Icon: LoginSvg
 });
 
+export const signupLink = linkFactory({
+  href: '/signup',
+  text: 'Creați un cont',
+  label: 'Deschideți pagina pentru conectare'
+});
+
 export const myOrdersLink = linkFactory({
   href: '/my-orders',
   text: 'Comenzile Mele',
