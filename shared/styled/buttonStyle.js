@@ -7,6 +7,8 @@ export const buttonStyle = css`
   color: var(--text-light);
   background-color: var(--accent-dark);
   box-shadow: 1px 1px 2px #00000066;
+  text-transform: lowercase;
+
   cursor: pointer;
 
   :hover {
