@@ -20,10 +20,12 @@ export default async function handle(req, res) {
         if (!match) validator.throwUnauthorizedUserPassword();
 
         const [session, auth] = createSession({
-          name: dbUser.name,
-          email: dbUser.email,
-          isAdmin: dbUser.isAdmin,
-          isManager: dbUser.isManager
+          user: {
+            name: dbUser.name,
+            email: dbUser.email,
+            isAdmin: dbUser.isAdmin,
+            isManager: dbUser.isManager
+          }
         });
 
         res.setHeader('Set-Cookie', [session, auth]);

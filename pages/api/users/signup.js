@@ -28,10 +28,12 @@ export default async function handle(req, res) {
         await user.save();
 
         const [session, auth] = createSession({
-          name: user.name,
-          email: user.email,
-          isAdmin: user.isAdmin,
-          isManager: user.isManager
+          user: {
+            name: user.name,
+            email: user.email,
+            isAdmin: user.isAdmin,
+            isManager: user.isManager
+          }
         });
 
         res.setHeader('Set-Cookie', [session, auth]);
