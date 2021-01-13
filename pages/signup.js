@@ -13,6 +13,7 @@ import { Input } from '@/shared/Input';
 import { useRouter } from 'next/router';
 import { getSession } from '@/utils/getSession';
 import { Form, FormAction } from '@/shared/Form';
+import { signup } from 'services/ceaiApi';
 
 const Wrapper = styled.div`
   width: var(--max-input-width);
@@ -46,22 +47,14 @@ export default function Signup() {
   const router = useRouter();
 
   const onSubmit = useCallback(async (data) => {
-    const res = await fetch('http://localhost:3000/api/users/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
+    const res = await signup(data);
 
-    if (res.status === 201) {
+    if (res.success) {
       router.reload();
     }
 
-    const resData = await res.json();
-
-    if (resData?.errors) {
-      resData.errors.forEach((error) => {
+    if (res?.errors) {
+      res.errors.forEach((error) => {
         const { message, name } = error;
         setError(name, { message });
       });
