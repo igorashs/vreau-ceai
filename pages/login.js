@@ -54,7 +54,7 @@ export default function Signup() {
       body: JSON.stringify(data)
     });
 
-    if (res.status === 201) {
+    if (res.status === 200) {
       router.reload();
     }
 
