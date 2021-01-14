@@ -28,4 +28,12 @@ export const signup = async (data) => {
   return resData;
 };
 
-export const logout = async () => {};
+export const logout = async () => {
+  const res = await fetch(`${URL}/api/users/logout`, {
+    method: 'POST'
+  });
+
+  const resData = await res.json();
+
+  return resData;
+};
