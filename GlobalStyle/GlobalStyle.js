@@ -15,7 +15,7 @@ export const GlobalStyle = createGlobalStyle`
 
   :focus {
     outline: 0;
-    box-shadow: 0px 0px 0px 1px var(--accent-text-light) !important;
+    box-shadow: 0px 2px 0px -1px var(--accent-text-light);
   }
 
   :disabled {

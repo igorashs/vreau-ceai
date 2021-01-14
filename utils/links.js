@@ -1,6 +1,5 @@
 import CartSvg from '@/icons/cart.svg';
 import LoginSvg from '@/icons/login.svg';
-import LogoutSvg from '@/icons/logout.svg';
 import PhoneSvg from '@/icons/phone.svg';
 import EmailSvg from '@/icons/email.svg';
 import PackageSvg from '@/icons/package.svg';
@@ -77,15 +76,6 @@ export const myOrdersLink = linkFactory({
   privatePath: true
 });
 
-export const logoutLink = linkFactory({
-  href: '/login',
-  text: 'Deconectare',
-  label: 'Deconectare din account',
-  Icon: LogoutSvg,
-  privatePath: true,
-  accent: false
-});
-
 export const managementLink = linkFactory({
   href: '/management',
   text: 'Managment',
@@ -94,17 +84,6 @@ export const managementLink = linkFactory({
   privatePath: true,
   managementPath: true
 });
-
-export const navLinks = [
-  managementLink,
-  categoriesLink,
-  aboutLink,
-  contactsLink,
-  cartLink,
-  loginLink,
-  myOrdersLink,
-  logoutLink
-];
 
 export const phoneLink = linkFactory({
   href: 'tel:062222222',
@@ -119,6 +98,19 @@ export const emailLink = linkFactory({
   label: 'trimiteți email',
   Icon: EmailSvg
 });
+
+export const navLinks = {
+  public: [categoriesLink, aboutLink, contactsLink, cartLink, loginLink],
+  private: [categoriesLink, aboutLink, contactsLink, cartLink, myOrdersLink],
+  management: [
+    managementLink,
+    categoriesLink,
+    aboutLink,
+    contactsLink,
+    cartLink,
+    myOrdersLink
+  ]
+};
 
 export const footerBlockLinksList = [
   {

@@ -1,13 +1,18 @@
 import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
-import { IconButton } from './IconButton';
+import { Button } from './Button';
 import { Container } from './Container';
 import MenuSvg from '@/icons/menu.svg';
 import breakpoints from 'GlobalStyle/breakpoints';
-import { useState, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { navLinks } from '@/utils/links';
 import { StyledLink } from '@/shared/StyledLink';
+import { useSession } from 'contexts/SessionContext';
+import AccountSvg from 'assets/icons/account.svg';
+import LogoutSvg from '@/icons/logout.svg';
+import { logout } from 'services/ceaiApi';
+import { useRouter } from 'next/router';
 
 const Wrapper = styled.div`
   display: flex;
@@ -58,11 +63,11 @@ const NavList = styled.ul`
 const NavListItem = styled.li`
   border-top: 1px solid var(--layout);
   padding: 7px 0;
+  display: flex;
+  align-items: center;
+  height: calc(var(--baseline) * 2);
 
   @media (min-width: ${breakpoints.lg}) {
-    display: flex;
-    align-items: center;
-    height: calc(var(--baseline) * 2);
     border: 0;
   }
 `;
@@ -80,11 +85,36 @@ const NavToggle = styled.div`
   }
 `;
 
+const Account = styled(NavListItem)`
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--text-light);
+`;
+
 export function Header() {
   const [isHidden, setIsHidden] = useState(true);
+  const { user } = useSession();
+  const [links, setLinks] = useState();
+  const router = useRouter();
 
-  //TODO PrivatePaths / AdminPath (when authed)
-  const links = useRef(navLinks.filter((link) => !link.privatePath));
+  const onLogoutClick = useCallback(async () => {
+    const res = await logout();
+
+    if (res.success) {
+      router.reload();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!user) {
+      setLinks(navLinks.public);
+    } else if (user.isManager || user.isAdmin) {
+      setLinks(navLinks.management);
+    } else {
+      setLinks(navLinks.private);
+    }
+  }, [user]);
 
   return (
     <Wrapper>
@@ -104,20 +134,41 @@ export function Header() {
             </Link>
           </Logo>
           <NavToggle>
-            <IconButton
+            <Button
+              icon
+              btnStyle="none"
               aria-label="Comutați Navigarea"
               onClick={() => setIsHidden((prev) => !prev)}
             >
               <MenuSvg />
-            </IconButton>
+            </Button>
           </NavToggle>
           <Nav hide={isHidden}>
             <NavList>
-              {links.current.map((link) => (
+              {links?.map((link) => (
                 <NavListItem key={link.href}>
                   <StyledLink {...link} />
                 </NavListItem>
               ))}
+              {user && (
+                <>
+                  <Account key="user">
+                    <AccountSvg />
+                    {user.name}
+                  </Account>
+                  <NavListItem key="user-logout">
+                    <Button
+                      aria-label="Deconectare din account"
+                      onClick={onLogoutClick}
+                      btnStyle="danger-text"
+                      noPadding
+                    >
+                      <LogoutSvg />
+                      Deconectare
+                    </Button>
+                  </NavListItem>
+                </>
+              )}
             </NavList>
           </Nav>
         </StyledHeader>

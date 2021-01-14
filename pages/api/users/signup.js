@@ -2,7 +2,7 @@ import User from '@/models/User';
 import bcrypt from 'bcrypt';
 import dbConnect from '@/utils/dbConnect';
 import * as validator from '@/utils/validator';
-import { createSession } from '@/utils/createSession';
+import { createSession } from 'lib/session';
 
 export default async function handle(req, res) {
   await dbConnect();
@@ -28,10 +28,12 @@ export default async function handle(req, res) {
         await user.save();
 
         const [session, auth] = createSession({
-          name: user.name,
-          email: user.email,
-          isAdmin: user.isAdmin,
-          isManager: user.isManager
+          user: {
+            name: user.name,
+            email: user.email,
+            isAdmin: user.isAdmin,
+            isManager: user.isManager
+          }
         });
 
         res.setHeader('Set-Cookie', [session, auth]);

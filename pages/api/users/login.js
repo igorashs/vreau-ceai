@@ -2,7 +2,7 @@ import User from '@/models/User';
 import bcrypt from 'bcrypt';
 import dbConnect from '@/utils/dbConnect';
 import * as validator from '@/utils/validator';
-import { createSession } from '@/utils/createSession';
+import { createSession } from 'lib/session';
 
 export default async function handle(req, res) {
   await dbConnect();
@@ -20,10 +20,12 @@ export default async function handle(req, res) {
         if (!match) validator.throwUnauthorizedUserPassword();
 
         const [session, auth] = createSession({
-          name: dbUser.name,
-          email: dbUser.email,
-          isAdmin: dbUser.isAdmin,
-          isManager: dbUser.isManager
+          user: {
+            name: dbUser.name,
+            email: dbUser.email,
+            isAdmin: dbUser.isAdmin,
+            isManager: dbUser.isManager
+          }
         });
 
         res.setHeader('Set-Cookie', [session, auth]);
