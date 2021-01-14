@@ -11,7 +11,7 @@ import { StyledLink } from '@/shared/StyledLink';
 import { loginLink } from '@/utils/links';
 import { Input } from '@/shared/Input';
 import { useRouter } from 'next/router';
-import { getSession } from '@/utils/getSession';
+import { verifySession } from 'lib/session';
 import { Form, FormAction } from '@/shared/Form';
 import { signup } from 'services/ceaiApi';
 
@@ -123,7 +123,7 @@ export default function Signup() {
 }
 
 export const getServerSideProps = async ({ req, res }) => {
-  const session = getSession(req);
+  const session = verifySession(req);
 
   if (session) {
     return {

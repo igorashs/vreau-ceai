@@ -2,7 +2,7 @@ import User from '@/models/User';
 import bcrypt from 'bcrypt';
 import dbConnect from '@/utils/dbConnect';
 import * as validator from '@/utils/validator';
-import { createSession } from '@/utils/createSession';
+import { createSession } from 'lib/session';
 
 export default async function handle(req, res) {
   await dbConnect();

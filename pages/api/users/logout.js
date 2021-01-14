@@ -1,4 +1,4 @@
-import { removeSession } from '@/utils/removeSession';
+import { removeSession } from 'lib/session';
 
 export default function handler(req, res) {
   switch (req.method) {
