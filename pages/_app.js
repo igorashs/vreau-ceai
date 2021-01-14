@@ -1,21 +1,12 @@
 import { GlobalStyle } from 'GlobalStyle';
 import { withLayout as withPageLayout } from '@/layouts/Layout';
 import Head from 'next/head';
-import { useEffect } from 'react';
-import { getSession } from '@/utils/getSession';
+import App from 'next/app';
+import { SessionProvider } from 'contexts/SessionContext';
+import { verifySession } from 'lib/session';
 
-// TODO useSession
-
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps, session }) {
   const withLayout = Component.withLayout || withPageLayout;
-
-  useEffect(() => {
-    if (document) {
-      const session = getSession();
-
-      console.log(session);
-    }
-  }, []);
 
   return (
     <>
@@ -29,9 +20,24 @@ function MyApp({ Component, pageProps }) {
         />
       </Head>
       <GlobalStyle />
-      {withLayout(<Component {...pageProps} />)}
+      <SessionProvider session={session}>
+        {withLayout(<Component {...pageProps} />)}
+      </SessionProvider>
     </>
   );
 }
+
+MyApp.getInitialProps = async (appContext) => {
+  let session = {};
+
+  if (appContext.ctx.req) {
+    session = verifySession(appContext.ctx.req);
+  }
+
+  // calls page's `getInitialProps` and fills `appProps.pageProps`
+  const appProps = await App.getInitialProps(appContext);
+
+  return { ...appProps, session };
+};
 
 export default MyApp;
