@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { buttonStyle } from './styled/buttonStyle';
+import { Button } from './Button';
 import Link from 'next/link';
 
 const StyledA = styled.a`
@@ -7,6 +7,10 @@ const StyledA = styled.a`
   display: inline-flex;
   align-items: center;
   gap: 7px;
+
+  :hover {
+    box-shadow: 0px 2px 0px -1px var(--accent-text-light);
+  }
 
   ${({ accent }) => {
     switch (accent) {
@@ -20,8 +24,6 @@ const StyledA = styled.a`
   }}
 
   ${({ underline }) => `text-decoration: ${underline ? 'underline' : 'none'};`}
-
-  ${({ button }) => button && buttonStyle}
 `;
 
 export const StyledLink = ({
@@ -33,19 +35,25 @@ export const StyledLink = ({
   target,
   rel,
   underline,
-  button
+  button = false
 }) => (
   <Link href={href} passHref>
-    <StyledA
-      aria-label={label}
-      accent={accent}
-      target={target}
-      rel={rel}
-      underline={underline}
-      button={button}
-    >
-      {Icon && <Icon />}
-      {text}
-    </StyledA>
+    {button ? (
+      <Button as="a" icon={!text} aria-label={label} target={target} rel={rel}>
+        {Icon && <Icon />}
+        {text}
+      </Button>
+    ) : (
+      <StyledA
+        aria-label={label}
+        accent={accent}
+        target={target}
+        rel={rel}
+        underline={underline}
+      >
+        {Icon && <Icon />}
+        {text}
+      </StyledA>
+    )}
   </Link>
 );
