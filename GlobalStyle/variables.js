@@ -19,6 +19,7 @@ export const variables = css`
     --danger-dark: #691616;
     --danger: #7e1b1b;
     --text-danger: #7e1b1b;
+    --text-danger-light: #e99696;
 
     /* typography */
     --body-text: 16px;
