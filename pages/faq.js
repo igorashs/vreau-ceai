@@ -1,12 +1,28 @@
 import Head from 'next/head';
 import styled from 'styled-components';
 import { withBaseLayout } from '@/layouts/BaseLayout';
+import breakpoints from 'GlobalStyle/breakpoints';
 
 const Wrapper = styled.div`
   max-width: var(--max-text-width);
 
+  h1 {
+    font-size: var(--h4-font-size);
+  }
+
   h2 {
+    font-size: var(--h5-font-size);
     margin: var(--baseline) 0 calc(var(--baseline) / 2);
+  }
+
+  @media (min-width: ${breakpoints.lg}) {
+    h1 {
+      font-size: var(--h3-font-size);
+    }
+
+    h2 {
+      font-size: var(--h4-font-size);
+    }
   }
 
   ol {

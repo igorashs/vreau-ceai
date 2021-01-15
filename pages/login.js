@@ -20,10 +20,18 @@ const Wrapper = styled.div`
   gap: calc(var(--baseline) / 2);
   margin: 0 auto;
 
+  h1 {
+    font-size: var(--h4-font-size);
+  }
+
   @media (min-width: ${breakpoints.lg}) {
     width: auto;
     margin: 0;
     gap: var(--baseline);
+
+    h1 {
+      font-size: var(--h3-font-size);
+    }
   }
 `;
 

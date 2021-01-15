@@ -1,5 +1,4 @@
 import { css } from 'styled-components';
-import breakpoints from './breakpoints';
 
 export const typography = css`
   /* base font */
@@ -29,35 +28,35 @@ export const typography = css`
 
   h1,
   h2,
-  h3 {
+  h3,
+  h4,
+  h5 {
     font-weight: 500;
     line-height: 1.3;
     color: var(--text-dark);
   }
 
   h1 {
-    font-size: 2.369rem;
+    font-size: var(--h1-font-size);
   }
 
   h2 {
-    font-size: 1.777rem;
+    font-size: var(--h2-font-size);
   }
 
   h3 {
-    font-size: 1.333rem;
+    font-size: var(--h3-font-size);
+  }
+
+  h4 {
+    font-size: var(--h4-font-size);
+  }
+
+  h5 {
+    font-size: var(--h5-font-size);
   }
 
   small {
     font-size: 0.75rem;
-  }
-
-  @media (min-width: ${breakpoints.lg}) {
-    h1 {
-      font-size: 3.157rem;
-    }
-
-    h2 {
-      font-size: 2.369rem;
-    }
   }
 `;

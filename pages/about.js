@@ -8,12 +8,20 @@ import { categoriesLink } from '@/utils/links';
 const Wrapper = styled.div`
   max-width: var(--max-text-width);
 
+  h1 {
+    font-size: var(--h4-font-size);
+  }
+
   h1,
   p {
     margin-bottom: calc(var(--baseline) / 2);
   }
 
   @media (min-width: ${breakpoints.lg}) {
+    h1 {
+      font-size: var(--h3-font-size);
+    }
+
     h1,
     p {
       margin-bottom: var(--baseline);

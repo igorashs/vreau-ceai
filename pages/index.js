@@ -34,23 +34,29 @@ const Hgroup = styled.hgroup`
     color: var(--text-light);
   }
 
+  h1 {
+    font-size: var(--h3-font-size);
+  }
+
   h2 {
     margin: var(--baseline) 0;
+    font-size: var(--h4-font-size);
   }
 
   @media (min-width: ${breakpoints.lg}) {
     h1 {
-      font-size: 4.209rem;
+      font-size: var(--h1-font-size);
     }
 
     h2 {
       margin: calc(var(--baseline) * 2) 0;
+      font-size: var(--h3-font-size);
     }
   }
 `;
 
 const Recommendations = styled.section`
-  h3 {
+  h5 {
     text-align: center;
   }
 `;
@@ -103,7 +109,7 @@ export default function Home() {
 
           <Container>
             <Recommendations>
-              <h3>Ceaiuri Recomandate</h3>
+              <h5>Ceaiuri Recomandate</h5>
             </Recommendations>
           </Container>
         </FlexContainer>
