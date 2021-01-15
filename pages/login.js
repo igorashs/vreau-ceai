@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import breakpoints from 'GlobalStyle/breakpoints';
 import { withBaseLayout } from '@/layouts/BaseLayout';
 import { useForm } from 'react-hook-form';
-import { useCallback } from 'react';
 import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
 import { loginSchema } from '@/utils/validator/schemas/user';
 import { Button } from '@/shared/Button';
@@ -46,7 +45,7 @@ export default function Signup() {
 
   const router = useRouter();
 
-  const onSubmit = useCallback(async (data) => {
+  const onSubmit = async (data) => {
     const res = await login(data);
 
     if (res.success) {
@@ -59,7 +58,7 @@ export default function Signup() {
         setError(name, { message });
       });
     }
-  }, []);
+  };
 
   return (
     <>

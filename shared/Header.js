@@ -5,7 +5,7 @@ import { Button } from './Button';
 import { Container } from './Container';
 import MenuSvg from '@/icons/menu.svg';
 import breakpoints from 'GlobalStyle/breakpoints';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { navLinks } from '@/utils/links';
 import { StyledLink } from '@/shared/StyledLink';
 import { useSession } from 'contexts/SessionContext';
@@ -98,13 +98,13 @@ export function Header() {
   const [links, setLinks] = useState();
   const router = useRouter();
 
-  const onLogoutClick = useCallback(async () => {
+  const onLogoutClick = async () => {
     const res = await logout();
 
     if (res.success) {
       router.reload();
     }
-  }, []);
+  };
 
   useEffect(() => {
     if (!user) {
