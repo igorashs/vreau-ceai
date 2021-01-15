@@ -26,6 +26,11 @@ export const variables = css`
     --body-line-height: 1.75;
     --baseline: calc(var(--body-text) * var(--body-line-height));
     --max-text-width: 720px;
+    --h1-font-size: 4.209rem;
+    --h2-font-size: 3.157rem;
+    --h3-font-size: 2.369rem;
+    --h4-font-size: 1.777rem;
+    --h5-font-size: 1.333rem;
 
     /* other */
     --max-input-width: 290px;

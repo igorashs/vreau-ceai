@@ -9,7 +9,7 @@ const StyledA = styled.a`
   gap: 7px;
 
   :hover {
-    box-shadow: 0px 2px 0px -1px var(--accent-text-light);
+    filter: brightness(0.7);
   }
 
   ${({ accent }) => {

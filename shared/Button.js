@@ -10,10 +10,6 @@ export const buttonStyle = css`
   text-transform: lowercase;
   text-decoration: none;
 
-  :focus {
-    box-shadow: 0px 0px 0px 1px var(--accent-text-light);
-  }
-
   cursor: pointer;
 
   :hover {
@@ -38,23 +34,29 @@ const dangerStyle = css`
   }
 `;
 
-const dangerTextStyle = css`
-  color: var(--text-danger-light);
+const textStyle = css`
   background-color: transparent;
+  text-transform: initial;
   box-shadow: none;
-
-  :focus {
-    box-shadow: 0px 0px 0px 1px var(--text-danger-light);
-  }
 
   :hover {
     background-color: transparent;
-    filter: brightness(0.9);
+    filter: brightness(0.7);
   }
 `;
 
+const dangerTextStyle = css`
+  ${textStyle}
+  color: var(--text-danger-light);
+`;
+
+const accentTextStyle = css`
+  ${textStyle}
+  color: var(--accent-text-dark);
+`;
+
 export const Button = styled.button`
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 7px;
 
@@ -68,6 +70,8 @@ export const Button = styled.button`
         return noneStyle;
       case 'danger-text':
         return dangerTextStyle;
+      case 'accent-text':
+        return accentTextStyle;
       default:
         return null;
     }

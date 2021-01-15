@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import breakpoints from 'GlobalStyle/breakpoints';
 import { withBaseLayout } from '@/layouts/BaseLayout';
 import { useForm } from 'react-hook-form';
-import { useCallback } from 'react';
 import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
 import { signupSchema } from '@/utils/validator/schemas/user';
 import { Button } from '@/shared/Button';
@@ -21,10 +20,18 @@ const Wrapper = styled.div`
   gap: calc(var(--baseline) / 2);
   margin: 0 auto;
 
+  h1 {
+    font-size: var(--h4-font-size);
+  }
+
   @media (min-width: ${breakpoints.lg}) {
     width: auto;
     margin: 0;
     gap: var(--baseline);
+
+    h1 {
+      font-size: var(--h3-font-size);
+    }
   }
 `;
 
@@ -46,7 +53,7 @@ export default function Signup() {
 
   const router = useRouter();
 
-  const onSubmit = useCallback(async (data) => {
+  const onSubmit = async (data) => {
     const res = await signup(data);
 
     if (res.success) {
@@ -59,7 +66,7 @@ export default function Signup() {
         setError(name, { message });
       });
     }
-  }, []);
+  };
 
   return (
     <>

@@ -4,10 +4,19 @@ import CalendarClock from '@/icons/calendar-clock.svg';
 import { withBaseLayout } from '@/layouts/BaseLayout';
 import { StyledLink } from '@/shared/StyledLink';
 import { phoneLink, emailLink } from '@/utils/links';
+import breakpoints from 'GlobalStyle/breakpoints';
 
 const Wrapper = styled.div`
   h1 {
     margin-bottom: calc(var(--baseline) / 2);
+    font-size: var(--h4-font-size);
+  }
+
+  @media (min-width: ${breakpoints.lg}) {
+    h1 {
+      font-size: var(--h3-font-size);
+      margin-bottom: var(--baseline);
+    }
   }
 
   a {
