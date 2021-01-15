@@ -25,7 +25,7 @@ const BlockLinkList = styled.ul`
   @media (min-width: ${breakpoints.lg}) {
     display: grid;
     align-items: start;
-    grid-template-columns: repeat(3, 225px);
+    grid-template-columns: repeat(3, 224px);
     justify-content: space-between;
   }
 `;
