@@ -112,6 +112,65 @@ export const navLinks = {
   ]
 };
 
+export const managementLinks = {
+  users: [
+    linkFactory({
+      href: '/management/users/update',
+      text: 'Modificare Utilizator',
+      accent: 'dark'
+    })
+  ],
+
+  orders: [
+    linkFactory({
+      href: '/management/orders/all',
+      text: 'Toate comenzile',
+      accent: 'dark'
+    }),
+    linkFactory({
+      href: '/management/orders/update',
+      text: 'Modificare comandă',
+      accent: 'dark'
+    })
+  ],
+
+  products: [
+    linkFactory({
+      href: '/management/products/all',
+      text: 'Toate produsele',
+      accent: 'dark'
+    }),
+    linkFactory({
+      href: '/management/products/update',
+      text: 'Modificare produs',
+      accent: 'dark'
+    }),
+    linkFactory({
+      href: '/management/products/add',
+      text: 'Adăugare produs',
+      accent: 'dark'
+    })
+  ],
+
+  categories: [
+    linkFactory({
+      href: '/management/categories/all',
+      text: 'Toate categoriile',
+      accent: 'dark'
+    }),
+    linkFactory({
+      href: '/management/categories/update',
+      text: 'Modificare categorie',
+      accent: 'dark'
+    }),
+    linkFactory({
+      href: '/management/categories/add',
+      text: 'Adăugare categorie',
+      accent: 'dark'
+    })
+  ]
+};
+
 export const footerBlockLinksList = [
   {
     ...aboutLink,
