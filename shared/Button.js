@@ -10,10 +10,6 @@ export const buttonStyle = css`
   text-transform: lowercase;
   text-decoration: none;
 
-  :focus {
-    box-shadow: 0px 0px 0px 1px var(--accent-text-light);
-  }
-
   cursor: pointer;
 
   :hover {
@@ -43,13 +39,9 @@ const dangerTextStyle = css`
   background-color: transparent;
   box-shadow: none;
 
-  :focus {
-    box-shadow: 0px 0px 0px 1px var(--text-danger-light);
-  }
-
   :hover {
     background-color: transparent;
-    filter: brightness(0.9);
+    filter: brightness(0.7);
   }
 `;
 
