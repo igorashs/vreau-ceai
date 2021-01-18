@@ -37,3 +37,6 @@ export const getValidationErrorDetails = (error) => {
 
   return null;
 };
+
+export const validateEmail = (email) =>
+  userValidation.emailSchema.validateAsync(email);
