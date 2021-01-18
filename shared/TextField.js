@@ -1,16 +1,11 @@
 import styled from 'styled-components';
+import { Label } from './Label';
 
 const Wrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 7px;
-`;
-
-const Label = styled.label`
-  font-weight: 500;
-
-  ${({ error }) => error && 'color: var(--text-danger);'}
 `;
 
 const StyledInput = styled.input`
@@ -22,7 +17,7 @@ const StyledInput = styled.input`
   color: var(--text-dark);
 `;
 
-export const Input = ({ name, label, error, passRef, type, id = name }) => {
+export const TextField = ({ name, label, error, passRef, type, id = name }) => {
   return (
     <Wrapper>
       <Label htmlFor={id} error={error}>
