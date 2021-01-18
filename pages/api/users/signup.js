@@ -4,7 +4,7 @@ import dbConnect from '@/utils/dbConnect';
 import * as validator from '@/utils/validator';
 import { createSession } from 'lib/session';
 
-export default async function handle(req, res) {
+export default async function handler(req, res) {
   await dbConnect();
 
   switch (req.method) {
