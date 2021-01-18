@@ -111,7 +111,7 @@ export default function Signup() {
               passRef={register}
               type="password"
             />
-            <FormAction>
+            <FormAction justify="space-between">
               <StyledLink
                 {...{
                   ...loginLink,
