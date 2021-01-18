@@ -15,7 +15,7 @@ export const unauthorizedPasswordDescription = {
   key: 'password'
 };
 
-const email = Joi.string()
+export const emailSchema = Joi.string()
   .email({ tlds: { allow: false } })
   .lowercase()
   .required()
@@ -34,7 +34,7 @@ export const signupSchema = Joi.object({
     'any.required': 'numele este obligatoriu'
   }),
 
-  email,
+  emailSchema,
 
   password: Joi.string()
     .pattern(/^[\w\d\.]+$/u)
@@ -57,7 +57,7 @@ export const signupSchema = Joi.object({
 });
 
 export const loginSchema = Joi.object({
-  email,
+  emailSchema,
 
   password: Joi.string().required().messages({
     'string.base': 'parola trebuie sa fie de tip text',
