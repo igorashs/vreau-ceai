@@ -12,7 +12,7 @@ import { TextField } from '@/shared/TextField';
 import { useRouter } from 'next/router';
 import { Form, FormAction } from '@/shared/Form';
 import { login } from 'services/ceaiApi';
-import { verifySession } from '@/utils/verifySession';
+import { withSession } from '@/utils/withSession';
 
 const Wrapper = styled.div`
   width: var(--max-input-width);
@@ -114,21 +114,20 @@ export default function Signup() {
   );
 }
 
-export const getServerSideProps = async ({ req, res }) => {
+export const getServerSideProps = withSession(async ({ req }) => {
   // console.log(req.headers.referer);
-  const [session, cookies] = await verifySession(req.cookies);
+  const { isAuth } = req.session;
 
-  if (cookies) res.setHeader('Set-Cookie', cookies);
-
-  if (session.isAuth) {
+  if (isAuth) {
     return {
       redirect: {
-        destination: '/'
+        destination: '/',
+        permanent: false
       }
     };
   }
 
   return { props: {} };
-};
+});
 
 Signup.withLayout = withBaseLayout;
