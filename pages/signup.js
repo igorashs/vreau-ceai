@@ -10,9 +10,9 @@ import { StyledLink } from '@/shared/StyledLink';
 import { loginLink } from '@/utils/links';
 import { TextField } from '@/shared/TextField';
 import { useRouter } from 'next/router';
-import { verifySession } from 'lib/session';
 import { Form, FormAction } from '@/shared/Form';
 import { signup } from 'services/ceaiApi';
+import { verifySession } from '@/utils/verifySession';
 
 const Wrapper = styled.div`
   width: var(--max-input-width);
@@ -130,9 +130,11 @@ export default function Signup() {
 }
 
 export const getServerSideProps = async ({ req, res }) => {
-  const session = verifySession(req);
+  const [session, cookies] = await verifySession(req.cookies);
 
-  if (session) {
+  if (cookies) res.setHeader('Set-Cookie', cookies);
+
+  if (session.isAuth) {
     return {
       redirect: {
         destination: '/'
