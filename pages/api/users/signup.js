@@ -1,4 +1,5 @@
 import User from '@/models/User';
+import Token from '@/models/Token';
 import bcrypt from 'bcrypt';
 import dbConnect from '@/utils/dbConnect';
 import * as validator from '@/utils/validator';
@@ -24,19 +25,27 @@ export default async function handler(req, res) {
           values.password,
           +process.env.SALT
         );
-        const user = new User({ ...values, password: hashedPass });
-        await user.save();
+        const newUser = new User({ ...values, password: hashedPass });
+        await newUser.save();
 
-        const [session, auth] = createSession({
-          user: {
-            name: user.name,
-            email: user.email,
-            isAdmin: user.isAdmin,
-            isManager: user.isManager
-          }
+        const user = {
+          _id: newUser._id,
+          name: newUser.name,
+          isAdmin: newUser.isAdmin,
+          isManager: newUser.isManager
+        };
+
+        const { cookies, refreshToken } = createSession(user, {
+          user_id: newUser._id
         });
 
-        res.setHeader('Set-Cookie', [session, auth]);
+        const token = new Token({
+          user_id: newUser._id,
+          refresh_token: refreshToken
+        });
+        await token.save();
+
+        res.setHeader('Set-Cookie', cookies);
 
         res
           .status(201)
