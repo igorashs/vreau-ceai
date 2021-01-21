@@ -3,10 +3,8 @@ import { createContext, useContext, useState } from 'react';
 const SessionContext = createContext();
 
 function SessionProvider({ children, session }) {
-  const [curSession] = useState(session);
-
   return (
-    <SessionContext.Provider value={curSession ?? {}}>
+    <SessionContext.Provider value={session}>
       {children}
     </SessionContext.Provider>
   );
