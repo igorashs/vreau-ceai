@@ -3,10 +3,24 @@ import { withLayout as withPageLayout } from '@/layouts/Layout';
 import Head from 'next/head';
 import App from 'next/app';
 import { SessionProvider } from 'contexts/SessionContext';
-import { verifySession } from 'lib/session';
+import { verifyToken } from 'lib/session';
+import { refreshUser } from 'services/ceaiApi';
+import { useEffect, useState } from 'react';
 
-function MyApp({ Component, pageProps, session }) {
+function MyApp({ Component, pageProps, initialSession }) {
   const withLayout = Component.withLayout || withPageLayout;
+  const [session, setSession] = useState(initialSession);
+
+  useEffect(async () => {
+    if (initialSession.needRefresh) {
+      const res = await refreshUser();
+
+      if (res.success) {
+        // update session
+        setSession(res.session);
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -28,16 +42,33 @@ function MyApp({ Component, pageProps, session }) {
 }
 
 MyApp.getInitialProps = async (appContext) => {
-  let session = {};
+  let session = { isAuth: false, user: null, needRefresh: false };
 
   if (appContext.ctx.req) {
-    session = verifySession(appContext.ctx.req);
+    const { access, refresh } = appContext.ctx.req.cookies;
+
+    if (refresh) {
+      const refreshClaims = verifyToken(refresh);
+
+      if (refreshClaims) {
+        const accessClaims = verifyToken(access);
+        session.isAuth = true;
+
+        if (accessClaims) {
+          session.user = accessClaims;
+        } else {
+          session.needRefresh = true;
+        }
+      } else {
+        session.needRefresh = true;
+      }
+    }
   }
 
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
 
-  return { ...appProps, session };
+  return { ...appProps, initialSession: session };
 };
 
 export default MyApp;
