@@ -61,3 +61,14 @@ export const updateUserManagerPermission = async (id, isManager) => {
 
   return resData;
 };
+
+export const refreshUser = async () => {
+  const res = await fetch(`${URL}/api/users/refresh`, {
+    method: 'POST',
+    credentials: 'same-origin'
+  });
+
+  const resData = await res.json();
+
+  return resData;
+};
