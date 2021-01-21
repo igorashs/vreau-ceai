@@ -1,17 +1,18 @@
-import Token from 'models/Token';
-import { removeSession } from 'lib/session';
+import { verifySession } from '@/utils/verifySession';
 
 export default async function handler(req, res) {
   switch (req.method) {
     case 'POST':
       try {
-        await Token.findOneAndDelete({ refresh_token: req.cookies.refresh });
-        const cookies = removeSession();
+        const [session, cookies] = await verifySession(req.cookies, true);
 
         res.setHeader('Set-Cookie', cookies);
-        res
-          .status(200)
-          .json({ success: true, message: 'Deconectare cu succes' });
+
+        res.status(session.isAuth ? 200 : 401).json({
+          success: session.isAuth,
+          message: session.isAuth ? 'auth updated' : 'unauthorized',
+          session
+        });
       } catch (error) {
         res.status(400).json({ success: false, message: 'Bad Request' });
       }

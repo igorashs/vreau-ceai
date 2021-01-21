@@ -8,11 +8,11 @@ import { signupSchema } from '@/utils/validator/schemas/user';
 import { Button } from '@/shared/Button';
 import { StyledLink } from '@/shared/StyledLink';
 import { loginLink } from '@/utils/links';
-import { Input } from '@/shared/Input';
+import { TextField } from '@/shared/TextField';
 import { useRouter } from 'next/router';
-import { verifySession } from 'lib/session';
 import { Form, FormAction } from '@/shared/Form';
 import { signup } from 'services/ceaiApi';
+import { verifySession } from '@/utils/verifySession';
 
 const Wrapper = styled.div`
   width: var(--max-input-width);
@@ -83,35 +83,35 @@ export default function Signup() {
 
         <FormWrapper>
           <Form onSubmit={handleSubmit(onSubmit)}>
-            <Input
+            <TextField
               name="name"
               label="nume"
               error={errors?.name?.message}
               passRef={register}
               type="text"
             />
-            <Input
+            <TextField
               name="email"
               label="e-mail"
               error={errors?.email?.message}
               passRef={register}
               type="email"
             />
-            <Input
+            <TextField
               name="password"
               label="parola"
               error={errors?.password?.message}
               passRef={register}
               type="password"
             />
-            <Input
+            <TextField
               name="repeat_password"
               label="repetați parola"
               error={errors?.repeat_password?.message}
               passRef={register}
               type="password"
             />
-            <FormAction>
+            <FormAction justify="space-between">
               <StyledLink
                 {...{
                   ...loginLink,
@@ -130,9 +130,11 @@ export default function Signup() {
 }
 
 export const getServerSideProps = async ({ req, res }) => {
-  const session = verifySession(req);
+  const [session, cookies] = await verifySession(req.cookies);
 
-  if (session) {
+  if (cookies) res.setHeader('Set-Cookie', cookies);
+
+  if (session.isAuth) {
     return {
       redirect: {
         destination: '/'

@@ -94,7 +94,7 @@ const Account = styled(NavListItem)`
 
 export function Header() {
   const [isHidden, setIsHidden] = useState(true);
-  const { user } = useSession();
+  const { isAuth, user } = useSession();
   const [links, setLinks] = useState();
   const router = useRouter();
 
@@ -107,14 +107,14 @@ export function Header() {
   };
 
   useEffect(() => {
-    if (!user) {
+    if (!isAuth) {
       setLinks(navLinks.public);
-    } else if (user.isManager || user.isAdmin) {
+    } else if (user?.isManager || user?.isAdmin) {
       setLinks(navLinks.management);
     } else {
       setLinks(navLinks.private);
     }
-  }, [user]);
+  }, [isAuth, user]);
 
   return (
     <Wrapper>
@@ -150,11 +150,11 @@ export function Header() {
                   <StyledLink {...link} />
                 </NavListItem>
               ))}
-              {user && (
+              {isAuth && (
                 <>
                   <Account key="user">
                     <AccountSvg />
-                    {user.name}
+                    {user?.name}
                   </Account>
                   <NavListItem key="user-logout">
                     <Button

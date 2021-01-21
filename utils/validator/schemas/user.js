@@ -26,6 +26,8 @@ const email = Joi.string()
     'any.required': 'e-mailul este obligatoriu'
   });
 
+export const emailSchema = Joi.object({ email });
+
 export const signupSchema = Joi.object({
   name: Joi.string().trim().max(60).required().messages({
     'string.base': 'numele trebuie sa fie de tip text',

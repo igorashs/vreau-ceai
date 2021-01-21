@@ -37,3 +37,38 @@ export const logout = async () => {
 
   return resData;
 };
+
+export const findUser = async (email) => {
+  const res = await fetch(`${URL}/api/users?search=${email}`, {
+    method: 'POST'
+  });
+
+  const resData = await res.json();
+
+  return resData;
+};
+
+export const updateUserManagerPermission = async (id, isManager) => {
+  const res = await fetch(`${URL}/api/users/${id}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ isManager })
+  });
+
+  const resData = await res.json();
+
+  return resData;
+};
+
+export const refreshUser = async () => {
+  const res = await fetch(`${URL}/api/users/refresh`, {
+    method: 'POST',
+    credentials: 'same-origin'
+  });
+
+  const resData = await res.json();
+
+  return resData;
+};
