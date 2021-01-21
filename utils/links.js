@@ -115,7 +115,7 @@ export const navLinks = {
 export const managementLinks = {
   users: [
     linkFactory({
-      href: '/management/users/update#form',
+      href: '/management/users/update#scroll',
       text: 'Modificare Utilizator',
       accent: 'dark'
     })

@@ -64,7 +64,7 @@ export default function Update() {
         <title>Modify user</title>
       </Head>
       <Wrapper>
-        <h4>Modificare Utilizator</h4>
+        <h4 id="scroll">Modificare Utilizator</h4>
         <FindUserForm onFindUserSubmit={handleFindUserSubmit} />
 
         {label && (
@@ -107,7 +107,7 @@ function FindUserForm({ onFindUserSubmit }) {
   };
 
   return (
-    <Form id="form" onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <TextField
         name="email"
         label="user email"
