@@ -1,9 +1,17 @@
 import { withManagementStoreLayout } from '@/layouts/StoreLayout';
 import { Leaves } from '@/shared/Leaves';
 import { withSession } from '@/utils/withSession';
+import Head from 'next/head';
 
 export default function Management() {
-  return <Leaves />;
+  return (
+    <>
+      <Head>
+        <title>Management</title>
+      </Head>
+      <Leaves />
+    </>
+  );
 }
 
 export const getServerSideProps = withSession(async ({ req }) => {

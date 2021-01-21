@@ -11,6 +11,7 @@ import { Form, FormAction } from '@/shared/Form';
 import { Label } from '@/shared/Label';
 import { CheckBox } from '@/shared/CheckBox';
 import { withSession } from '@/utils/withSession';
+import Head from 'next/head';
 
 const Wrapper = styled.div`
   display: grid;
@@ -58,23 +59,28 @@ export default function Update() {
   };
 
   return (
-    <Wrapper>
-      <h4>Modificare Utilizator</h4>
-      <FindUserForm onFindUserSubmit={handleFindUserSubmit} />
+    <>
+      <Head>
+        <title>Modify user</title>
+      </Head>
+      <Wrapper>
+        <h4>Modificare Utilizator</h4>
+        <FindUserForm onFindUserSubmit={handleFindUserSubmit} />
 
-      {label && (
-        <Label error={!label.success} success={label.success}>
-          {label.message}
-        </Label>
-      )}
+        {label && (
+          <Label error={!label.success} success={label.success}>
+            {label.message}
+          </Label>
+        )}
 
-      {dbUser && (
-        <UpdateUserForm
-          dbUser={dbUser}
-          onUpdateUserSubmit={handleUpdateUserSubmit}
-        />
-      )}
-    </Wrapper>
+        {dbUser && (
+          <UpdateUserForm
+            dbUser={dbUser}
+            onUpdateUserSubmit={handleUpdateUserSubmit}
+          />
+        )}
+      </Wrapper>
+    </>
   );
 }
 
