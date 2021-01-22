@@ -25,7 +25,7 @@ export default withSession(async function handler(req, res) {
           // query all items
           const dbCategories = await Category.find({});
 
-          if (dbCategories) {
+          if (dbCategories.length) {
             res.status(200).json({ success: true, categories: dbCategories });
           } else {
             res.status(404).json({ success: false, message: 'Not Found' });

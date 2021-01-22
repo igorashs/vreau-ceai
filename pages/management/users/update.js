@@ -1,29 +1,16 @@
 import styled from 'styled-components';
 import { withManagementStoreLayout } from '@/layouts/StoreLayout';
-import { TextField } from '@/shared/TextField';
-import { Button } from '@/shared/Button';
-import { useForm } from 'react-hook-form';
-import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
-import { emailSchema } from '@/utils/validator/schemas/user';
 import { findUser, updateUserManagerPermission } from 'services/ceaiApi';
-import { useState, useEffect } from 'react';
-import { Form, FormAction } from '@/shared/Form';
+import { useState } from 'react';
 import { Label } from '@/shared/Label';
-import { CheckBox } from '@/shared/CheckBox';
 import { withSession } from '@/utils/withSession';
 import Head from 'next/head';
+import { FindUserForm } from '@/shared/FindUserForm';
+import { UpdateUserForm } from '@/shared/UpdateUserForm';
 
 const Wrapper = styled.div`
   display: grid;
   gap: var(--baseline);
-`;
-
-const UserData = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  padding: 7px 0;
-  border-bottom: 1px solid var(--layout);
 `;
 
 export default function Update() {
@@ -83,81 +70,6 @@ export default function Update() {
         )}
       </Wrapper>
     </>
-  );
-}
-
-function FindUserForm({ onFindUserSubmit }) {
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors }
-  } = useForm({
-    mode: 'onChange',
-    resolver: joiResolver(emailSchema)
-  });
-
-  const onSubmit = async (data) => {
-    const errors = await onFindUserSubmit(data);
-
-    if (errors) {
-      errors.forEach((error) => {
-        const { message, name } = error;
-        setError(name, { message });
-      });
-    }
-  };
-
-  return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <TextField
-        name="email"
-        label="user email"
-        error={errors?.email?.message}
-        passRef={register}
-        type="email"
-      />
-      <FormAction justify="flex-end">
-        <Button>caută</Button>
-      </FormAction>
-    </Form>
-  );
-}
-
-function UpdateUserForm({ onUpdateUserSubmit, user }) {
-  const { register, handleSubmit, reset } = useForm({
-    mode: 'onChange',
-    defaultValues: {
-      isManager: user.isManager
-    }
-  });
-
-  useEffect(() => {
-    reset({
-      isManager: user.isManager
-    });
-  }, [user]);
-
-  return (
-    <Form onSubmit={handleSubmit(onUpdateUserSubmit)}>
-      <div>
-        <UserData>
-          <Label>name</Label>
-          {user.name}
-        </UserData>
-        <UserData>
-          <Label>email</Label>
-          {user.email}
-        </UserData>
-        <UserData>
-          <Label>permisiuni</Label>
-          <CheckBox label="manager" passRef={register} name="isManager" />
-        </UserData>
-      </div>
-      <FormAction justify="flex-end">
-        <Button>salvează</Button>
-      </FormAction>
-    </Form>
   );
 }
 

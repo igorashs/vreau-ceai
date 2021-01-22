@@ -86,6 +86,14 @@ export const createCategory = async (data) => {
   return resData;
 };
 
+export const getCategories = async () => {
+  const res = await fetch(`${URL}/api/categories`);
+
+  const resData = await res.json();
+
+  return resData;
+};
+
 export const findCategory = async (name) => {
   const res = await fetch(`${URL}/api/categories?search=${name}`);
 
