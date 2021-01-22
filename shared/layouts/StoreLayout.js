@@ -12,12 +12,18 @@ const StoreGrid = styled.div`
   }
 `;
 
+const StoreContentWrapper = styled.div`
+  display: grid;
+  align-content: start;
+  gap: var(--baseline);
+`;
+
 function StoreLayout({ children, Menu = null }) {
   return (
     <>
       <StoreGrid>
         {Menu ? <Menu /> : <p>No menu provided</p>}
-        <div>{children}</div>
+        <StoreContentWrapper>{children}</StoreContentWrapper>
       </StoreGrid>
     </>
   );
