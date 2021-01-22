@@ -1,17 +1,13 @@
 import styled from 'styled-components';
 import { withManagementStoreLayout } from '@/layouts/StoreLayout';
-import { TextField } from '@/shared/TextField';
-import { Button } from '@/shared/Button';
-import { useForm } from 'react-hook-form';
-import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
-import { categorySchema } from '@/utils/validator/schemas/category';
-import { Form, FormAction } from '@/shared/Form';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Label } from '@/shared/Label';
 import { withSession } from '@/utils/withSession';
 import Head from 'next/head';
 import { DropDown } from '@/shared/DropDown';
 import { findCategory, updateCategory, deleteCategory } from 'services/ceaiApi';
+import { UpdateCategoryForm } from '@/shared/UpdateCategoryForm';
+import { FindCategoryForm } from '@/shared/FindCategoryForm';
 
 const Wrapper = styled.div`
   display: grid;
@@ -91,92 +87,6 @@ export default function Update() {
         )}
       </Wrapper>
     </>
-  );
-}
-
-function FindCategoryForm({ onFindCategorySubmit }) {
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors }
-  } = useForm({
-    mode: 'onChange',
-    resolver: joiResolver(categorySchema)
-  });
-
-  const onSubmit = async (data) => {
-    const errors = await onFindCategorySubmit(data);
-
-    if (errors) {
-      errors.forEach((error) => {
-        const { message, name } = error;
-        setError(name, { message });
-      });
-    }
-  };
-
-  return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <TextField
-        name="name"
-        label="numele categoriei"
-        error={errors?.name?.message}
-        passRef={register}
-        type="text"
-      />
-      <FormAction justify="flex-end">
-        <Button>caută</Button>
-      </FormAction>
-    </Form>
-  );
-}
-
-function UpdateCategoryForm({ onUpdateCategorySubmit, category }) {
-  const {
-    register,
-    handleSubmit,
-    setError,
-    reset,
-    formState: { errors }
-  } = useForm({
-    mode: 'onChange',
-    resolver: joiResolver(categorySchema),
-    defaultValues: {
-      name: category.name
-    }
-  });
-
-  useEffect(() => {
-    reset({
-      name: category.name
-    });
-  }, [category]);
-
-  const onSubmit = async (data) => {
-    const errors = await onUpdateCategorySubmit(data);
-
-    if (errors) {
-      errors.forEach((error) => {
-        const { message, name } = error;
-        setError(name, { message });
-      });
-    }
-  };
-
-  return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <TextField
-        name="name"
-        label="redenumire"
-        error={errors?.name?.message}
-        passRef={register}
-        type="text"
-      />
-      <FormAction justify="flex-end">
-        <Button>salvează</Button>
-      </FormAction>
-    </Form>
   );
 }
 
