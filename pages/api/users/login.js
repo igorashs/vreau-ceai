@@ -15,10 +15,18 @@ export default async function handler(req, res) {
         const values = await validator.validateUserLogin({ email, password });
 
         const dbUser = await User.findOne({ email: values.email });
-        if (!dbUser) validator.throwUnauthorizedUserEmail();
+        if (!dbUser)
+          validator.throwValidationError({
+            message: 'e-mail greșit',
+            key: 'email'
+          });
 
         const match = await bcrypt.compare(values.password, dbUser.password);
-        if (!match) validator.throwUnauthorizedUserPassword();
+        if (!match)
+          validator.throwValidationError({
+            message: 'parolă greșită',
+            key: 'password'
+          });
 
         const user = {
           _id: dbUser._id,

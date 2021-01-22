@@ -1,20 +1,5 @@
 import Joi from 'joi';
 
-export const alreadyExistsDescription = {
-  message: 'utilizatorul cu acest e-mail deja există',
-  key: 'email'
-};
-
-export const unauthorizedEmailDescription = {
-  message: 'e-mail greșit',
-  key: 'email'
-};
-
-export const unauthorizedPasswordDescription = {
-  message: 'parolă greșită',
-  key: 'password'
-};
-
 const email = Joi.string()
   .email({ tlds: { allow: false } })
   .lowercase()
