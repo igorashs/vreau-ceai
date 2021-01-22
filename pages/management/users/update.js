@@ -37,6 +37,8 @@ export default function Update() {
       setLabel({ success: true, message: 'utilizatorul a fost găsit' });
       setDbUser({ ...res.user });
     } else {
+      setLabel({ success: false, message: 'utilizatorul nu a fost găsit :(' });
+      setDbUser(null);
       return res.errors;
     }
   };
@@ -64,7 +66,7 @@ export default function Update() {
         <title>Modify user</title>
       </Head>
       <Wrapper>
-        <h4 id="scroll">Modificare Utilizator</h4>
+        <h4>Modificare Utilizator</h4>
         <FindUserForm onFindUserSubmit={handleFindUserSubmit} />
 
         {label && (
@@ -75,7 +77,7 @@ export default function Update() {
 
         {dbUser && (
           <UpdateUserForm
-            dbUser={dbUser}
+            user={dbUser}
             onUpdateUserSubmit={handleUpdateUserSubmit}
           />
         )}
@@ -122,30 +124,30 @@ function FindUserForm({ onFindUserSubmit }) {
   );
 }
 
-function UpdateUserForm({ onUpdateUserSubmit, dbUser }) {
+function UpdateUserForm({ onUpdateUserSubmit, user }) {
   const { register, handleSubmit, reset } = useForm({
     mode: 'onChange',
     defaultValues: {
-      isManager: dbUser.isManager
+      isManager: user.isManager
     }
   });
 
   useEffect(() => {
     reset({
-      isManager: dbUser.isManager
+      isManager: user.isManager
     });
-  }, [dbUser]);
+  }, [user]);
 
   return (
     <Form onSubmit={handleSubmit(onUpdateUserSubmit)}>
       <div>
         <UserData>
           <Label>name</Label>
-          {dbUser.name}
+          {user.name}
         </UserData>
         <UserData>
           <Label>email</Label>
-          {dbUser.email}
+          {user.email}
         </UserData>
         <UserData>
           <Label>permisiuni</Label>
