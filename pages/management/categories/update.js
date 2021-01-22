@@ -183,7 +183,7 @@ function UpdateCategoryForm({ onUpdateCategorySubmit, category }) {
 export const getServerSideProps = withSession(async ({ req }) => {
   const { isAuth, user } = req.session;
 
-  if (!isAuth || !user.isAdmin) {
+  if (!isAuth || !(user.isAdmin || user.isManager)) {
     return {
       redirect: {
         destination: '/',
