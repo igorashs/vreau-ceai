@@ -19,7 +19,11 @@ export default async function handler(req, res) {
         });
 
         const dbUser = await User.findOne({ email: values.email });
-        if (dbUser) validator.throwUserAlreadyExists();
+        if (dbUser)
+          validator.throwValidationError({
+            message: 'utilizatorul cu acest e-mail deja există',
+            key: 'email'
+          });
 
         const hashedPass = await bcrypt.hash(
           values.password,

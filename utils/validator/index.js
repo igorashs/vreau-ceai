@@ -8,15 +8,6 @@ export const validateUserSignup = (user) =>
 export const validateUserLogin = (user) =>
   userValidation.loginSchema.validateAsync(user);
 
-export const throwUserAlreadyExists = () =>
-  throwValidationError(userValidation.alreadyExistsDescription);
-
-export const throwUnauthorizedUserEmail = () =>
-  throwValidationError(userValidation.unauthorizedEmailDescription);
-
-export const throwUnauthorizedUserPassword = () =>
-  throwValidationError(userValidation.unauthorizedPasswordDescription);
-
 export const validateCategory = (category) =>
   categoryValidation.categorySchema.validateAsync(category);
 
