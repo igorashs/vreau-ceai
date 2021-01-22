@@ -12,11 +12,6 @@ import { Label } from '@/shared/Label';
 import Head from 'next/head';
 import { UpdateCategoryForm } from '@/shared/UpdateCategoryForm';
 
-const Wrapper = styled.div`
-  display: grid;
-  gap: var(--baseline);
-`;
-
 const List = styled.ul`
   display: grid;
   gap: calc(var(--baseline) / 2);
@@ -75,35 +70,33 @@ export default function Categories() {
         <title>Categories</title>
       </Head>
 
-      <Wrapper>
-        <h4>Toate categoriile</h4>
+      <h4>Toate categoriile</h4>
 
-        {label && (
-          <Label error={!label.success} success={label.success}>
-            {label.message}
-          </Label>
-        )}
+      {label && (
+        <Label error={!label.success} success={label.success}>
+          {label.message}
+        </Label>
+      )}
 
-        {dbCategories && (
-          <List>
-            {dbCategories.map((category) => (
-              <li key={category._id}>
-                <DropDown
-                  title={category?.name}
-                  onDeleteClick={() => handleDeleteCategory(category._id)}
-                >
-                  <UpdateCategoryForm
-                    category={category}
-                    onUpdateCategorySubmit={(data) =>
-                      handleUpdateCategorySubmit(category._id, data)
-                    }
-                  />
-                </DropDown>
-              </li>
-            ))}
-          </List>
-        )}
-      </Wrapper>
+      {dbCategories && (
+        <List>
+          {dbCategories.map((category) => (
+            <li key={category._id}>
+              <DropDown
+                title={category?.name}
+                onDeleteClick={() => handleDeleteCategory(category._id)}
+              >
+                <UpdateCategoryForm
+                  category={category}
+                  onUpdateCategorySubmit={(data) =>
+                    handleUpdateCategorySubmit(category._id, data)
+                  }
+                />
+              </DropDown>
+            </li>
+          ))}
+        </List>
+      )}
     </>
   );
 }

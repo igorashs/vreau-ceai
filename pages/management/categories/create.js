@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import { withManagementStoreLayout } from '@/layouts/StoreLayout';
 import { Button } from '@/shared/Button';
 import { TextField } from '@/shared/TextField';
@@ -11,11 +10,6 @@ import { createCategory } from 'services/ceaiApi';
 import { useState } from 'react';
 import { withSession } from '@/utils/withSession';
 import Head from 'next/head';
-
-const Wrapper = styled.div`
-  display: grid;
-  gap: var(--baseline);
-`;
 
 export default function Create() {
   const {
@@ -52,27 +46,26 @@ export default function Create() {
         <title>Add category</title>
       </Head>
 
-      <Wrapper>
-        <h4>Adăugare categorie</h4>
+      <h4>Adăugare categorie</h4>
 
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <TextField
-            name="name"
-            label="nume"
-            error={errors?.name?.message}
-            passRef={register}
-            type="text"
-          />
-          <FormAction justify="flex-end">
-            <Button>adaugă</Button>
-          </FormAction>
-          {label && (
-            <Label error={!label.success} success={label.success}>
-              {label.message}
-            </Label>
-          )}
-        </Form>
-      </Wrapper>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <TextField
+          name="name"
+          label="nume"
+          error={errors?.name?.message}
+          passRef={register}
+          type="text"
+        />
+        <FormAction justify="flex-end">
+          <Button>adaugă</Button>
+        </FormAction>
+
+        {label && (
+          <Label error={!label.success} success={label.success}>
+            {label.message}
+          </Label>
+        )}
+      </Form>
     </>
   );
 }

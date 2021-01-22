@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import { withManagementStoreLayout } from '@/layouts/StoreLayout';
 import { useState } from 'react';
 import { Label } from '@/shared/Label';
@@ -8,11 +7,6 @@ import { DropDown } from '@/shared/DropDown';
 import { findCategory, updateCategory, deleteCategory } from 'services/ceaiApi';
 import { UpdateCategoryForm } from '@/shared/UpdateCategoryForm';
 import { FindCategoryForm } from '@/shared/FindCategoryForm';
-
-const Wrapper = styled.div`
-  display: grid;
-  gap: var(--baseline);
-`;
 
 export default function Update() {
   const [dbCategory, setDbCategory] = useState();
@@ -63,29 +57,27 @@ export default function Update() {
         <title>Update Category</title>
       </Head>
 
-      <Wrapper>
-        <h4>Modificare categorie</h4>
-        <FindCategoryForm onFindCategorySubmit={handleFindCategorySubmit} />
+      <h4>Modificare categorie</h4>
+      <FindCategoryForm onFindCategorySubmit={handleFindCategorySubmit} />
 
-        {label && (
-          <Label error={!label.success} success={label.success}>
-            {label.message}
-          </Label>
-        )}
+      {label && (
+        <Label error={!label.success} success={label.success}>
+          {label.message}
+        </Label>
+      )}
 
-        {dbCategory && (
-          <DropDown
-            title={dbCategory?.name}
-            showInitial={true}
-            onDeleteClick={handleDeleteCategory}
-          >
-            <UpdateCategoryForm
-              category={dbCategory}
-              onUpdateCategorySubmit={handleUpdateCategorySubmit}
-            />
-          </DropDown>
-        )}
-      </Wrapper>
+      {dbCategory && (
+        <DropDown
+          title={dbCategory?.name}
+          showInitial={true}
+          onDeleteClick={handleDeleteCategory}
+        >
+          <UpdateCategoryForm
+            category={dbCategory}
+            onUpdateCategorySubmit={handleUpdateCategorySubmit}
+          />
+        </DropDown>
+      )}
     </>
   );
 }
