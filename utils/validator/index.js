@@ -1,4 +1,5 @@
 import * as userValidation from './schemas/user';
+import * as categoryValidation from './schemas/category';
 import { ValidationError } from 'joi';
 
 export const validateUserSignup = (user) =>
@@ -15,6 +16,9 @@ export const throwUnauthorizedUserEmail = () =>
 
 export const throwUnauthorizedUserPassword = () =>
   throwValidationError(userValidation.unauthorizedPasswordDescription);
+
+export const validateCategory = (category) =>
+  categoryValidation.categorySchema.validateAsync(category);
 
 export const throwValidationError = ({ message, key }) => {
   throw new ValidationError(message, [
