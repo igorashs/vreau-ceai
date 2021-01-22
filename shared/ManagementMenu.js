@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { StyledLink } from './StyledLink';
-import { DropDown } from './DropDown';
+import { DropDownList } from './DropDownList';
 import { managementLinks } from '@/utils/links';
 import { useSession } from 'contexts/SessionContext';
 
@@ -27,42 +27,42 @@ export function ManagementMenu() {
       {user?.isAdmin && (
         <>
           <h5>Users management</h5>
-          <DropDown label="Utilizatori">
+          <DropDownList label="Utilizatori">
             {users.map((l) => (
               <li key={l.href}>
                 <StyledLink {...l} />
               </li>
             ))}
-          </DropDown>
+          </DropDownList>
         </>
       )}
 
       {user?.isManager && (
         <>
           <h5>Shop management</h5>
-          <DropDown label="Comenzi">
+          <DropDownList label="Comenzi">
             {orders.map((l) => (
               <li key={l.href}>
                 <StyledLink {...l} />
               </li>
             ))}
-          </DropDown>
+          </DropDownList>
 
-          <DropDown label="Produse">
+          <DropDownList label="Produse">
             {products.map((l) => (
               <li key={l.href}>
                 <StyledLink {...l} />
               </li>
             ))}
-          </DropDown>
+          </DropDownList>
 
-          <DropDown label="Categorii">
+          <DropDownList label="Categorii">
             {categories.map((l) => (
               <li key={l.href}>
                 <StyledLink {...l} />
               </li>
             ))}
-          </DropDown>
+          </DropDownList>
         </>
       )}
     </Wrapper>
