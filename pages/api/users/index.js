@@ -7,7 +7,7 @@ export default withSession(async function handler(req, res) {
   await dbConnect();
 
   switch (req.method) {
-    case 'POST':
+    case 'GET':
       try {
         if (req.session.isAuth && req.session.user.isAdmin) {
           const { search } = req.query;
@@ -17,9 +17,12 @@ export default withSession(async function handler(req, res) {
             { email },
             'isManager _id name email'
           );
-          if (!dbUser) validator.throwUnauthorizedUserEmail();
 
-          res.status(200).json({ success: true, user: dbUser });
+          if (dbUser) {
+            res.status(200).json({ success: true, user: dbUser });
+          } else {
+            res.status(404).json({ success: false, message: 'Not Found' });
+          }
         } else {
           res.status(401).json({ success: false, message: 'Unauthorized' });
         }

@@ -20,10 +20,15 @@ export default withSession(async function handler(req, res) {
             });
 
           const dbUser = await User.findById(id, 'isManager _id name email');
-          dbUser.isManager = isManager;
-          await dbUser.save();
 
-          res.status(200).json({ success: true, user: dbUser });
+          if (dbUser) {
+            dbUser.isManager = isManager;
+            await dbUser.save();
+
+            res.status(200).json({ success: true, user: dbUser });
+          } else {
+            res.status(404).json({ success: false, message: 'Not Found' });
+          }
         } else {
           res.status(401).json({ success: false, message: 'Unauthorized' });
         }

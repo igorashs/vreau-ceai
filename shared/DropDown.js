@@ -1,54 +1,70 @@
-import styled, { css } from 'styled-components';
-import ArrowSvg from 'assets/icons/arrow.svg';
-import { Button } from './Button';
+import styled from 'styled-components';
+import { Button } from '@/shared/Button';
+import BoxRemoveSvg from '@/icons/box-remove.svg';
+import ArrowSvg from '@/icons/arrow.svg';
 import { useState } from 'react';
 
-const itemStyle = css`
-  padding: calc(var(--baseline) / 4) 0;
+const Wrapper = styled.div`
+  display: grid;
+  gap: var(--baseline);
+  padding-bottom: calc(var(--baseline) / 2);
   border-bottom: 1px solid var(--layout);
 `;
 
-const Label = styled.div`
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Action = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: calc(var(--baseline) / 2);
 
-  ${itemStyle}
-
-  p {
-    font-weight: 500;
-  }
-
-  button {
+  button:last-child {
     transform: rotate(-90deg);
   }
 
-  ${({ hide }) => hide && 'button {transform: rotate(90deg);}'}
+  ${({ hide }) => hide && 'button:last-child {transform: rotate(90deg);}'}
 `;
 
-const List = styled.ul`
-  display: flex;
-  flex-direction: column;
-
-  li {
-    ${itemStyle}
-  }
-
+const Body = styled.div`
   ${({ hide }) => hide && 'display: none;'}
 `;
 
-export function DropDown({ label, children }) {
-  const [hide, setHide] = useState(false);
+export function DropDown({
+  title,
+  label,
+  onDeleteClick,
+  showInitial = false,
+  customHeading,
+  children
+}) {
+  const [hide, setHide] = useState(!showInitial);
 
   return (
-    <div>
-      <Label hide={hide}>
-        <p>{label}</p>
-        <Button icon onClick={() => setHide((e) => !e)} noPadding>
-          <ArrowSvg />
-        </Button>
-      </Label>
-      <List hide={hide}>{children}</List>
-    </div>
+    <Wrapper>
+      <Header>
+        {customHeading ? (
+          customHeading
+        ) : (
+          <>
+            <h5>{title}</h5>
+            {label && <small>{label}</small>}
+          </>
+        )}
+        <Action hide={hide}>
+          {onDeleteClick && (
+            <Button icon btnStyle="danger" onClick={onDeleteClick} noPadding>
+              <BoxRemoveSvg />
+            </Button>
+          )}
+          <Button icon onClick={() => setHide((e) => !e)} noPadding>
+            <ArrowSvg />
+          </Button>
+        </Action>
+      </Header>
+      <Body hide={hide}>{children}</Body>
+    </Wrapper>
   );
 }

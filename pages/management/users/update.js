@@ -11,6 +11,7 @@ import { Form, FormAction } from '@/shared/Form';
 import { Label } from '@/shared/Label';
 import { CheckBox } from '@/shared/CheckBox';
 import { withSession } from '@/utils/withSession';
+import Head from 'next/head';
 
 const Wrapper = styled.div`
   display: grid;
@@ -36,6 +37,8 @@ export default function Update() {
       setLabel({ success: true, message: 'utilizatorul a fost găsit' });
       setDbUser({ ...res.user });
     } else {
+      setLabel({ success: false, message: 'utilizatorul nu a fost găsit :(' });
+      setDbUser(null);
       return res.errors;
     }
   };
@@ -58,23 +61,28 @@ export default function Update() {
   };
 
   return (
-    <Wrapper>
-      <h4>Modificare Utilizator</h4>
-      <FindUserForm onFindUserSubmit={handleFindUserSubmit} />
+    <>
+      <Head>
+        <title>Modify user</title>
+      </Head>
+      <Wrapper>
+        <h4>Modificare Utilizator</h4>
+        <FindUserForm onFindUserSubmit={handleFindUserSubmit} />
 
-      {label && (
-        <Label error={!label.success} success={label.success}>
-          {label.message}
-        </Label>
-      )}
+        {label && (
+          <Label error={!label.success} success={label.success}>
+            {label.message}
+          </Label>
+        )}
 
-      {dbUser && (
-        <UpdateUserForm
-          dbUser={dbUser}
-          onUpdateUserSubmit={handleUpdateUserSubmit}
-        />
-      )}
-    </Wrapper>
+        {dbUser && (
+          <UpdateUserForm
+            user={dbUser}
+            onUpdateUserSubmit={handleUpdateUserSubmit}
+          />
+        )}
+      </Wrapper>
+    </>
   );
 }
 
@@ -101,7 +109,7 @@ function FindUserForm({ onFindUserSubmit }) {
   };
 
   return (
-    <Form id="form" onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <TextField
         name="email"
         label="user email"
@@ -116,30 +124,30 @@ function FindUserForm({ onFindUserSubmit }) {
   );
 }
 
-function UpdateUserForm({ onUpdateUserSubmit, dbUser }) {
+function UpdateUserForm({ onUpdateUserSubmit, user }) {
   const { register, handleSubmit, reset } = useForm({
     mode: 'onChange',
     defaultValues: {
-      isManager: dbUser.isManager
+      isManager: user.isManager
     }
   });
 
   useEffect(() => {
     reset({
-      isManager: dbUser.isManager
+      isManager: user.isManager
     });
-  }, [dbUser]);
+  }, [user]);
 
   return (
     <Form onSubmit={handleSubmit(onUpdateUserSubmit)}>
       <div>
         <UserData>
           <Label>name</Label>
-          {dbUser.name}
+          {user.name}
         </UserData>
         <UserData>
           <Label>email</Label>
-          {dbUser.email}
+          {user.email}
         </UserData>
         <UserData>
           <Label>permisiuni</Label>

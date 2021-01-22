@@ -115,7 +115,7 @@ export const navLinks = {
 export const managementLinks = {
   users: [
     linkFactory({
-      href: '/management/users/update#form',
+      href: '/management/users/update',
       text: 'Modificare Utilizator',
       accent: 'dark'
     })
@@ -123,7 +123,7 @@ export const managementLinks = {
 
   orders: [
     linkFactory({
-      href: '/management/orders/all',
+      href: '/management/orders',
       text: 'Toate comenzile',
       accent: 'dark'
     }),
@@ -136,7 +136,7 @@ export const managementLinks = {
 
   products: [
     linkFactory({
-      href: '/management/products/all',
+      href: '/management/products',
       text: 'Toate produsele',
       accent: 'dark'
     }),
@@ -146,7 +146,7 @@ export const managementLinks = {
       accent: 'dark'
     }),
     linkFactory({
-      href: '/management/products/add',
+      href: '/management/products/create',
       text: 'Adăugare produs',
       accent: 'dark'
     })
@@ -154,7 +154,7 @@ export const managementLinks = {
 
   categories: [
     linkFactory({
-      href: '/management/categories/all',
+      href: '/management/categories',
       text: 'Toate categoriile',
       accent: 'dark'
     }),
@@ -164,7 +164,7 @@ export const managementLinks = {
       accent: 'dark'
     }),
     linkFactory({
-      href: '/management/categories/add',
+      href: '/management/categories/create',
       text: 'Adăugare categorie',
       accent: 'dark'
     })
