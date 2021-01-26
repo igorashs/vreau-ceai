@@ -43,3 +43,6 @@ export const getValidationErrorDetails = (error) => {
 
 export const validateEmail = (email) =>
   userValidation.emailSchema.validateAsync(email);
+
+export const validateProductName = (name) =>
+  productValidation.nameSchema.validateAsync(name);

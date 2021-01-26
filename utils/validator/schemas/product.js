@@ -1,12 +1,16 @@
 import Joi from 'joi';
 
+const name = Joi.string().trim().max(60).required().messages({
+  'string.base': 'numele trebuie sa fie de tip text',
+  'string.max': 'numele este prea lung',
+  'string.empty': 'numele este obligatoriu',
+  'any.required': 'numele este obligatoriu'
+});
+
+export const nameSchema = Joi.object({ name });
+
 export const productSchema = Joi.object({
-  name: Joi.string().trim().max(60).required().messages({
-    'string.base': 'numele trebuie sa fie de tip text',
-    'string.max': 'numele este prea lung',
-    'string.empty': 'numele este obligatoriu',
-    'any.required': 'numele este obligatoriu'
-  }),
+  name,
 
   src: Joi.any().default('placeholder.png'),
 
