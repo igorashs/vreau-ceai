@@ -139,3 +139,34 @@ export const createProduct = async (data) => {
 
   return resData;
 };
+
+export const updateProduct = async (id, data) => {
+  const res = await fetch(`${URL}/api/products/update/${id}`, {
+    method: 'PUT',
+    credentials: 'same-origin',
+    body: data
+  });
+
+  const resData = await res.json();
+
+  return resData;
+};
+
+export const deleteProduct = async (id) => {
+  const res = await fetch(`${URL}/api/products/delete/${id}`, {
+    method: 'DELETE',
+    credentials: 'same-origin'
+  });
+
+  const resData = await res.json();
+
+  return resData;
+};
+
+export const findProduct = async (name) => {
+  const res = await fetch(`${URL}/api/products?search=${name}`);
+
+  const resData = await res.json();
+
+  return resData;
+};
