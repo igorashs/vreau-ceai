@@ -43,6 +43,7 @@ export function InputFile({
   passRef,
   id = name,
   fullWidth,
+  accept,
   children
 }) {
   const [fileName, setFileName] = useState();
@@ -58,6 +59,7 @@ export function InputFile({
           ref={passRef}
           id={id}
           name={name}
+          accept={accept}
           onChange={(e) => setFileName(e.currentTarget.files[0]?.name)}
         />
         {children}
