@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { Label } from '@/shared/Label';
-import { useState } from 'react';
 
 const Wrapper = styled.div`
   display: flex;
@@ -46,22 +45,13 @@ export function InputFile({
   accept,
   children
 }) {
-  const [fileName, setFileName] = useState();
-
   return (
     <Wrapper>
       <Label htmlFor={id} error={error}>
-        {error || label} {fileName && <I>{fileName}</I>}
+        {error || label}
       </Label>
       <StyledInputFile fullWidth={fullWidth}>
-        <Input
-          type="file"
-          ref={passRef}
-          id={id}
-          name={name}
-          accept={accept}
-          onChange={(e) => setFileName(e.currentTarget.files[0]?.name)}
-        />
+        <Input type="file" ref={passRef} id={id} name={name} accept={accept} />
         {children}
       </StyledInputFile>
     </Wrapper>
