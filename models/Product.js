@@ -30,14 +30,21 @@ const Product = new mongoose.Schema({
     default: 0
   },
 
-  advertise: {
+  description: {
+    type: String,
+    required: true,
+    trim: true,
+    max: 2000
+  },
+
+  recommend: {
     type: Boolean,
     default: false
   },
 
   category: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true
+    type: mongoose.Schema.Types.ObjectId
+    // required: true
   }
 });
 
