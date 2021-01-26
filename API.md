@@ -91,12 +91,12 @@
 
 ```bash
 # PUT an updated product by id (auth Manager)
-/api/products/:id
+/api/products/update/:id
 ```
 
 ```bash
 # DELETE a product by id (auth Manager)
-/api/products/:id
+/api/products/delete/:id
 ```
 
 ## Order
