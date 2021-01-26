@@ -7,7 +7,7 @@ export default withSession(async function handler(req, res) {
   await dbConnect();
 
   switch (req.method) {
-    case 'POST':
+    case 'PUT':
       try {
         const { isAuth, user } = req.session;
 

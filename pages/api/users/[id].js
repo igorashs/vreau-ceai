@@ -7,7 +7,7 @@ export default withSession(async function handler(req, res) {
   await dbConnect();
 
   switch (req.method) {
-    case 'POST':
+    case 'PUT':
       try {
         if (req.session.isAuth && req.session.user.isAdmin) {
           const { id } = req.query;
