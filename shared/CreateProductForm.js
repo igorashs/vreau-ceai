@@ -16,6 +16,7 @@ export function CreateProductForm({ onCreateProductSubmit }) {
     register,
     handleSubmit,
     setError,
+    watch,
     formState: { errors }
   } = useForm({
     mode: 'onChange',
@@ -23,10 +24,12 @@ export function CreateProductForm({ onCreateProductSubmit }) {
     defaultValues: {
       price: 0,
       quantity: 0,
-      total_quantity: 0
+      total_quantity: 0,
+      src: null
     }
   });
 
+  const watchSrc = watch('src');
   const [dbCategories, setDbCategories] = useState();
 
   useEffect(async () => {
@@ -103,7 +106,7 @@ export function CreateProductForm({ onCreateProductSubmit }) {
       </Select>
       <InputFile
         name="src"
-        label={'(max 1MB) imagine'}
+        label={`(max 1MB) imagine ${(watchSrc && watchSrc[0]?.name) || ''}`}
         passRef={register}
         error={errors?.src?.message}
         accept=".png, .jpg, .jpeg"
