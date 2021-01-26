@@ -61,6 +61,17 @@ export default withSession(async function handler(req, res) {
           }
 
           const values = await validator.validateProduct(data.fields);
+
+          const dbExistingProduct = await Product.findOne({
+            name: values.name
+          });
+
+          if (dbExistingProduct)
+            validator.throwValidationError({
+              message: 'produs cu acest nume deja există',
+              key: 'name'
+            });
+
           const dbCategory = await Category.findById(values.category);
 
           if (!dbCategory)
