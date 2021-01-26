@@ -5,22 +5,13 @@ import { createProduct } from 'services/ceaiApi';
 import { Label } from '@/shared/Label';
 import { useState } from 'react';
 import Head from 'next/head';
+import { getFormData } from '@/utils/getFormData';
 
 export default function Products() {
   const [label, setLabel] = useState();
 
   const handleCreateProductSubmit = async (data) => {
-    const formData = new FormData();
-
-    for (const name in data) {
-      if (name === 'src') continue;
-
-      formData.append(name, data[name]);
-    }
-
-    if (data.src[0]) {
-      formData.append('src', data.src[0]);
-    }
+    const formData = getFormData(data);
 
     const res = await createProduct(formData);
 
