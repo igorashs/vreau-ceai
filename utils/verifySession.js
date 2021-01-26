@@ -21,7 +21,6 @@ export const verifySession = async ({ access, refresh }, updateAccess) => {
 
     const dbToken = await Token.findOne({ user_id: refreshClaims.user_id });
 
-    console.log(dbToken, refresh);
     if (!dbToken || dbToken.refresh_token !== refresh)
       throw new Error('Invalidated refresh token');
 
