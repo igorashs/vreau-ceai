@@ -15,6 +15,18 @@ const StyledInput = styled.input`
   padding: calc(var(--baseline) / 4) 0 calc(var(--baseline) / 4)
     calc(var(--baseline) / 2);
   color: var(--text-dark);
+
+  /* Chrome, Safari, Edge, Opera */
+  ::-webkit-outer-spin-button,
+  ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  &[type='number'] {
+    -moz-appearance: textfield;
+  }
 `;
 
 export const TextField = ({ name, label, error, passRef, type, id = name }) => {
