@@ -1,7 +1,7 @@
 import * as session from 'lib/session';
 import dbConnect from '@/utils/dbConnect';
 import User from 'models/User';
-import Token from 'models/Token';
+import SessionModel from '@/models/Session';
 
 /**
  *
@@ -19,9 +19,11 @@ export const verifySession = async ({ access, refresh }, updateAccess) => {
     const refreshClaims = session.verifyToken(refresh);
     if (!refreshClaims) throw new Error('Invalidated refresh token');
 
-    const dbToken = await Token.findOne({ user_id: refreshClaims.user_id });
+    const dbSession = await SessionModel.findOne({
+      user_id: refreshClaims.user_id
+    });
 
-    if (!dbToken || dbToken.refresh_token !== refresh)
+    if (!dbSession || dbSession.refresh_token !== refresh)
       throw new Error('Invalidated refresh token');
 
     if (!updateAccess) {
@@ -30,7 +32,10 @@ export const verifySession = async ({ access, refresh }, updateAccess) => {
       if (accessClaims) return [{ isAuth: true, user: accessClaims }];
     }
 
-    const dbUser = await User.findById(refreshClaims.user_id);
+    const dbUser = await User.findById(
+      refreshClaims.user_id,
+      'name isAdmin isManager'
+    );
     if (!dbUser) throw new Error('Invalid user');
 
     const user = {
