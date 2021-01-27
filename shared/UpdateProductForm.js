@@ -114,9 +114,7 @@ export function UpdateProductForm({ onUpdateProductSubmit, product }) {
       </Select>
       <InputFile
         name="src"
-        label={`(max 1MB) imagine existentă va fi ștearsă ${
-          (watchSrc && watchSrc[0]?.name) || ''
-        }`}
+        label={`(max 1MB) imagine ${(watchSrc && watchSrc[0]?.name) || ''}`}
         passRef={register}
         error={errors?.src?.message}
         accept=".png, .jpg, .jpeg"
