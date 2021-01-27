@@ -16,7 +16,10 @@ export default withSession(async function handler(req, res) {
           const { name } = req.body;
 
           const values = await validator.validateCategory({ name });
-          const dbCategory = await Category.findOne({ name: values.name });
+          const dbCategory = await Category.findOne(
+            { name: values.name },
+            'name'
+          );
 
           if (dbCategory)
             validator.throwValidationError({
@@ -24,13 +27,9 @@ export default withSession(async function handler(req, res) {
               key: 'name'
             });
 
-          const dbUpdatedCategory = await Category.findByIdAndUpdate(
-            id,
-            {
-              name: values.name
-            },
-            { new: true }
-          );
+          const dbUpdatedCategory = await Category.findById(id, 'name');
+          dbUpdatedCategory.name = values.name;
+          await dbUpdatedCategory.save();
 
           if (dbUpdatedCategory) {
             res
