@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   gap: 7px;
 `;
 
-const StyledInput = styled.input`
+const StyledTextarea = styled.textarea`
   background-color: var(--input);
   border: 1px solid var(--layout-dark);
   border-radius: 4px;
@@ -16,26 +16,31 @@ const StyledInput = styled.input`
     calc(var(--baseline) / 2);
   color: var(--text-dark);
 
-  /* Chrome, Safari, Edge, Opera */
-  ::-webkit-outer-spin-button,
-  ::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  /* Firefox */
-  &[type='number'] {
-    -moz-appearance: textfield;
-  }
+  resize: none;
 `;
 
-export const TextField = ({ name, label, error, passRef, type, id = name }) => {
+export const Textarea = ({
+  name,
+  label,
+  error,
+  passRef,
+  type,
+  id = name,
+  rows
+}) => {
   return (
     <Wrapper>
       <Label htmlFor={id} error={error}>
         {error || label}
       </Label>
-      <StyledInput id={id} ref={passRef} name={name} type={type} />
+
+      <StyledTextarea
+        id={id}
+        ref={passRef}
+        name={name}
+        type={type}
+        rows={rows}
+      />
     </Wrapper>
   );
 };

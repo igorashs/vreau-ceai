@@ -13,7 +13,7 @@
 ```
 
 ```bash
-# POST a new user
+# POST logout user
 /api/users/logout
 ```
 
@@ -75,8 +75,8 @@
 ```
 
 ```bash
-# POST a new product
-/api/products/
+# POST a new product (auth Manager)
+/api/products/create
 ```
 
 ```bash
@@ -90,18 +90,13 @@
 ```
 
 ```bash
-# GET a product by id
-/api/products/:id
-```
-
-```bash
 # PUT an updated product by id (auth Manager)
-/api/products/:id
+/api/products/update/:id
 ```
 
 ```bash
 # DELETE a product by id (auth Manager)
-/api/products/:id
+/api/products/delete/:id
 ```
 
 ## Order

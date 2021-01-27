@@ -48,7 +48,7 @@ export const findUser = async (email) => {
 
 export const updateUserManagerPermission = async (id, isManager) => {
   const res = await fetch(`${URL}/api/users/${id}`, {
-    method: 'POST',
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
     },
@@ -104,7 +104,7 @@ export const findCategory = async (name) => {
 
 export const updateCategory = async (id, data) => {
   const res = await fetch(`${URL}/api/categories/${id}`, {
-    method: 'POST',
+    method: 'PUT',
     credentials: 'same-origin',
     headers: {
       'Content-type': 'application/json'
@@ -122,6 +122,49 @@ export const deleteCategory = async (id) => {
     method: 'DELETE',
     credentials: 'same-origin'
   });
+
+  const resData = await res.json();
+
+  return resData;
+};
+
+export const createProduct = async (data) => {
+  const res = await fetch(`${URL}/api/products/create`, {
+    method: 'POST',
+    credentials: 'same-origin',
+    body: data
+  });
+
+  const resData = await res.json();
+
+  return resData;
+};
+
+export const updateProduct = async (id, data) => {
+  const res = await fetch(`${URL}/api/products/update/${id}`, {
+    method: 'PUT',
+    credentials: 'same-origin',
+    body: data
+  });
+
+  const resData = await res.json();
+
+  return resData;
+};
+
+export const deleteProduct = async (id) => {
+  const res = await fetch(`${URL}/api/products/delete/${id}`, {
+    method: 'DELETE',
+    credentials: 'same-origin'
+  });
+
+  const resData = await res.json();
+
+  return resData;
+};
+
+export const findProduct = async (name) => {
+  const res = await fetch(`${URL}/api/products?search=${name}`);
 
   const resData = await res.json();
 
