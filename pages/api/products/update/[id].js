@@ -84,7 +84,15 @@ export default withSession(async function handler(req, res) {
           const dbProduct = await Product.findById(id);
 
           if (dbProduct) {
-            if (dbProduct.src !== 'placeholder.png') {
+            const defaultImg = 'placeholder.png';
+
+            // remove prev img if new img is provided
+            if (values.src === defaultImg && dbProduct.src !== defaultImg) {
+              values.src = dbProduct.src;
+            } else if (
+              values.src !== defaultImg &&
+              dbProduct.src !== defaultImg
+            ) {
               await fs.unlink(`public/uploads/${dbProduct.src}`);
             }
 
