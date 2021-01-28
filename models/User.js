@@ -34,7 +34,7 @@ const User = new mongoose.Schema({
     default: false
   },
 
-  orders: { type: [mongoose.Schema.Types.ObjectId], ref: 'Order' }
+  orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }]
 });
 
 export default mongoose.models.User || mongoose.model('User', User);

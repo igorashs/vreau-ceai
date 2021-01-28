@@ -1,9 +1,11 @@
 import mongoose from 'mongoose';
 
 const Order = new mongoose.Schema({
-  consumer: {
+  user_id: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    ref: 'User',
+    required: true,
+    index: true
   },
 
   total_price: {
@@ -15,10 +17,11 @@ const Order = new mongoose.Schema({
   status: {
     type: String,
     enum: ['processing', 'inDelivery', 'canceled', 'completed'],
-    default: 'processing'
+    default: 'processing',
+    index: true
   },
 
-  products: [mongoose.Schema.Types.ObjectId],
+  products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
 
   address: {
     type: String,

@@ -4,7 +4,16 @@ const Product = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    maxLength: 60,
+    unique: true,
+    index: true
+  },
+
+  category_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
+    required: true
   },
 
   src: {
@@ -15,7 +24,8 @@ const Product = new mongoose.Schema({
   price: {
     type: Number,
     min: 0,
-    default: 0
+    default: 0,
+    index: true
   },
 
   quantity: {
@@ -27,7 +37,8 @@ const Product = new mongoose.Schema({
   total_quantity: {
     type: Number,
     min: 0,
-    default: 0
+    default: 0,
+    index: true
   },
 
   description: {
@@ -39,12 +50,8 @@ const Product = new mongoose.Schema({
 
   recommend: {
     type: Boolean,
-    default: false
-  },
-
-  category: {
-    type: mongoose.Schema.Types.ObjectId
-    // required: true
+    default: false,
+    index: true
   }
 });
 

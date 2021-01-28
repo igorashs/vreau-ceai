@@ -10,7 +10,7 @@ const Category = new mongoose.Schema({
     index: true
   },
 
-  products: { type: [mongoose.Schema.Types.ObjectId], ref: 'Product' }
+  products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }]
 });
 
 export default mongoose.models.Category || mongoose.model('Category', Category);
