@@ -68,9 +68,7 @@ export default withSession(async function handler(req, res) {
           }
 
           const values = await validator.validateProduct(data.fields);
-          const dbExistingProduct = await Product.findOne({
-            name: values.name
-          });
+          const dbExistingProduct = await Product.findById(id);
 
           if (!dbExistingProduct)
             validator.throwValidationError({
