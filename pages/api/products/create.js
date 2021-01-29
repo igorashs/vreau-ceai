@@ -9,6 +9,7 @@ const nanoid = require('nanoid');
 
 export default withSession(async function handler(req, res) {
   await dbConnect();
+  let tmpSrc;
 
   switch (req.method) {
     case 'POST':
@@ -17,7 +18,10 @@ export default withSession(async function handler(req, res) {
 
         if (isAuth && (user.isAdmin || user.isManager)) {
           const data = await new Promise((resolve, reject) => {
-            const form = new IncomingForm({ maxFileSize: 1 * 1024 * 1024 });
+            const form = new IncomingForm({
+              uploadDir: process.cwd() + '/public/uploads',
+              maxFileSize: 1 * 1024 * 1024
+            });
 
             form.onPart = (part) => {
               if (part.filename) {
@@ -58,13 +62,16 @@ export default withSession(async function handler(req, res) {
           // set src img if exists
           if (data.files.src) {
             data.fields.src = nanoid() + data.files.src.name.match(/\..+$/)[0];
+            tmpSrc = data.files.src.path;
           }
 
           const values = await validator.validateProduct(data.fields);
-
-          const dbExistingProduct = await Product.findOne({
-            name: values.name
-          });
+          const dbExistingProduct = await Product.findOne(
+            {
+              name: values.name
+            },
+            'name'
+          );
 
           if (dbExistingProduct)
             validator.throwValidationError({
@@ -72,7 +79,12 @@ export default withSession(async function handler(req, res) {
               key: 'name'
             });
 
-          const dbCategory = await Category.findById(values.category);
+          const product = new Product(values);
+          const dbCategory = await Category.findByIdAndUpdate(
+            values.category_id,
+            { $push: { products: product._id } },
+            { projection: 'name' }
+          );
 
           if (!dbCategory)
             validator.throwValidationError({
@@ -80,14 +92,13 @@ export default withSession(async function handler(req, res) {
               key: 'category'
             });
 
-          const product = new Product(values);
           await product.save();
 
-          // save product img
+          // rename product img
           if (data.files.src) {
             await fs.rename(
               data.files.src.path,
-              `public/uploads/${data.fields.src}`
+              `${process.cwd()}/public/uploads/${data.fields.src}`
             );
           }
 
@@ -96,6 +107,12 @@ export default withSession(async function handler(req, res) {
           res.status(401).json({ success: false, message: 'Unauthorized' });
         }
       } catch (error) {
+        try {
+          if (tmpSrc) await fs.unlink(tmpSrc);
+        } catch (error) {
+          console.error(error);
+        }
+
         const details = validator.getValidationErrorDetails(error);
 
         if (details) {
