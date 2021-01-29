@@ -1,5 +1,6 @@
 import dbConnect from '@/utils/dbConnect';
 import Product from 'models/Product';
+import Category from 'models/Category';
 import { withSession } from '@/utils/withSession';
 import { promises as fs } from 'fs';
 
@@ -15,10 +16,17 @@ export default withSession(async function handler(req, res) {
           const { id } = req.query;
 
           const dbProduct = await Product.findByIdAndDelete(id, {
-            projection: 'src'
+            projection: 'src category_id'
           });
 
           if (dbProduct) {
+            // remove from prev category product list
+            await Category.findByIdAndUpdate(
+              dbProduct.category_id,
+              { $pull: { products: dbProduct._id } },
+              { projection: 'name' }
+            );
+
             if (dbProduct.src !== 'placeholder.png')
               await fs.unlink(
                 `${process.cwd()}/public/uploads/${dbProduct.src}`
