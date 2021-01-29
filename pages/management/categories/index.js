@@ -10,7 +10,7 @@ import {
 import { useState, useEffect } from 'react';
 import { Label } from '@/shared/Label';
 import Head from 'next/head';
-import { UpdateCategoryForm } from '@/shared/UpdateCategoryForm';
+import { CategoryForm } from '@/shared/CategoryForm';
 
 const List = styled.ul`
   display: grid;
@@ -34,7 +34,7 @@ export default function Categories() {
     }
   }, []);
 
-  const handleUpdateCategorySubmit = async (id, data) => {
+  const handleCategorySubmit = async (id, data) => {
     const res = await updateCategory(id, data);
 
     if (res.success) {
@@ -72,12 +72,6 @@ export default function Categories() {
 
       <h4>Toate categoriile</h4>
 
-      {label && (
-        <Label error={!label.success} success={label.success}>
-          {label.message}
-        </Label>
-      )}
-
       {dbCategories && (
         <List>
           {dbCategories.map((category) => (
@@ -86,16 +80,22 @@ export default function Categories() {
                 title={category?.name}
                 onDeleteClick={() => handleDeleteCategory(category._id)}
               >
-                <UpdateCategoryForm
+                <CategoryForm
                   category={category}
-                  onUpdateCategorySubmit={(data) =>
-                    handleUpdateCategorySubmit(category._id, data)
+                  onCategorySubmit={(data) =>
+                    handleCategorySubmit(category._id, data)
                   }
                 />
               </DropDown>
             </li>
           ))}
         </List>
+      )}
+
+      {label && (
+        <Label error={!label.success} success={label.success}>
+          {label.message}
+        </Label>
       )}
     </>
   );

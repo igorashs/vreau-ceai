@@ -6,7 +6,7 @@ import { TextField } from '@/shared/TextField';
 import { Button } from '@/shared/Button';
 import { useEffect } from 'react';
 
-export function UpdateCategoryForm({ onUpdateCategorySubmit, category }) {
+export function CategoryForm({ onCategorySubmit, category }) {
   const {
     register,
     handleSubmit,
@@ -15,20 +15,17 @@ export function UpdateCategoryForm({ onUpdateCategorySubmit, category }) {
     formState: { errors }
   } = useForm({
     mode: 'onChange',
-    resolver: joiResolver(categorySchema),
-    defaultValues: {
-      name: category.name
-    }
+    resolver: joiResolver(categorySchema)
   });
 
   useEffect(() => {
     reset({
-      name: category.name
+      name: category?.name ?? ''
     });
   }, [category]);
 
   const onSubmit = async (data) => {
-    const errors = await onUpdateCategorySubmit(data);
+    const errors = await onCategorySubmit(data);
 
     if (errors) {
       errors.forEach((error) => {
@@ -41,6 +38,7 @@ export function UpdateCategoryForm({ onUpdateCategorySubmit, category }) {
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <TextField
+        id={category && 'name_' + category._id}
         name="name"
         label="redenumire"
         error={errors?.name?.message}

@@ -41,7 +41,7 @@ export const productSchema = Joi.object({
 
   recommend: Joi.boolean().default(false),
 
-  category: Joi.string().required().messages({
+  category_id: Joi.string().required().messages({
     'any.required': 'categoria este obligatorie'
   })
 });

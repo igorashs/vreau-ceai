@@ -1,5 +1,6 @@
 import dbConnect from '@/utils/dbConnect';
-import Product from 'models/Product';
+import Category from '@/models/Category';
+import Product from '@/models/Product';
 import { withSession } from '@/utils/withSession';
 import * as validator from '@/utils/validator';
 
@@ -9,22 +10,86 @@ export default withSession(async function handler(req, res) {
   switch (req.method) {
     case 'GET':
       try {
-        const { search } = req.query;
+        const {
+          search,
+          byCategory,
+          filters: filtersQuery,
+          offset,
+          limit
+        } = req.query;
+
+        let matchFilter = {};
+        let sortFilter = {};
+
+        if (filtersQuery) {
+          const filters = Object.fromEntries(
+            filtersQuery.split(' ').map((f) => [f, true])
+          );
+
+          if (filters.recommend) matchFilter.recommend = true;
+
+          if (filters.ascPrice) sortFilter.price = 1;
+          else if (filters.descPrice) sortFilter.price = -1;
+
+          if (filters.ascQuantity) sortFilter.total_quantity = 1;
+          else if (filters.descQuantity) sortFilter.total_quantity = -1;
+        }
+
+        const options = {
+          limit: +limit || 3,
+          skip: +offset || 0,
+          sort: sortFilter
+        };
 
         if (search) {
-          // find product
-          const { name } = await validator.validateProductName({
-            name: search
-          });
-          const dbProduct = await Product.findOne({ name });
+          if (byCategory) {
+            // find products by category with filters
+            const { name } = await validator.validateCategory({ name: search });
+            const dbCategory = await Category.findOne({ name })
+              .populate({
+                path: 'products',
+                match: matchFilter,
+                options
+              })
+              .lean();
 
-          if (dbProduct) {
-            res.status(200).json({ success: true, product: dbProduct });
+            if (dbCategory) {
+              res
+                .status(200)
+                .json({ success: true, products: dbCategory.products });
+            } else {
+              res.status(404).json({ success: false, message: 'Not Found' });
+            }
           } else {
-            res.status(404).json({ success: false, message: 'Not Found' });
+            // find product
+            const { name } = await validator.validateProductName({
+              name: search
+            });
+
+            const dbProduct = await Product.findOne({ name });
+
+            if (dbProduct) {
+              res.status(200).json({ success: true, product: dbProduct });
+            } else {
+              res.status(404).json({ success: false, message: 'Not Found' });
+            }
+          }
+        } else {
+          // find products with filters
+          const dbProducts = await Product.find(
+            matchFilter,
+            null,
+            options
+          ).lean();
+
+          if (dbProducts.length) {
+            res.status(200).json({ success: true, products: dbProducts });
+          } else {
+            res.status(400).json({ success: false, message: 'Not Found' });
           }
         }
       } catch (error) {
+        console.log(error);
         const details = validator.getValidationErrorDetails(error);
 
         if (details) {

@@ -62,7 +62,7 @@ export default withSession(async function handler(req, res) {
           const category = new Category({ name: values.name });
           await category.save();
 
-          res.status(201).json({ success: true, category });
+          res.status(201).json({ success: true });
         } else {
           res.status(401).json({ success: false, message: 'Unauthorized' });
         }

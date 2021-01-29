@@ -170,3 +170,32 @@ export const findProduct = async (name) => {
 
   return resData;
 };
+
+export const getProducts = async (filters, limit = 3, offset = 0) => {
+  const res = await fetch(
+    `${URL}/api/products${
+      filters ? '?filters=' + filters.join(' ') : ''
+    }&limit=${limit}&offset=${offset}`
+  );
+
+  const resData = await res.json();
+
+  return resData;
+};
+
+export const getProductsByCategory = async (
+  name,
+  filters,
+  limit = 3,
+  offset = 0
+) => {
+  const res = await fetch(
+    `${URL}/api/products?search=${name}&byCategory=true${
+      filters ? '&filters=' + filters.join(' ') : ''
+    }&limit=${limit}&offset=${offset}`
+  );
+
+  const resData = await res.json();
+
+  return resData;
+};

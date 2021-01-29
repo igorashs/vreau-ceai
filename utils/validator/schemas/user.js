@@ -2,11 +2,14 @@ import Joi from 'joi';
 
 const email = Joi.string()
   .email({ tlds: { allow: false } })
+  .trim()
+  .max(60)
   .lowercase()
   .required()
   .messages({
     'string.base': 'e-mailul trebuie sa fie de tip text',
     'string.email': 'e-mailul nu este valid',
+    'string.max': 'e-mailul este prea lung',
     'string.empty': 'e-mailul este obligatoriu',
     'any.required': 'e-mailul este obligatoriu'
   });

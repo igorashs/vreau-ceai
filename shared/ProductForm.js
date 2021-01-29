@@ -5,13 +5,12 @@ import { Form, FormAction } from '@/shared/Form';
 import { TextField } from '@/shared/TextField';
 import { CheckBox } from '@/shared/CheckBox';
 import { Button } from '@/shared/Button';
-import { useState, useEffect } from 'react';
 import { Select } from '@/shared/Select';
 import { InputFile } from '@/shared/InputFile';
 import { Textarea } from '@/shared/Textarea';
-import { getCategories } from 'services/ceaiApi';
+import { useEffect } from 'react';
 
-export function UpdateProductForm({ onUpdateProductSubmit, product }) {
+export function ProductForm({ onProductSubmit, categories, product }) {
   const {
     register,
     handleSubmit,
@@ -25,31 +24,22 @@ export function UpdateProductForm({ onUpdateProductSubmit, product }) {
   });
 
   const watchSrc = watch('src');
-  const [dbCategories, setDbCategories] = useState();
-
-  useEffect(async () => {
-    const res = await getCategories();
-
-    if (res.success) {
-      setDbCategories(res.categories);
-    }
-  }, []);
 
   useEffect(() => {
     reset({
-      name: product.name,
-      price: product.price,
-      quantity: product.quantity,
-      total_quantity: product.total_quantity,
-      description: product.description,
-      category: product.category,
-      recommend: product.recommend,
+      name: product?.name ?? '',
+      price: product?.price ?? 0,
+      quantity: product?.quantity ?? 0,
+      total_quantity: product?.total_quantity ?? 0,
+      description: product?.description ?? '',
+      category_id: product?.category_id,
+      recommend: product?.recommend ?? false,
       src: null
     });
-  }, [product, dbCategories]);
+  }, [product, categories]);
 
   const onSubmit = async (data) => {
-    const errors = await onUpdateProductSubmit(data);
+    const errors = await onProductSubmit(data);
 
     if (errors) {
       errors.forEach((error) => {
@@ -62,6 +52,7 @@ export function UpdateProductForm({ onUpdateProductSubmit, product }) {
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <TextField
+        id={product && 'name_' + product._id}
         name="name"
         label="nume produs"
         error={errors?.name?.message}
@@ -69,6 +60,7 @@ export function UpdateProductForm({ onUpdateProductSubmit, product }) {
         type="text"
       />
       <TextField
+        id={product && 'price_' + product._id}
         name="price"
         label="preț (lei)"
         error={errors?.price?.message}
@@ -76,6 +68,7 @@ export function UpdateProductForm({ onUpdateProductSubmit, product }) {
         type="number"
       />
       <TextField
+        id={product && 'quantity_' + product._id}
         name="quantity"
         label="preț per cantitate (g)"
         error={errors?.quantity?.message}
@@ -83,6 +76,7 @@ export function UpdateProductForm({ onUpdateProductSubmit, product }) {
         type="number"
       />
       <TextField
+        id={product && 'total_quantity_' + product._id}
         name="total_quantity"
         label="cantitatea totală (g)"
         error={errors?.total_quantity?.message}
@@ -90,6 +84,7 @@ export function UpdateProductForm({ onUpdateProductSubmit, product }) {
         type="number"
       />
       <Textarea
+        id={product && 'description_' + product._id}
         name="description"
         label="descriere"
         passRef={register}
@@ -97,13 +92,14 @@ export function UpdateProductForm({ onUpdateProductSubmit, product }) {
         rows="7"
       />
       <Select
-        name="category"
+        id={product && 'category_id_' + product._id}
+        name="category_id"
         label="categorie"
         passRef={register}
-        error={errors?.category?.message}
+        error={errors?.category_id?.message}
       >
-        {dbCategories ? (
-          dbCategories.map((c) => (
+        {categories ? (
+          categories.map((c) => (
             <option key={c._id} value={c._id}>
               {c.name}
             </option>
@@ -113,6 +109,7 @@ export function UpdateProductForm({ onUpdateProductSubmit, product }) {
         )}
       </Select>
       <InputFile
+        id={product && 'src_' + product._id}
         name="src"
         label={`(max 1MB) imagine ${(watchSrc && watchSrc[0]?.name) || ''}`}
         passRef={register}
@@ -122,7 +119,12 @@ export function UpdateProductForm({ onUpdateProductSubmit, product }) {
         Încarcă imagine
       </InputFile>
       <FormAction justify="space-between">
-        <CheckBox name="recommend" label="recomandată" passRef={register} />
+        <CheckBox
+          id={product && 'recommend_' + product._id}
+          name="recommend"
+          label="recomandată"
+          passRef={register}
+        />
         <Button>salvează</Button>
       </FormAction>
     </Form>

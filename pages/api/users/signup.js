@@ -1,5 +1,5 @@
 import User from '@/models/User';
-import Token from '@/models/Token';
+import Session from '@/models/Session';
 import bcrypt from 'bcrypt';
 import dbConnect from '@/utils/dbConnect';
 import * as validator from '@/utils/validator';
@@ -18,7 +18,7 @@ export default async function handler(req, res) {
           password
         });
 
-        const dbUser = await User.findOne({ email: values.email });
+        const dbUser = await User.findOne({ email: values.email }, 'email');
         if (dbUser)
           validator.throwValidationError({
             message: 'utilizatorul cu acest e-mail deja există',
@@ -43,11 +43,11 @@ export default async function handler(req, res) {
           user_id: newUser._id
         });
 
-        const token = new Token({
+        const session = new Session({
           user_id: newUser._id,
           refresh_token: refreshToken
         });
-        await token.save();
+        await session.save();
 
         res.setHeader('Set-Cookie', cookies);
 

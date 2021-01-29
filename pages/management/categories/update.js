@@ -5,7 +5,7 @@ import { withSession } from '@/utils/withSession';
 import Head from 'next/head';
 import { DropDown } from '@/shared/DropDown';
 import { findCategory, updateCategory, deleteCategory } from 'services/ceaiApi';
-import { UpdateCategoryForm } from '@/shared/UpdateCategoryForm';
+import { CategoryForm } from '@/shared/CategoryForm';
 import { FindCategoryForm } from '@/shared/FindCategoryForm';
 
 export default function Update() {
@@ -25,7 +25,7 @@ export default function Update() {
     }
   };
 
-  const handleUpdateCategorySubmit = async (data) => {
+  const handleCategorySubmit = async (data) => {
     const res = await updateCategory(dbCategory._id, data);
 
     if (res.success) {
@@ -72,9 +72,9 @@ export default function Update() {
           showInitial={true}
           onDeleteClick={handleDeleteCategory}
         >
-          <UpdateCategoryForm
+          <CategoryForm
             category={dbCategory}
-            onUpdateCategorySubmit={handleUpdateCategorySubmit}
+            onCategorySubmit={handleCategorySubmit}
           />
         </DropDown>
       )}

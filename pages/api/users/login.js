@@ -1,5 +1,5 @@
 import User from '@/models/User';
-import Token from '@/models/Token';
+import Session from '@/models/Session';
 import bcrypt from 'bcrypt';
 import dbConnect from '@/utils/dbConnect';
 import * as validator from '@/utils/validator';
@@ -14,7 +14,10 @@ export default async function handler(req, res) {
         const { email, password } = req.body;
         const values = await validator.validateUserLogin({ email, password });
 
-        const dbUser = await User.findOne({ email: values.email });
+        const dbUser = await User.findOne(
+          { email: values.email },
+          'name isAdmin isManager password'
+        );
         if (!dbUser)
           validator.throwValidationError({
             message: 'e-mail greșit',
@@ -40,14 +43,14 @@ export default async function handler(req, res) {
         });
 
         // remove prev session if exists
-        await Token.findOneAndDelete({ user_id: dbUser._id });
+        await Session.findOneAndDelete({ user_id: dbUser._id });
 
         // save new session
-        const token = new Token({
+        const session = new Session({
           user_id: dbUser._id,
           refresh_token: refreshToken
         });
-        await token.save();
+        await session.save();
 
         res.setHeader('Set-Cookie', cookies);
 

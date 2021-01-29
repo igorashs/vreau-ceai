@@ -14,7 +14,7 @@ const UserData = styled.div`
   border-bottom: 1px solid var(--layout);
 `;
 
-export function UpdateUserForm({ onUpdateUserSubmit, user }) {
+export function UserForm({ onUserSubmit, user }) {
   const { register, handleSubmit, reset } = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -29,7 +29,7 @@ export function UpdateUserForm({ onUpdateUserSubmit, user }) {
   }, [user]);
 
   return (
-    <Form onSubmit={handleSubmit(onUpdateUserSubmit)}>
+    <Form onSubmit={handleSubmit(onUserSubmit)}>
       <div>
         <UserData>
           <Label>name</Label>
