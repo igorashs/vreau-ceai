@@ -5,7 +5,7 @@ import { Label } from '@/shared/Label';
 import { withSession } from '@/utils/withSession';
 import Head from 'next/head';
 import { FindUserForm } from '@/shared/FindUserForm';
-import { UpdateUserForm } from '@/shared/UpdateUserForm';
+import { UserForm } from '@/shared/UserForm';
 
 export default function Update() {
   const [dbUser, setDbUser] = useState();
@@ -24,7 +24,7 @@ export default function Update() {
     }
   };
 
-  const handleUpdateUserSubmit = async ({ isManager }) => {
+  const handleUserSubmit = async ({ isManager }) => {
     const res = await updateUserManagerPermission(dbUser._id, isManager);
 
     if (res.success) {
@@ -57,12 +57,7 @@ export default function Update() {
         </Label>
       )}
 
-      {dbUser && (
-        <UpdateUserForm
-          user={dbUser}
-          onUpdateUserSubmit={handleUpdateUserSubmit}
-        />
-      )}
+      {dbUser && <UserForm user={dbUser} onUserSubmit={handleUserSubmit} />}
     </>
   );
 }
