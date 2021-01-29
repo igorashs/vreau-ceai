@@ -1,6 +1,7 @@
 import dbConnect from '@/utils/dbConnect';
 import Product from 'models/Product';
 import { withSession } from '@/utils/withSession';
+import { promises as fs } from 'fs';
 
 export default withSession(async function handler(req, res) {
   await dbConnect();
@@ -13,9 +14,16 @@ export default withSession(async function handler(req, res) {
         if (isAuth && (user.isAdmin || user.isManager)) {
           const { id } = req.query;
 
-          const dbProduct = await Product.findByIdAndDelete(id);
+          const dbProduct = await Product.findByIdAndDelete(id, {
+            projection: 'src'
+          });
 
           if (dbProduct) {
+            if (dbProduct.src !== 'placeholder.png')
+              await fs.unlink(
+                `${process.cwd()}/public/uploads/${dbProduct.src}`
+              );
+
             res.status(200).json({ success: true, message: 'Product deleted' });
           } else {
             res.status(404).json({ success: false, message: 'Not Found' });
