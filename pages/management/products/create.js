@@ -1,26 +1,33 @@
 import { withManagementStoreLayout } from '@/layouts/StoreLayout';
 import { withSession } from '@/utils/withSession';
-import { CreateProductForm } from '@/shared/CreateProductForm';
-import { createProduct } from 'services/ceaiApi';
 import { Label } from '@/shared/Label';
-import { useState } from 'react';
-import Head from 'next/head';
+import { useState, useEffect } from 'react';
+import { createProduct, getCategories } from 'services/ceaiApi';
 import { getFormData } from '@/utils/getFormData';
+import { ProductForm } from '@/shared/ProductForm';
+import Head from 'next/head';
 
 export default function Products() {
   const [label, setLabel] = useState();
+  const [dbCategories, setDbCategories] = useState();
 
-  const handleCreateProductSubmit = async (data) => {
+  useEffect(async () => {
+    const res = await getCategories();
+
+    if (res.success) {
+      setDbCategories(res.categories);
+    }
+  }, []);
+
+  const handleProductSubmit = async (data) => {
     const formData = getFormData(data);
-
     const res = await createProduct(formData);
 
     if (res.success) {
       setLabel({ success: true, message: 'produsul a fost creat ^-^' });
-    } else if (res.errors) {
-      return res.errors;
     } else {
       setLabel({ success: false, message: 'ceva nu a mers bine :(' });
+      return res.errors;
     }
   };
 
@@ -32,7 +39,10 @@ export default function Products() {
 
       <h4>Adăugare produs</h4>
 
-      <CreateProductForm onCreateProductSubmit={handleCreateProductSubmit} />
+      <ProductForm
+        onProductSubmit={handleProductSubmit}
+        categories={dbCategories}
+      />
 
       {label && (
         <Label error={!label.success} success={label.success}>

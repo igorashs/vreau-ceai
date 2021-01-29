@@ -5,13 +5,12 @@ import { Form, FormAction } from '@/shared/Form';
 import { TextField } from '@/shared/TextField';
 import { CheckBox } from '@/shared/CheckBox';
 import { Button } from '@/shared/Button';
-import { useState, useEffect } from 'react';
 import { Select } from '@/shared/Select';
 import { InputFile } from '@/shared/InputFile';
 import { Textarea } from '@/shared/Textarea';
-import { getCategories } from 'services/ceaiApi';
+import { useEffect } from 'react';
 
-export function UpdateProductForm({ onUpdateProductSubmit, product }) {
+export function ProductForm({ onProductSubmit, categories, product }) {
   const {
     register,
     handleSubmit,
@@ -25,31 +24,22 @@ export function UpdateProductForm({ onUpdateProductSubmit, product }) {
   });
 
   const watchSrc = watch('src');
-  const [dbCategories, setDbCategories] = useState();
-
-  useEffect(async () => {
-    const res = await getCategories();
-
-    if (res.success) {
-      setDbCategories(res.categories);
-    }
-  }, []);
 
   useEffect(() => {
     reset({
-      name: product.name,
-      price: product.price,
-      quantity: product.quantity,
-      total_quantity: product.total_quantity,
-      description: product.description,
-      category: product.category,
-      recommend: product.recommend,
+      name: product?.name ?? '',
+      price: product?.price ?? 0,
+      quantity: product?.quantity ?? 0,
+      total_quantity: product?.total_quantity ?? 0,
+      description: product?.description ?? '',
+      category_id: product?.category_id,
+      recommend: product?.recommend ?? false,
       src: null
     });
-  }, [product, dbCategories]);
+  }, [product, categories]);
 
   const onSubmit = async (data) => {
-    const errors = await onUpdateProductSubmit(data);
+    const errors = await onProductSubmit(data);
 
     if (errors) {
       errors.forEach((error) => {
@@ -97,13 +87,13 @@ export function UpdateProductForm({ onUpdateProductSubmit, product }) {
         rows="7"
       />
       <Select
-        name="category"
+        name="category_id"
         label="categorie"
         passRef={register}
-        error={errors?.category?.message}
+        error={errors?.category_id?.message}
       >
-        {dbCategories ? (
-          dbCategories.map((c) => (
+        {categories ? (
+          categories.map((c) => (
             <option key={c._id} value={c._id}>
               {c.name}
             </option>

@@ -1,17 +1,31 @@
 import { withManagementStoreLayout } from '@/layouts/StoreLayout';
 import { withSession } from '@/utils/withSession';
-import { findProduct, updateProduct, deleteProduct } from 'services/ceaiApi';
 import { Label } from '@/shared/Label';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DropDown } from '@/shared/DropDown';
 import { FindProductForm } from '@/shared/FindProductForm';
-import { UpdateProductForm } from '@/shared/UpdateProductForm';
+import { ProductForm } from '@/shared/ProductForm';
 import { getFormData } from '@/utils/getFormData';
+import {
+  getCategories,
+  findProduct,
+  updateProduct,
+  deleteProduct
+} from 'services/ceaiApi';
 import Head from 'next/head';
 
 export default function Products() {
   const [dbProduct, setDbProduct] = useState();
   const [label, setLabel] = useState();
+  const [dbCategories, setDbCategories] = useState();
+
+  useEffect(async () => {
+    const res = await getCategories();
+
+    if (res.success) {
+      setDbCategories(res.categories);
+    }
+  }, []);
 
   const handleFindProductSubmit = async ({ name }) => {
     const res = await findProduct(name);
@@ -26,19 +40,16 @@ export default function Products() {
     }
   };
 
-  const handleUpdateProductSubmit = async (data) => {
+  const handleProductSubmit = async (data) => {
     const formData = getFormData(data);
-
     const res = await updateProduct(dbProduct._id, formData);
 
     if (res.success) {
       setLabel({ success: true, message: 'produsul a fost modificat' });
       setDbProduct({ ...res.product });
-    } else if (res.errors) {
-      setLabel({ success: false, message: 'produsul nu a fost modificat' });
-      return res.errors;
     } else {
       setLabel({ success: false, message: 'ceva nu a mers bine :(' });
+      return res.errors;
     }
   };
 
@@ -74,9 +85,10 @@ export default function Products() {
           showInitial={true}
           onDeleteClick={handleDeleteProduct}
         >
-          <UpdateProductForm
+          <ProductForm
+            onProductSubmit={handleProductSubmit}
             product={dbProduct}
-            onUpdateProductSubmit={handleUpdateProductSubmit}
+            categories={dbCategories}
           />
         </DropDown>
       )}
