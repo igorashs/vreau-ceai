@@ -52,6 +52,7 @@ export function ProductForm({ onProductSubmit, categories, product }) {
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <TextField
+        id={product && 'name_' + product._id}
         name="name"
         label="nume produs"
         error={errors?.name?.message}
@@ -59,6 +60,7 @@ export function ProductForm({ onProductSubmit, categories, product }) {
         type="text"
       />
       <TextField
+        id={product && 'price_' + product._id}
         name="price"
         label="preț (lei)"
         error={errors?.price?.message}
@@ -66,6 +68,7 @@ export function ProductForm({ onProductSubmit, categories, product }) {
         type="number"
       />
       <TextField
+        id={product && 'quantity_' + product._id}
         name="quantity"
         label="preț per cantitate (g)"
         error={errors?.quantity?.message}
@@ -73,6 +76,7 @@ export function ProductForm({ onProductSubmit, categories, product }) {
         type="number"
       />
       <TextField
+        id={product && 'total_quantity_' + product._id}
         name="total_quantity"
         label="cantitatea totală (g)"
         error={errors?.total_quantity?.message}
@@ -80,6 +84,7 @@ export function ProductForm({ onProductSubmit, categories, product }) {
         type="number"
       />
       <Textarea
+        id={product && 'description_' + product._id}
         name="description"
         label="descriere"
         passRef={register}
@@ -87,6 +92,7 @@ export function ProductForm({ onProductSubmit, categories, product }) {
         rows="7"
       />
       <Select
+        id={product && 'category_id_' + product._id}
         name="category_id"
         label="categorie"
         passRef={register}
@@ -103,6 +109,7 @@ export function ProductForm({ onProductSubmit, categories, product }) {
         )}
       </Select>
       <InputFile
+        id={product && 'src_' + product._id}
         name="src"
         label={`(max 1MB) imagine ${(watchSrc && watchSrc[0]?.name) || ''}`}
         passRef={register}
@@ -112,7 +119,12 @@ export function ProductForm({ onProductSubmit, categories, product }) {
         Încarcă imagine
       </InputFile>
       <FormAction justify="space-between">
-        <CheckBox name="recommend" label="recomandată" passRef={register} />
+        <CheckBox
+          id={product && 'recommend_' + product._id}
+          name="recommend"
+          label="recomandată"
+          passRef={register}
+        />
         <Button>salvează</Button>
       </FormAction>
     </Form>
