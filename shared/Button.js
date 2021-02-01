@@ -45,6 +45,11 @@ const textStyle = css`
   }
 `;
 
+const darkTextStyle = css`
+  ${textStyle}
+  color: var(--text-dark);
+`;
+
 const dangerTextStyle = css`
   ${textStyle}
   color: var(--text-danger-light);
@@ -58,6 +63,7 @@ const accentTextStyle = css`
 export const Button = styled.button`
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 7px;
 
   ${buttonStyle}
@@ -72,6 +78,8 @@ export const Button = styled.button`
         return dangerTextStyle;
       case 'accent-text':
         return accentTextStyle;
+      case 'dark-text':
+        return darkTextStyle;
       default:
         return null;
     }
