@@ -13,4 +13,5 @@ const Category = new mongoose.Schema({
   products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }]
 });
 
-export default mongoose.models.Category || mongoose.model('Category', Category);
+export default mongoose.models?.Category ||
+  mongoose.model('Category', Category);
