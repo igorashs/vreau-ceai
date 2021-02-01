@@ -54,9 +54,16 @@ export default withSession(async function handler(req, res) {
               .lean();
 
             if (dbCategory) {
-              res
-                .status(200)
-                .json({ success: true, products: dbCategory.products });
+              const count = await Product.countDocuments({
+                ...matchFilter,
+                category_id: dbCategory._id
+              });
+
+              res.status(200).json({
+                success: true,
+                products: dbCategory.products,
+                count
+              });
             } else {
               res.status(404).json({ success: false, message: 'Not Found' });
             }
@@ -83,7 +90,11 @@ export default withSession(async function handler(req, res) {
           ).lean();
 
           if (dbProducts.length) {
-            res.status(200).json({ success: true, products: dbProducts });
+            const count = await Product.countDocuments(matchFilter);
+
+            res
+              .status(200)
+              .json({ success: true, products: dbProducts, count });
           } else {
             res.status(400).json({ success: false, message: 'Not Found' });
           }
