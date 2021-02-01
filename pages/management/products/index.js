@@ -14,10 +14,11 @@ import { DropDownList } from '@/shared/DropDownList';
 import { Label } from '@/shared/Label';
 import { Filter } from '@/shared/Filter';
 import { getFormData } from '@/utils/getFormData';
+import { Pagination } from '@/shared/Pagination';
 import Head from 'next/head';
 
 const List = styled.ul`
-  margin-top: var(--baseline);
+  margin: var(--baseline) 0;
   display: grid;
   gap: calc(var(--baseline) / 2);
 `;
@@ -43,26 +44,49 @@ const allowedFilters = [
   }
 ];
 
+const PRODUCTS_PER_PAGE = 5;
+
 export default function Products() {
   const [filters, setFilters] = useState(new Set());
   const [dbProducts, setDbProducts] = useState();
   const [dbCategories, setDbCategories] = useState();
   const [label, setLabel] = useState();
+  const [totalPages, setTotalPages] = useState();
 
   useEffect(async () => {
-    const categoriesRes = await getCategories();
+    const res = await getCategories();
 
-    if (categoriesRes.success) {
-      setDbCategories(categoriesRes.categories);
+    if (res.success) {
+      setDbCategories(res.categories);
     }
   }, []);
 
-  useEffect(async () => {
-    console.log(filters);
-    const productsRes = await getProducts([...filters], 10);
+  const handlePageChange = async (pageNumber) => {
+    if (pageNumber >= 0 && pageNumber < totalPages) {
+      const res = await getProducts(
+        [...filters],
+        PRODUCTS_PER_PAGE,
+        pageNumber * PRODUCTS_PER_PAGE
+      );
 
-    if (productsRes.success) {
-      setDbProducts(productsRes.products);
+      if (res.success) {
+        setDbProducts(res.products);
+      } else {
+        setLabel({
+          success: false,
+          message: 'Nu au fost găsit niciun produs'
+        });
+      }
+    }
+  };
+
+  useEffect(async () => {
+    const res = await getProducts([...filters], PRODUCTS_PER_PAGE);
+
+    if (res.success) {
+      setDbProducts(res.products);
+      setTotalPages(Math.ceil(res.count / PRODUCTS_PER_PAGE));
+      console.log(Math.ceil(res.count / PRODUCTS_PER_PAGE));
     } else {
       setLabel({
         success: false,
@@ -139,24 +163,32 @@ export default function Products() {
       )}
 
       {dbProducts && (
-        <List>
-          {dbProducts.map((product) => (
-            <li key={product._id}>
-              <DropDown
-                title={product?.name}
-                onDeleteClick={() => handleDeleteProduct(product._id)}
-              >
-                <ProductForm
-                  product={product}
-                  categories={dbCategories}
-                  onProductSubmit={(data) =>
-                    handleProductSubmit(product._id, data)
-                  }
-                />
-              </DropDown>
-            </li>
-          ))}
-        </List>
+        <>
+          <List>
+            {dbProducts.map((product) => (
+              <li key={product._id}>
+                <DropDown
+                  title={product?.name}
+                  onDeleteClick={() => handleDeleteProduct(product._id)}
+                >
+                  <ProductForm
+                    product={product}
+                    categories={dbCategories}
+                    onProductSubmit={(data) =>
+                      handleProductSubmit(product._id, data)
+                    }
+                  />
+                </DropDown>
+              </li>
+            ))}
+          </List>
+
+          <Pagination
+            onPageChange={handlePageChange}
+            min={0}
+            max={totalPages - 1}
+          />
+        </>
       )}
     </>
   );
