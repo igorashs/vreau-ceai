@@ -21,4 +21,4 @@ const Session = new mongoose.Schema({
   }
 });
 
-export default mongoose.models.Session || mongoose.model('Session', Session);
+export default mongoose.models?.Session || mongoose.model('Session', Session);

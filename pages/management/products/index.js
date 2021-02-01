@@ -86,7 +86,6 @@ export default function Products() {
     if (res.success) {
       setDbProducts(res.products);
       setTotalPages(Math.ceil(res.count / PRODUCTS_PER_PAGE));
-      console.log(Math.ceil(res.count / PRODUCTS_PER_PAGE));
     } else {
       setLabel({
         success: false,

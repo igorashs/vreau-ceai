@@ -28,7 +28,7 @@ const Header = styled.div`
 
 const List = styled.ul`
   display: grid;
-  column-gap: 7px;
+  column-gap: var(--baseline);
   grid-template-columns: repeat(auto-fit, minmax(224px, 1fr));
 
   li {

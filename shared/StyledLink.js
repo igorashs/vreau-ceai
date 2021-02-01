@@ -35,7 +35,8 @@ export const StyledLink = ({
   target,
   rel,
   underline,
-  button = false
+  button = false,
+  children
 }) => (
   <Link href={href} passHref>
     {button ? (
@@ -52,7 +53,7 @@ export const StyledLink = ({
         underline={underline}
       >
         {Icon && <Icon />}
-        {text}
+        {text || children}
       </StyledA>
     )}
   </Link>

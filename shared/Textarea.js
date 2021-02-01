@@ -9,6 +9,7 @@ const Wrapper = styled.div`
 `;
 
 const StyledTextarea = styled.textarea`
+  width: 100%;
   background-color: var(--input);
   border: 1px solid var(--layout-dark);
   border-radius: 4px;
