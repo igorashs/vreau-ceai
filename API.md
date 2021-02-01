@@ -63,15 +63,10 @@
 
 ```bash
 # GET products
-# offset | limit (10def)
-/api/products/
-```
-
-```bash
-# GET products by filter
-# ascPrice | descPrice | ascQuantity | descQuantity | ads
-# offset | limit (10 def)
-/api/products?ascPrice=true&descQuantity
+# filter = ascPrice | descPrice | ascQuantity | descQuantity | recommend
+# offset
+# limit
+/api/products?filter=ascPrice+descQuantity&limit=10
 ```
 
 ```bash
@@ -81,7 +76,10 @@
 
 ```bash
 # GET products by category name
-/api/products?search=<CATEGORY_NAME>&byCategoryName=true
+# filter = ascPrice | descPrice | ascQuantity | descQuantity | recommend
+# offset
+# limit
+/api/products?search=<CATEGORY_NAME>&byCategory=true
 ```
 
 ```bash
@@ -102,13 +100,11 @@
 ## Order
 
 ```bash
-# GET orders
-/api/orders/
-```
-
-```bash
-# POST new order  (auth user)
-/api/orders/
+# GET orders (auth Manager)
+# filter = processing | inDelivery | canceled | completed | last | first (date)
+# offset
+# limit
+/api/orders?filter=processing+canceled
 ```
 
 ```bash
@@ -117,23 +113,26 @@
 ```
 
 ```bash
-# GET orders by user id
+# GET orders by user id  (auth User)
 /api/orders?search=<USER_ID>&byUserId=true
 ```
 
 ```bash
-# GET orders by filters
-# processing | inDelivery | canceled | completed | last | first (date)
-# offset | limit (def 10)
-/api/orders?processing=true&inDelivery=true
+# GET orders by user email  (auth Manager)
+/api/orders?search=<USER_EMAIL>&byUserEmail=true
+```
+
+```bash
+# POST new order  (auth User)
+/api/orders/create
 ```
 
 ```bash
 # PUT an updated order by id (auth Manager)
-/api/orders/:id
+/api/orders/update/:id
 ```
 
 ```bash
 # DELETE an order by id (auth user (completed | canceled) | auth Manager)
-/api/orders/:id
+/api/orders/delete/:id
 ```
