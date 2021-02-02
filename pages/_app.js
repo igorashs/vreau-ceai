@@ -6,6 +6,7 @@ import { SessionProvider } from 'contexts/SessionContext';
 import { verifyToken } from 'lib/session';
 import { refreshUser } from 'services/ceaiApi';
 import { useEffect, useState } from 'react';
+import { CartProvider } from 'contexts/CartContext';
 
 function MyApp({ Component, pageProps, initialSession }) {
   const withLayout = Component.withLayout || withPageLayout;
@@ -35,7 +36,7 @@ function MyApp({ Component, pageProps, initialSession }) {
       </Head>
       <GlobalStyle />
       <SessionProvider session={session}>
-        {withLayout(<Component {...pageProps} />)}
+        <CartProvider>{withLayout(<Component {...pageProps} />)}</CartProvider>
       </SessionProvider>
     </>
   );

@@ -6,9 +6,10 @@ import breakpoints from 'GlobalStyle/breakpoints';
 import styled from 'styled-components';
 import Image from 'next/image';
 import { Button } from '@/shared/Button';
-import MinusSvg from '@/icons/minus.svg';
-import PlusSvg from '@/icons/plus.svg';
 import { useState } from 'react';
+import { useCartDispatch } from 'contexts/CartContext';
+import { Counter } from '@/shared/Counter';
+import { Label } from '@/shared/Label';
 
 const Wrapper = styled.div`
   display: flex;
@@ -64,35 +65,10 @@ const Price = styled.p`
   grid-column: 1 / -1;
 `;
 
-const Counter = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 7px;
-`;
-
-const CountInput = styled.input`
-  border: 0;
-  width: calc(var(--baseline) * 2);
-  background-color: transparent;
-  color: var(--accent-text-dark);
-  border-bottom: 1px solid var(--accent);
-  text-align: center;
-
-  /* Chrome, Safari, Edge, Opera */
-  ::-webkit-outer-spin-button,
-  ::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  /* Firefox */
-  &[type='number'] {
-    -moz-appearance: textfield;
-  }
-`;
-
 export default function Product({ product }) {
   const [count, setCount] = useState(1);
+  const [label, setLabel] = useState();
+  const cartDispatch = useCartDispatch();
 
   return (
     <>
@@ -117,40 +93,27 @@ export default function Product({ product }) {
         <ActionsWrapper>
           <Price>{`${product.price}lei - ${product.quantity}g`}</Price>
           <Actions>
-            <Counter>
-              <Button
-                icon
-                noPadding
-                onClick={() => setCount((c) => (c > 1 ? c - 1 : 1))}
-              >
-                <MinusSvg />
-              </Button>
-              <CountInput
-                type="number"
-                value={count}
-                onBlur={(e) => !e.currentTarget.value && setCount(1)}
-                onChange={(e) => {
-                  if (!e.currentTarget.value) {
-                    setCount('');
-                  } else {
-                    const value = +e.currentTarget.value;
-
-                    if (value >= 1 && value <= 100) {
-                      setCount(value);
-                    }
+            <Counter count={count} min={1} max={100} onChange={setCount} />
+            <Button
+              onClick={() => {
+                cartDispatch({
+                  type: 'add-item',
+                  payload: {
+                    product,
+                    count
                   }
-                }}
-              />
-              <Button
-                icon
-                noPadding
-                onClick={() => setCount((c) => (c < 100 ? c + 1 : c))}
-              >
-                <PlusSvg />
-              </Button>
-            </Counter>
-            <Button>adaugă în coș</Button>
+                });
+
+                setLabel({
+                  success: true,
+                  message: 'produsul a fost adăugat în coș'
+                });
+              }}
+            >
+              adaugă în coș
+            </Button>
           </Actions>
+          {label && <Label success={label.success}>{label.message}</Label>}
         </ActionsWrapper>
       </Wrapper>
     </>
@@ -163,7 +126,10 @@ export const getServerSideProps = async ({ query }) => {
   await dbConnect();
 
   try {
-    const dbProduct = await ProductModel.findOne({ name: query.product });
+    const dbProduct = await ProductModel.findOne(
+      { name: query.product },
+      'name description price quantity src'
+    );
 
     if (!dbProduct) {
       return {
