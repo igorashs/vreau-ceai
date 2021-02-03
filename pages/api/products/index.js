@@ -100,7 +100,6 @@ export default withSession(async function handler(req, res) {
           }
         }
       } catch (error) {
-        console.log(error);
         const details = validator.getValidationErrorDetails(error);
 
         if (details) {
