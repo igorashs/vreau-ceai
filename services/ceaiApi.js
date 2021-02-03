@@ -214,3 +214,13 @@ export const createOrder = async (data) => {
 
   return resData;
 };
+
+export const findOrder = async (number) => {
+  const res = await fetch(`${URL}/api/orders?search=${number}`, {
+    credentials: 'same-origin'
+  });
+
+  const resData = await res.json();
+
+  return resData;
+};
