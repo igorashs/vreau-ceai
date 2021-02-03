@@ -5,6 +5,8 @@ import { DropDown } from '@/shared/DropDown';
 import { Button } from '@/shared/Button';
 import styled from 'styled-components';
 import { Counter } from '@/shared/Counter';
+import { useSession } from 'contexts/SessionContext';
+import { useRouter } from 'next/router';
 
 const Wrapper = styled.div`
   display: grid;
@@ -44,6 +46,16 @@ const Actions = styled.div`
 
 export default function Cart() {
   const [cart, cartDispatch] = useCart();
+  const router = useRouter();
+  const { isAuth } = useSession();
+
+  const handleOrderClick = () => {
+    if (isAuth) {
+      router.push('/order');
+    } else {
+      router.push('/login');
+    }
+  };
 
   return (
     <>
@@ -114,7 +126,7 @@ export default function Cart() {
               >
                 goliți coșul
               </Button>
-              <Button>comandă</Button>
+              <Button onClick={handleOrderClick}>comandă</Button>
             </Actions>
           </>
         ) : (
