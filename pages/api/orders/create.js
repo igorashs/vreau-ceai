@@ -51,7 +51,7 @@ export default withSession(async function handler(req, res) {
           const number = await nanoid();
 
           const order = new Order({
-            user_id: user._id,
+            user: user._id,
             total_price: totalPrice,
             items: orderItems,
             ...info,
