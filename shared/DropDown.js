@@ -14,10 +14,15 @@ const Wrapper = styled.div`
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(var(--baseline) / 2);
 `;
 
 const Action = styled.div`
+  flex: 1;
   display: flex;
+  justify-content: flex-end;
   align-items: center;
   gap: calc(var(--baseline) / 2);
 

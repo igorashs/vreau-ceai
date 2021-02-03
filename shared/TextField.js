@@ -30,13 +30,27 @@ const StyledInput = styled.input`
   }
 `;
 
-export const TextField = ({ name, label, error, passRef, type, id = name }) => {
+export const TextField = ({
+  name,
+  label,
+  error,
+  passRef,
+  type,
+  id = name,
+  placeholder
+}) => {
   return (
     <Wrapper>
       <Label htmlFor={id} error={error}>
         {error || label}
       </Label>
-      <StyledInput id={id} ref={passRef} name={name} type={type} />
+      <StyledInput
+        id={id}
+        ref={passRef}
+        name={name}
+        type={type}
+        placeholder={placeholder}
+      />
     </Wrapper>
   );
 };

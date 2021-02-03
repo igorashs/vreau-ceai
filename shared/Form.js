@@ -22,7 +22,19 @@ export const FormAction = styled.div`
         return 'justify-content: center;';
       default:
         return 'justify-content: stretch;';
-        break;
+    }
+  }}
+
+  ${({ align }) => {
+    switch (align) {
+      case 'flex-end':
+        return 'align-items: flex-end;';
+      case 'flex-start':
+        return 'align-items: flex-start;';
+      case 'center':
+        return 'align-items: center;';
+      default:
+        return 'align-items: stretch;';
     }
   }}
 `;

@@ -5,7 +5,7 @@ import { withSession } from '@/utils/withSession';
 import * as validator from '@/utils/validator';
 import { IncomingForm } from 'formidable';
 import { promises as fs } from 'fs';
-const nanoid = require('nanoid');
+import { nanoid } from 'nanoid';
 
 export default withSession(async function handler(req, res) {
   await dbConnect();

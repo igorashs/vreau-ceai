@@ -199,3 +199,28 @@ export const getProductsByCategory = async (
 
   return resData;
 };
+
+export const createOrder = async (data) => {
+  const res = await fetch(`${URL}/api/orders/create`, {
+    method: 'POST',
+    credentials: 'same-origin',
+    headers: {
+      'Content-type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+
+  const resData = await res.json();
+
+  return resData;
+};
+
+export const findOrder = async (number) => {
+  const res = await fetch(`${URL}/api/orders?search=${number}`, {
+    credentials: 'same-origin'
+  });
+
+  const resData = await res.json();
+
+  return resData;
+};
