@@ -22,6 +22,12 @@ export const validateOrderSubmit = (order) =>
 export const validateOrderItems = (items) =>
   orderValidation.orderItemsSchema.validateAsync(items);
 
+export const validateOrderNumber = (number) =>
+  orderValidation.orderNumberSchema.validateAsync(number);
+
+export const validateOrderStatus = (status) =>
+  orderValidation.orderStatusSchema.validateAsync(status);
+
 export const createValidationError = ({ message, key }) => {
   return new ValidationError(message, [
     {

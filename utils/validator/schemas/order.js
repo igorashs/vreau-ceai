@@ -22,3 +22,22 @@ export const orderItemsSchema = Joi.array().items(
     count: Joi.number().min(1).required()
   })
 );
+
+export const orderNumberSchema = Joi.object({
+  number: Joi.string().length(16).required().messages({
+    'string.length': 'numărul trebuie să aibă exact 16 caractere',
+    'string.empty': 'numărul este obligatoriu',
+    'any.required': 'numărul este obligatoriu'
+  })
+});
+
+export const orderStatusSchema = Joi.object({
+  status: Joi.string()
+    .valid('processing', 'inDelivery', 'canceled', 'completed')
+    .required()
+    .messages({
+      'string.empty': 'statusul este obligatoriu',
+      'any.required': 'statusul este obligatoriu',
+      'any.only': 'status greșit'
+    })
+});
