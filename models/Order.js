@@ -8,6 +8,13 @@ const Order = new mongoose.Schema({
     index: true
   },
 
+  number: {
+    type: String,
+    required: true,
+    unique: true,
+    index: true
+  },
+
   total_price: {
     type: Number,
     min: 0,
@@ -21,7 +28,21 @@ const Order = new mongoose.Schema({
     index: true
   },
 
-  products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
+  items: [
+    {
+      count: {
+        type: Number,
+        min: 1,
+        required: true
+      },
+
+      product: {
+        name: { type: String, required: true },
+        price: { type: Number, required: true },
+        quantity: { type: Number, required: true }
+      }
+    }
+  ],
 
   address: {
     type: String,
