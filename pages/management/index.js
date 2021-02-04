@@ -9,7 +9,8 @@ export default function Management() {
       <Head>
         <title>Management</title>
       </Head>
-      <Leaves />
+
+      <Leaves height="224px" />
     </>
   );
 }
