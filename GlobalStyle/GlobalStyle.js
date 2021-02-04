@@ -2,11 +2,13 @@ import { createGlobalStyle } from 'styled-components';
 import { variables } from './variables';
 import { reset } from './reset';
 import { typography } from './typography';
+import { nprogress } from './nprogress';
 
 export const GlobalStyle = createGlobalStyle`
   ${reset}
   ${variables}
   ${typography}
+  ${nprogress}
 
   body {
     background-color: var(--body-bg);
