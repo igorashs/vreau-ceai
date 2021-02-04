@@ -89,7 +89,6 @@ export default function Home() {
               src="/tea-plantation.jpg"
               layout="fill"
               objectFit="cover"
-              quality={75}
             />
             <HeroOverlay />
             <Container>
