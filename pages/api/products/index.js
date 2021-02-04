@@ -85,14 +85,13 @@ export default withSession(async function handler(req, res) {
         } else {
           // find products with filters
           const dbProducts = recommended
-            ? await Product.find(matchFilter, null, options)
+            ? await Product.find({ recommend: true }, null, options)
                 .populate({
                   path: 'category_id',
                   select: 'name'
                 })
                 .lean()
-            : await Product.find(matchFilter, null, options)
-              .lean();
+            : await Product.find(matchFilter, null, options).lean();
 
           if (dbProducts.length) {
             const count = await Product.countDocuments(matchFilter);
