@@ -7,6 +7,11 @@ import { verifyToken } from 'lib/session';
 import { refreshUser } from 'services/ceaiApi';
 import { useEffect, useState } from 'react';
 import { CartProvider } from 'contexts/CartContext';
+import dynamic from 'next/dynamic';
+
+const TopProgressBar = dynamic(() => import('@/shared/TopProgressBar'), {
+  ssr: false
+});
 
 function MyApp({ Component, pageProps, initialSession }) {
   const withLayout = Component.withLayout || withPageLayout;
@@ -35,6 +40,7 @@ function MyApp({ Component, pageProps, initialSession }) {
         />
       </Head>
       <GlobalStyle />
+      <TopProgressBar />
       <SessionProvider session={session}>
         <CartProvider>{withLayout(<Component {...pageProps} />)}</CartProvider>
       </SessionProvider>
