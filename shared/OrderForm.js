@@ -44,6 +44,7 @@ export function OrderForm({ onOrderSubmit, order }) {
           label="status"
           passRef={register}
           error={errors?.status?.message}
+          disabled={order?.status === 'completed'}
         >
           <option value="processing">procesare</option>
           <option value="inDelivery">în livrare</option>
@@ -51,7 +52,7 @@ export function OrderForm({ onOrderSubmit, order }) {
           <option value="completed">finalizată</option>
         </Select>
 
-        <Button>salvează</Button>
+        <Button disabled={order?.status === 'completed'}>salvează</Button>
       </FormAction>
     </Form>
   );
