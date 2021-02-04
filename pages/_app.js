@@ -45,7 +45,7 @@ function MyApp({ Component, pageProps, initialSession }) {
 MyApp.getInitialProps = async (appContext) => {
   let session = { isAuth: false, user: null, needRefresh: false };
 
-  if (appContext.ctx.req) {
+  if (appContext.ctx.req && appContext.ctx.req.cookies) {
     const { access, refresh } = appContext.ctx.req.cookies;
 
     if (refresh) {
