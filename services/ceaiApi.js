@@ -276,3 +276,13 @@ export const getUserOrders = async (filters, limit = 3, offset = 0) => {
 
   return resData;
 };
+
+export const getRecommendedProducts = async (limit = 3, offset = 0) => {
+  const res = await fetch(
+    `${URL}/api/products?recommended=true&limit=${limit}&offset=${offset}`
+  );
+
+  const resData = await res.json();
+
+  return resData;
+};
