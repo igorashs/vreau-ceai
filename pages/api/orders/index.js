@@ -60,7 +60,10 @@ export default withSession(async function handler(req, res) {
             ).lean();
 
             if (dbOrders.length) {
-              const count = await Order.countDocuments(matchFilter);
+              const count = await Order.countDocuments({
+                ...matchFilter,
+                user: user._id
+              });
 
               res.status(200).json({ success: true, orders: dbOrders, count });
             } else {
@@ -96,7 +99,10 @@ export default withSession(async function handler(req, res) {
                   .lean();
 
                 if (dbOrders.length) {
-                  const count = await Order.countDocuments(matchFilter);
+                  const count = await Order.countDocuments({
+                    ...matchFilter,
+                    user: dbUser._id
+                  });
 
                   res
                     .status(200)

@@ -8,7 +8,7 @@ import { TeaCard } from '@/shared/TeaCard';
 import breakpoints from 'GlobalStyle/breakpoints';
 import { Filter } from '@/shared/Filter';
 import { DropDownList } from '@/shared/DropDownList';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { StaticPagination } from '@/shared/StaticPagination';
 
