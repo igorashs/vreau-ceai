@@ -14,5 +14,6 @@ export const GlobalStyle = createGlobalStyle`
 
   :disabled {
     background-color: var(--disabled) !important;
+    cursor: initial !important;
   }
 `;
