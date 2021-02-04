@@ -5,6 +5,7 @@ import { Container } from '@/shared/Container';
 import { StyledLink } from '@/shared/StyledLink';
 import { categoriesLink } from '@/utils/links';
 import breakpoints from 'GlobalStyle/breakpoints';
+import { Recommendation } from '@/shared/Recommendation';
 
 const Hero = styled.div`
   position: relative;
@@ -55,9 +56,11 @@ const Hgroup = styled.hgroup`
   }
 `;
 
-const Recommendations = styled.section`
+const RecommendationSection = styled.section`
   h5 {
     text-align: center;
+
+    margin-bottom: var(--baseline);
   }
 `;
 
@@ -108,9 +111,11 @@ export default function Home() {
           </Hero>
 
           <Container>
-            <Recommendations>
+            <RecommendationSection>
               <h5>Ceaiuri Recomandate</h5>
-            </Recommendations>
+
+              <Recommendation />
+            </RecommendationSection>
           </Container>
         </FlexContainer>
       </main>
