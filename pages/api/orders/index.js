@@ -128,11 +128,12 @@ export default withSession(async function handler(req, res) {
               }
             } else {
               // find orders with filters
-              const dbOrders = await Order.find(
-                matchFilter,
-                null,
-                options
-              ).lean();
+              const dbOrders = await Order.find(matchFilter, null, options)
+                .populate({
+                  path: 'user',
+                  select: 'name email'
+                })
+                .lean();
 
               if (dbOrders.length) {
                 const count = await Order.countDocuments(matchFilter);
