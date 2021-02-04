@@ -87,6 +87,7 @@ export default function Products() {
       setDbProducts(res.products);
       setTotalPages(Math.ceil(res.count / PRODUCTS_PER_PAGE));
     } else {
+      setDbProducts(null);
       setLabel({
         success: false,
         message: 'Nu au fost găsit niciun produs'
