@@ -250,3 +250,15 @@ export const deleteOrder = async (id) => {
 
   return resData;
 };
+
+export const getOrders = async (filters, limit = 3, offset = 0) => {
+  const res = await fetch(
+    `${URL}/api/orders${
+      filters ? '?filters=' + filters.join(' ') : ''
+    }&limit=${limit}&offset=${offset}`
+  );
+
+  const resData = await res.json();
+
+  return resData;
+};
