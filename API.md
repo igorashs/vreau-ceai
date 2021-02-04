@@ -70,6 +70,14 @@
 ```
 
 ```bash
+# GET recommended products
+# recommended
+# offset
+# limit
+/api/products?recommended=true
+```
+
+```bash
 # POST a new product (auth Manager)
 /api/products/create
 ```
@@ -101,7 +109,7 @@
 
 ```bash
 # GET orders (auth Manager)
-# filter = processing | inDelivery | canceled | completed | last | first (date)
+# filter = processing | inDelivery | canceled | completed | lastOrdered | firstOrdered (date)
 # offset
 # limit
 /api/orders?filter=processing+canceled
