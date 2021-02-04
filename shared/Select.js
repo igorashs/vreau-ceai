@@ -53,6 +53,7 @@ export function Select({
   passRef,
   id = name,
   fullWidth,
+  disabled,
   children
 }) {
   return (
@@ -61,7 +62,7 @@ export function Select({
         {error || label}
       </Label>
       <SelectWrapper fullWidth={fullWidth}>
-        <StyledSelect name={name} ref={passRef} id={id}>
+        <StyledSelect name={name} ref={passRef} id={id} disabled={disabled}>
           {children}
         </StyledSelect>
         <StyledSvg />
