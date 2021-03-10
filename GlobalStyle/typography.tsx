@@ -1,6 +1,6 @@
 import { css } from 'styled-components';
 
-export const typography = css`
+const typography = css`
   /* base font */
   html {
     font-size: var(--body-text);
@@ -60,3 +60,5 @@ export const typography = css`
     font-size: 0.75rem;
   }
 `;
+
+export default typography;

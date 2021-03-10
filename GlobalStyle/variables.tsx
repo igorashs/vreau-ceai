@@ -1,6 +1,6 @@
 import { css } from 'styled-components';
 
-export const variables = css`
+const variables = css`
   :root {
     /* colors */
     --body-bg: #f2f2f2;
@@ -36,3 +36,5 @@ export const variables = css`
     --max-input-width: 290px;
   }
 `;
+
+export default variables;

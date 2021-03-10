@@ -1,6 +1,6 @@
 import { css } from 'styled-components';
 
-export const nprogress = css`
+const nprogress = css`
   /* Make clicks pass-through */
   #nprogress {
     pointer-events: none;
@@ -84,3 +84,5 @@ export const nprogress = css`
     }
   }
 `;
+
+export default nprogress;

@@ -1,10 +1,10 @@
 import { createGlobalStyle } from 'styled-components';
-import { variables } from './variables';
-import { reset } from './reset';
-import { typography } from './typography';
-import { nprogress } from './nprogress';
+import variables from './variables';
+import reset from './reset';
+import typography from './typography';
+import nprogress from './nprogress';
 
-export const GlobalStyle = createGlobalStyle`
+const GlobalStyle = createGlobalStyle`
   ${reset}
   ${variables}
   ${typography}
@@ -19,3 +19,5 @@ export const GlobalStyle = createGlobalStyle`
     cursor: initial !important;
   }
 `;
+
+export default GlobalStyle;

@@ -1,6 +1,6 @@
 import { css } from 'styled-components';
 
-export const reset = css`
+const reset = css`
   /* Box sizing rules */
   *,
   *::before,
@@ -57,3 +57,5 @@ export const reset = css`
     display: block;
   }
 `;
+
+export default reset;
