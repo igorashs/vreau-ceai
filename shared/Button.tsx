@@ -1,5 +1,11 @@
 import styled, { css } from 'styled-components';
 
+interface ButtonProps {
+  btnStyle?: 'danger' | 'none' | 'danger-text' | 'accent-text' | 'dark-text';
+  icon?: boolean;
+  noPadding?: boolean;
+}
+
 export const buttonStyle = css`
   padding: calc(var(--baseline) / 4) calc(var(--baseline) / 2);
   border-radius: 4px;
@@ -60,7 +66,7 @@ const accentTextStyle = css`
   color: var(--accent-text-dark);
 `;
 
-export const Button = styled.button`
+const Button = styled.button<ButtonProps>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -89,3 +95,5 @@ export const Button = styled.button`
 
   ${({ noPadding }) => noPadding && 'padding: 0;'}
 `;
+
+export default Button;
