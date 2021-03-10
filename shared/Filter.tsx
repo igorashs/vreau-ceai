@@ -1,6 +1,6 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import CheckSvg from '@/icons/check.svg';
-import { Button } from '@/shared/Button';
+import Button from '@/shared/Button';
 
 const StyledFilter = styled.div`
   display: flex;
@@ -11,9 +11,21 @@ const StyledFilter = styled.div`
   }
 `;
 
-export const Filter = ({ label, text, checked, onChange }) => {
+interface FilterProps {
+  label?: string;
+  text: string;
+  checked?: boolean;
+  onChange: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+}
+
+export const Filter = ({
+  label = '',
+  text,
+  checked = false,
+  onChange,
+}: FilterProps) => {
   return (
-    <StyledFilter disableOutline={checked}>
+    <StyledFilter>
       <Button
         icon={checked}
         onClick={onChange}
