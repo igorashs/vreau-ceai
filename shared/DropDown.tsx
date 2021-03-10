@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Button } from '@/shared/Button';
+import Button from '@/shared/Button';
 import BoxRemoveSvg from '@/icons/box-remove.svg';
 import ArrowSvg from '@/icons/arrow.svg';
 import { useState } from 'react';
@@ -19,7 +19,11 @@ const Header = styled.div`
   gap: calc(var(--baseline) / 2);
 `;
 
-const Action = styled.div`
+interface HideStyledProps {
+  hide?: boolean;
+}
+
+const Action = styled.div<HideStyledProps>`
   flex: 1;
   display: flex;
   justify-content: flex-end;
@@ -33,26 +37,34 @@ const Action = styled.div`
   ${({ hide }) => hide && 'button:last-child {transform: rotate(90deg);}'}
 `;
 
-const Body = styled.div`
+const Body = styled.div<HideStyledProps>`
   ${({ hide }) => hide && 'display: none;'}
 `;
 
-export function DropDown({
+interface DropDownProps {
+  title: string;
+  label: string;
+  showInitial?: boolean;
+  onDeleteClick?: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => void;
+  customHeading?: React.ReactElement;
+}
+
+export const DropDown = ({
   title,
   label,
-  onDeleteClick,
+  onDeleteClick = null,
   showInitial = false,
-  customHeading,
-  children
-}) {
+  customHeading = null,
+  children,
+}: React.PropsWithChildren<DropDownProps>) => {
   const [hide, setHide] = useState(!showInitial);
 
   return (
     <Wrapper>
       <Header>
-        {customHeading ? (
-          customHeading
-        ) : (
+        {customHeading || (
           <>
             <h5>{title}</h5>
             {label && <small>{label}</small>}
@@ -72,4 +84,4 @@ export function DropDown({
       <Body hide={hide}>{children}</Body>
     </Wrapper>
   );
-}
+};
