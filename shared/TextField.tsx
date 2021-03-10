@@ -30,15 +30,27 @@ const StyledInput = styled.input`
   }
 `;
 
+interface TextFieldProps {
+  name: string;
+  label: string;
+  error?: boolean;
+  type?: string;
+  id?: string;
+  placeholder?: string;
+  passRef?:
+    | ((instance: HTMLInputElement) => void)
+    | React.RefObject<HTMLInputElement>;
+}
+
 export const TextField = ({
   name,
   label,
-  error,
-  passRef,
-  type,
+  error = false,
+  passRef = null,
+  type = 'text',
   id = name,
-  placeholder
-}) => {
+  placeholder,
+}: TextFieldProps) => {
   return (
     <Wrapper>
       <Label htmlFor={id} error={error}>
