@@ -1,8 +1,13 @@
 import styled from 'styled-components';
-import { Button } from './Button';
 import Link from 'next/link';
+import Button from './Button';
 
-const StyledA = styled.a`
+interface StyledAProps {
+  accent?: 'light' | 'dark';
+  underline?: boolean;
+}
+
+const StyledA = styled.a<StyledAProps>`
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -26,18 +31,30 @@ const StyledA = styled.a`
   ${({ underline }) => `text-decoration: ${underline ? 'underline' : 'none'};`}
 `;
 
+interface StyledLinkProps {
+  href: string;
+  label: string;
+  text?: string;
+  accent?: 'light' | 'dark';
+  Icon?: React.FC<React.SVGProps<SVGElement>>;
+  target?: string;
+  rel?: string;
+  underline?: boolean;
+  button?: boolean;
+}
+
 export const StyledLink = ({
   href,
   label,
-  text,
-  accent,
-  Icon,
-  target,
-  rel,
-  underline,
+  text = '',
+  accent = null,
+  Icon = null,
+  target = '',
+  rel = '',
+  underline = false,
   button = false,
-  children
-}) => (
+  children,
+}: React.PropsWithChildren<StyledLinkProps>) => (
   <Link href={href} passHref>
     {button ? (
       <Button as="a" icon={!text} aria-label={label} target={target} rel={rel}>
