@@ -16,7 +16,23 @@ const StyledInput = styled.input`
   cursor: pointer;
 `;
 
-export const CheckBox = ({ name, label, error, passRef, id = name }) => {
+interface CheckBoxProps {
+  name: string;
+  label: string;
+  error?: boolean;
+  passRef?:
+    | ((instance: HTMLInputElement) => void)
+    | React.RefObject<HTMLInputElement>;
+  id: string;
+}
+
+const CheckBox = ({
+  name,
+  label,
+  error = false,
+  passRef = null,
+  id = name,
+}: CheckBoxProps) => {
   return (
     <Wrapper>
       <Label htmlFor={id} error={error} success>
@@ -27,3 +43,5 @@ export const CheckBox = ({ name, label, error, passRef, id = name }) => {
     </Wrapper>
   );
 };
+
+export default CheckBox;
