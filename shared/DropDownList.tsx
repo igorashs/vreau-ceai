@@ -1,14 +1,18 @@
 import styled, { css } from 'styled-components';
 import ArrowSvg from 'assets/icons/arrow.svg';
-import { Button } from './Button';
 import { useState } from 'react';
+import Button from './Button';
 
 const itemStyle = css`
   padding: calc(var(--baseline) / 4) 0;
   border-bottom: 1px solid var(--layout);
 `;
 
-const Header = styled.div`
+interface HideStyledProps {
+  hide?: boolean;
+}
+
+const Header = styled.div<HideStyledProps>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -26,7 +30,7 @@ const Header = styled.div`
   ${({ hide }) => hide && 'button {transform: rotate(90deg);}'}
 `;
 
-const List = styled.ul`
+const List = styled.ul<HideStyledProps>`
   display: grid;
   column-gap: var(--baseline);
   grid-template-columns: repeat(auto-fit, minmax(224px, 1fr));
@@ -38,7 +42,14 @@ const List = styled.ul`
   ${({ hide }) => hide && 'display: none;'}
 `;
 
-export function DropDownList({ label, children }) {
+interface DropDownListProps {
+  label: string;
+}
+
+export const DropDownList = ({
+  label,
+  children,
+}: React.PropsWithChildren<DropDownListProps>) => {
   const [hide, setHide] = useState(false);
 
   return (
@@ -52,4 +63,4 @@ export function DropDownList({ label, children }) {
       <List hide={hide}>{children}</List>
     </div>
   );
-}
+};
