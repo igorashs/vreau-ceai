@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Button } from '@/shared/Button';
+import Button from '@/shared/Button';
 import MinusSvg from '@/icons/minus.svg';
 import PlusSvg from '@/icons/plus.svg';
 
@@ -30,14 +30,23 @@ const CountInput = styled.input`
   }
 `;
 
+interface CounterProps {
+  count?: number;
+  min?: number;
+  max?: number;
+  onChange: (value: string | number) => void;
+  onDecrement?: (value: string | number) => void;
+  onIncrement?: (value: string | number) => void;
+}
+
 export const Counter = ({
   count = 0,
   min = 0,
   max = Infinity,
   onChange,
   onDecrement = onChange,
-  onIncrement = onChange
-}) => {
+  onIncrement = onChange,
+}: CounterProps) => {
   return (
     <Wrapper>
       <Button
