@@ -14,10 +14,10 @@ interface LeavesProps {
   width?: string;
 }
 
-export function Leaves({ height = '112', width = '112' }: LeavesProps) {
+export const Leaves = ({ height = '112', width = '112' }: LeavesProps) => {
   return (
     <StyledFigure>
       <LeavesSvg height={height} width={width} />
     </StyledFigure>
   );
-}
+};
