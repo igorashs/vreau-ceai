@@ -2,13 +2,17 @@ import styled from 'styled-components';
 import ArrowSvg from 'assets/icons/arrow.svg';
 import { Label } from '@/shared/Label';
 
+interface SelectWrapperProps {
+  fullWidth?: boolean;
+}
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 7px;
 `;
 
-const SelectWrapper = styled.div`
+const SelectWrapper = styled.div<SelectWrapperProps>`
   position: relative;
   align-self: flex-start;
 
@@ -46,16 +50,28 @@ const StyledSvg = styled(ArrowSvg)`
   pointer-events: none;
 `;
 
-export function Select({
+interface SelectProps {
+  name: string;
+  label: string;
+  error?: boolean;
+  id?: string;
+  fullWidth?: boolean;
+  disabled?: boolean;
+  passRef:
+    | ((instance: HTMLSelectElement) => void)
+    | React.RefObject<HTMLSelectElement>;
+}
+
+export const Select = ({
   name,
   label,
-  error,
-  passRef,
+  error = false,
+  passRef = null,
   id = name,
-  fullWidth,
-  disabled,
-  children
-}) {
+  fullWidth = false,
+  disabled = false,
+  children,
+}: React.PropsWithChildren<SelectProps>) => {
   return (
     <Wrapper>
       <Label htmlFor={id} error={error}>
@@ -69,4 +85,4 @@ export function Select({
       </SelectWrapper>
     </Wrapper>
   );
-}
+};
