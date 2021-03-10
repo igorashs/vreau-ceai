@@ -1,6 +1,11 @@
 import styled from 'styled-components';
 
-export const Label = styled.label`
+interface LabelProps {
+  error?: boolean;
+  success?: boolean;
+}
+
+export const Label = styled.label<LabelProps>`
   font-weight: 500;
 
   ${({ error }) => error && 'color: var(--text-danger);'}
