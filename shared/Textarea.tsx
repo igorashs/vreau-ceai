@@ -20,28 +20,32 @@ const StyledTextarea = styled.textarea`
   resize: none;
 `;
 
+interface TextareaProps {
+  name: string;
+  label: string;
+  error?: boolean;
+  id?: string;
+  rows?: number;
+  passRef:
+    | ((instance: HTMLTextAreaElement) => void)
+    | React.RefObject<HTMLTextAreaElement>;
+}
+
 export const Textarea = ({
   name,
   label,
-  error,
-  passRef,
-  type,
+  error = false,
+  passRef = null,
   id = name,
-  rows
-}) => {
+  rows = 2,
+}: TextareaProps) => {
   return (
     <Wrapper>
       <Label htmlFor={id} error={error}>
         {error || label}
       </Label>
 
-      <StyledTextarea
-        id={id}
-        ref={passRef}
-        name={name}
-        type={type}
-        rows={rows}
-      />
+      <StyledTextarea id={id} ref={passRef} name={name} rows={rows} />
     </Wrapper>
   );
 };
