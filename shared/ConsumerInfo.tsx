@@ -29,7 +29,19 @@ const Info = styled.div`
   }
 `;
 
-export const ConsumerInfo = ({ name, email, tel, address }) => {
+interface ConsumerInfoProps {
+  name: string;
+  email: string;
+  tel: string;
+  address: string;
+}
+
+export const ConsumerInfo = ({
+  name,
+  email,
+  tel,
+  address,
+}: ConsumerInfoProps) => {
   return (
     <Wrapper>
       <Title>Consumator</Title>
