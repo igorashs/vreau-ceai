@@ -53,7 +53,7 @@ const StyledSvg = styled(ArrowSvg)`
 interface SelectProps {
   name: string;
   label: string;
-  error?: boolean;
+  error?: string;
   id?: string;
   fullWidth?: boolean;
   disabled?: boolean;
@@ -65,7 +65,7 @@ interface SelectProps {
 export const Select = ({
   name,
   label,
-  error = false,
+  error,
   passRef,
   id = name,
   fullWidth = false,
@@ -74,7 +74,7 @@ export const Select = ({
 }: React.PropsWithChildren<SelectProps>) => {
   return (
     <Wrapper>
-      <Label htmlFor={id} error={error}>
+      <Label htmlFor={id} error={!!error}>
         {error || label}
       </Label>
       <SelectWrapper fullWidth={fullWidth}>
