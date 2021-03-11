@@ -1,26 +1,36 @@
 import { TextField } from '@/shared/TextField';
-import { Button } from '@/shared/Button';
+import Button from '@/shared/Button';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
 import { emailSchema } from '@/utils/validator/schemas/user';
 import { Form, FormAction } from '@/shared/Form';
 
-export function FindUserForm({ onFindUserSubmit }) {
+type UserInputs = {
+  email: string;
+};
+
+type InputsErrors = Array<{ message: string; name: 'email' }>;
+
+interface FindUserFormProps {
+  onFindUserSubmit: (data: UserInputs) => InputsErrors;
+}
+
+export function FindUserForm({ onFindUserSubmit }: FindUserFormProps) {
   const {
     register,
     handleSubmit,
     setError,
-    formState: { errors }
+    formState: { errors },
   } = useForm({
     mode: 'onChange',
-    resolver: joiResolver(emailSchema)
+    resolver: joiResolver(emailSchema),
   });
 
-  const onSubmit = async (data) => {
-    const errors = await onFindUserSubmit(data);
+  const onSubmit = async (data: UserInputs) => {
+    const submitErrors = await onFindUserSubmit(data);
 
-    if (errors) {
-      errors.forEach((error) => {
+    if (submitErrors) {
+      submitErrors.forEach((error) => {
         const { message, name } = error;
         setError(name, { message });
       });
