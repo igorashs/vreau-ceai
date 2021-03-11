@@ -33,9 +33,16 @@ const Label = styled.p`
   background-color: var(--accent-dark);
 `;
 
-export const CategoryCard = ({ category }) => {
+interface CategoryCardProps {
+  category: {
+    name: string;
+    src: string;
+  };
+}
+
+export const CategoryCard = ({ category }: CategoryCardProps) => {
   return (
-    <StyledLink href={`/categories/${category.name}`}>
+    <StyledLink href={`/categories/${category.name}`} label="vedeți categoria">
       <Wrapper>
         <ImgWrapper>
           <ImgContainer>
