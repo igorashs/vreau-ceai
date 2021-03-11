@@ -3,32 +3,48 @@ import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
 import { orderStatusSchema } from '@/utils/validator/schemas/order';
 import { Form, FormAction } from '@/shared/Form';
 import { Select } from '@/shared/Select';
-import { Button } from '@/shared/Button';
+import Button from '@/shared/Button';
 import { useEffect } from 'react';
 
-export function OrderForm({ onOrderSubmit, order }) {
+type Status = 'processing' | 'inDelivery' | 'canceled' | 'completed';
+
+type OrderInputs = {
+  status: Status;
+};
+
+type InputsErrors = Array<{ message: string; name: 'status' }>;
+
+interface OrderFormProps {
+  onOrderSubmit: (data: OrderInputs) => InputsErrors;
+  order?: {
+    status: Status;
+    _id: string;
+  };
+}
+
+export const OrderForm = ({ onOrderSubmit, order }: OrderFormProps) => {
   const {
     register,
     handleSubmit,
     setError,
     reset,
-    formState: { errors }
-  } = useForm({
+    formState: { errors },
+  } = useForm<OrderInputs>({
     mode: 'onChange',
-    resolver: joiResolver(orderStatusSchema)
+    resolver: joiResolver(orderStatusSchema),
   });
 
   useEffect(() => {
     reset({
-      status: order?.status ?? ''
+      status: order?.status,
     });
   }, [order]);
 
-  const onSubmit = async (data) => {
-    const errors = await onOrderSubmit(data);
+  const onSubmit = async (data: OrderInputs) => {
+    const submitErrors = await onOrderSubmit(data);
 
-    if (errors) {
-      errors.forEach((error) => {
+    if (submitErrors) {
+      submitErrors.forEach((error) => {
         const { message, name } = error;
         setError(name, { message });
       });
@@ -39,7 +55,7 @@ export function OrderForm({ onOrderSubmit, order }) {
     <Form onSubmit={handleSubmit(onSubmit)}>
       <FormAction justify="space-between" align="flex-end">
         <Select
-          id={order && 'order_id_' + order._id}
+          id={order && `order_id_${order._id}`}
           name="status"
           label="status"
           passRef={register}
@@ -56,4 +72,4 @@ export function OrderForm({ onOrderSubmit, order }) {
       </FormAction>
     </Form>
   );
-}
+};
