@@ -6,7 +6,12 @@ export const Form = styled.form`
   gap: calc(var(--baseline) / 2);
 `;
 
-export const FormAction = styled.div`
+interface FormActionProps {
+  justify?: 'space-between' | 'flex-end' | 'flex-start' | 'center';
+  align?: 'flex-end' | 'flex-start' | 'center';
+}
+
+export const FormAction = styled.div<FormActionProps>`
   margin-top: calc(var(--baseline) / 2);
   display: flex;
 

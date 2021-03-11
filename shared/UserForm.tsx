@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { Button } from '@/shared/Button';
+import Button from '@/shared/Button';
 import { useForm } from 'react-hook-form';
 import { Form, FormAction } from '@/shared/Form';
-import { CheckBox } from '@/shared/CheckBox';
+import CheckBox from '@/shared/CheckBox';
 import { useEffect } from 'react';
 import { Label } from '@/shared/Label';
 
@@ -14,17 +14,30 @@ const UserData = styled.div`
   border-bottom: 1px solid var(--layout);
 `;
 
-export function UserForm({ onUserSubmit, user }) {
-  const { register, handleSubmit, reset } = useForm({
+type UserInputs = {
+  isManager: boolean;
+};
+
+interface UserFormProps {
+  onUserSubmit: (data: UserInputs) => void;
+  user: {
+    isManager: boolean;
+    name: string;
+    email: string;
+  };
+}
+
+export const UserForm = ({ onUserSubmit, user }: UserFormProps) => {
+  const { register, handleSubmit, reset } = useForm<UserInputs>({
     mode: 'onChange',
     defaultValues: {
-      isManager: user.isManager
-    }
+      isManager: user.isManager,
+    },
   });
 
   useEffect(() => {
     reset({
-      isManager: user.isManager
+      isManager: user.isManager,
     });
   }, [user]);
 
@@ -49,4 +62,4 @@ export function UserForm({ onUserSubmit, user }) {
       </FormAction>
     </Form>
   );
-}
+};
