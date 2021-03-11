@@ -62,7 +62,18 @@ const Actions = styled.div`
   }
 `;
 
-export const TeaCard = ({ tea, category }) => {
+interface TeaCardProps {
+  tea: {
+    name: string;
+    src: string;
+    description: string;
+    price: number;
+    quantity: number;
+  };
+  category: string;
+}
+
+export const TeaCard = ({ tea, category }: TeaCardProps) => {
   return (
     <Wrapper>
       <ImgContainer>
@@ -79,6 +90,7 @@ export const TeaCard = ({ tea, category }) => {
       <Actions>
         <StyledLink
           href={`/categories/${category}/${tea.name}`}
+          label="vezi produs"
           button
           text="vezi produs"
         />

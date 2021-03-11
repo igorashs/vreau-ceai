@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import styled from 'styled-components';
 import Image from 'next/image';
 import { StyledLink } from '@/shared/StyledLink';
@@ -43,7 +44,20 @@ const Actions = styled.div`
   display: grid;
 `;
 
-export const TeaRecommendation = ({ tea }) => {
+interface TeaRecommendationProps {
+  tea: {
+    name: string;
+    src: string;
+    description: string;
+    price: number;
+    quantity: number;
+    category_id: {
+      name: string;
+    };
+  };
+}
+
+export const TeaRecommendation = ({ tea }: TeaRecommendationProps) => {
   return (
     <Wrapper>
       <ImgContainer>
@@ -61,6 +75,7 @@ export const TeaRecommendation = ({ tea }) => {
         <StyledLink
           href={`/categories/${tea.category_id.name || ''}/${tea.name}`}
           button
+          label="vezi produs"
           text="vezi produs"
         />
       </Actions>
