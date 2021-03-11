@@ -5,16 +5,27 @@ import EmailSvg from '@/icons/email.svg';
 import PackageSvg from '@/icons/package.svg';
 import BriefcaseSvg from '@/icons/briefcase.svg';
 
+interface Link {
+  href: string;
+  text: string;
+  label?: string;
+  Icon?: React.FC<React.SVGProps<SVGElement>>;
+  accent?: 'light' | 'dark' | false;
+  privatePath?: boolean;
+  managementPath?: boolean;
+  underline?: boolean;
+}
+
 const linkFactory = ({
   href,
   text,
-  label,
+  label = '',
   Icon = null,
   accent = 'light',
   privatePath = false,
   managementPath = false,
-  underline = false
-}) => ({
+  underline = false,
+}: Link) => ({
   href,
   text,
   label,
@@ -22,28 +33,28 @@ const linkFactory = ({
   accent,
   privatePath,
   managementPath,
-  underline
+  underline,
 });
 
 export const categoriesLink = linkFactory({
   href: '/categories',
   text: 'Ceai',
   label: 'Deschideți pagina cu categorii',
-  accent: false
+  accent: false,
 });
 
 export const aboutLink = linkFactory({
   href: '/about',
   text: 'Despre',
   label: 'Deschideți pagina cu informații despre noi',
-  accent: false
+  accent: false,
 });
 
 export const contactsLink = linkFactory({
   href: '/contacts',
   text: 'Contacte',
   label: 'Deschideți pagina cu contacte',
-  accent: false
+  accent: false,
 });
 
 export const cartLink = linkFactory({
@@ -51,20 +62,20 @@ export const cartLink = linkFactory({
   text: 'Coș',
   label: 'Deschideți pagina cu coșul personal',
   Icon: CartSvg,
-  accent: false
+  accent: false,
 });
 
 export const loginLink = linkFactory({
   href: '/login',
   text: 'Conectați-vă',
   label: 'Deschideți pagina pentru conectare',
-  Icon: LoginSvg
+  Icon: LoginSvg,
 });
 
 export const signupLink = linkFactory({
   href: '/signup',
   text: 'Creați un cont',
-  label: 'Deschideți pagina pentru conectare'
+  label: 'Deschideți pagina pentru conectare',
 });
 
 export const myOrdersLink = linkFactory({
@@ -73,7 +84,7 @@ export const myOrdersLink = linkFactory({
   label: 'Deschideți pagina cu comenziile efectuate',
   Icon: PackageSvg,
   accent: false,
-  privatePath: true
+  privatePath: true,
 });
 
 export const managementLink = linkFactory({
@@ -82,21 +93,21 @@ export const managementLink = linkFactory({
   label: 'Managment',
   Icon: BriefcaseSvg,
   privatePath: true,
-  managementPath: true
+  managementPath: true,
 });
 
 export const phoneLink = linkFactory({
   href: 'tel:062222222',
   text: '062222222',
   label: 'apelați nr de tel',
-  Icon: PhoneSvg
+  Icon: PhoneSvg,
 });
 
 export const emailLink = linkFactory({
   href: 'mailto:vreauceai@gmail.com',
   text: 'vreauceai@gmail.com',
   label: 'trimiteți email',
-  Icon: EmailSvg
+  Icon: EmailSvg,
 });
 
 export const navLinks = {
@@ -108,8 +119,8 @@ export const navLinks = {
     aboutLink,
     contactsLink,
     cartLink,
-    myOrdersLink
-  ]
+    myOrdersLink,
+  ],
 };
 
 export const managementLinks = {
@@ -117,58 +128,58 @@ export const managementLinks = {
     linkFactory({
       href: '/management/users/update',
       text: 'Modificare Utilizator',
-      accent: 'dark'
-    })
+      accent: 'dark',
+    }),
   ],
 
   orders: [
     linkFactory({
       href: '/management/orders',
       text: 'Toate comenzile',
-      accent: 'dark'
+      accent: 'dark',
     }),
     linkFactory({
       href: '/management/orders/update',
       text: 'Modificare comandă',
-      accent: 'dark'
-    })
+      accent: 'dark',
+    }),
   ],
 
   products: [
     linkFactory({
       href: '/management/products',
       text: 'Toate produsele',
-      accent: 'dark'
+      accent: 'dark',
     }),
     linkFactory({
       href: '/management/products/update',
       text: 'Modificare produs',
-      accent: 'dark'
+      accent: 'dark',
     }),
     linkFactory({
       href: '/management/products/create',
       text: 'Adăugare produs',
-      accent: 'dark'
-    })
+      accent: 'dark',
+    }),
   ],
 
   categories: [
     linkFactory({
       href: '/management/categories',
       text: 'Toate categoriile',
-      accent: 'dark'
+      accent: 'dark',
     }),
     linkFactory({
       href: '/management/categories/update',
       text: 'Modificare categorie',
-      accent: 'dark'
+      accent: 'dark',
     }),
     linkFactory({
       href: '/management/categories/create',
       text: 'Adăugare categorie',
-      accent: 'dark'
-    })
-  ]
+      accent: 'dark',
+    }),
+  ],
 };
 
 export const footerBlockLinksList = [
@@ -178,37 +189,37 @@ export const footerBlockLinksList = [
       linkFactory({
         href: '/about',
         text: 'vreau ceai',
-        label: 'Deschideți pagina cu informații despre noi'
-      })
-    ]
+        label: 'Deschideți pagina cu informații despre noi',
+      }),
+    ],
   },
   {
     ...linkFactory({
       href: '/faq',
       text: 'FAQ',
       label: 'Deschideți pagina cu întrebări frecvente',
-      accent: false
+      accent: false,
     }),
     links: [
       linkFactory({
         href: '/faq#cum-comand',
         text: 'cum comand',
-        label: 'Deschideți pagina cu întrebarea cum comand'
+        label: 'Deschideți pagina cu întrebarea cum comand',
       }),
       linkFactory({
         href: '/faq#cum-achit',
         text: 'cum achit',
-        label: 'Deschideți pagina cu întrebarea cum achit'
+        label: 'Deschideți pagina cu întrebarea cum achit',
       }),
       linkFactory({
         href: '/faq#livrare',
         text: 'cum are loc livrarea',
-        label: 'Deschideți pagina cu întrebarea despre cum are loc livrarea'
-      })
-    ]
+        label: 'Deschideți pagina cu întrebarea despre cum are loc livrarea',
+      }),
+    ],
   },
   {
     ...contactsLink,
-    links: [{ ...phoneLink }, { ...emailLink }]
-  }
+    links: [{ ...phoneLink }, { ...emailLink }],
+  },
 ];

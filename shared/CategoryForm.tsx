@@ -3,32 +3,49 @@ import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
 import { categorySchema } from '@/utils/validator/schemas/category';
 import { Form, FormAction } from '@/shared/Form';
 import { TextField } from '@/shared/TextField';
-import { Button } from '@/shared/Button';
+import Button from '@/shared/Button';
 import { useEffect } from 'react';
 
-export function CategoryForm({ onCategorySubmit, category }) {
+type CategoryInputs = {
+  name: string;
+};
+
+type InputsErrors = Array<{ message: string; name: 'name' }>;
+
+interface CategoryFormProps {
+  onCategorySubmit: (data: CategoryInputs) => Promise<InputsErrors | null>;
+  category?: {
+    _id: string;
+    name: string;
+  };
+}
+
+export const CategoryForm = ({
+  onCategorySubmit,
+  category,
+}: CategoryFormProps) => {
   const {
     register,
     handleSubmit,
     setError,
     reset,
-    formState: { errors }
-  } = useForm({
+    formState: { errors },
+  } = useForm<CategoryInputs>({
     mode: 'onChange',
-    resolver: joiResolver(categorySchema)
+    resolver: joiResolver(categorySchema),
   });
 
   useEffect(() => {
     reset({
-      name: category?.name ?? ''
+      name: category?.name ?? '',
     });
   }, [category]);
 
-  const onSubmit = async (data) => {
-    const errors = await onCategorySubmit(data);
+  const onSubmit = async (data: CategoryInputs) => {
+    const submitErrors = await onCategorySubmit(data);
 
-    if (errors) {
-      errors.forEach((error) => {
+    if (submitErrors) {
+      submitErrors.forEach((error) => {
         const { message, name } = error;
         setError(name, { message });
       });
@@ -38,9 +55,9 @@ export function CategoryForm({ onCategorySubmit, category }) {
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <TextField
-        id={category && 'name_' + category._id}
+        id={category && `name_${category._id}`}
         name="name"
-        label="redenumire"
+        label="numele categoriei"
         error={errors?.name?.message}
         passRef={register}
         type="text"
@@ -50,4 +67,4 @@ export function CategoryForm({ onCategorySubmit, category }) {
       </FormAction>
     </Form>
   );
-}
+};
