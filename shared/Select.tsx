@@ -57,7 +57,7 @@ interface SelectProps {
   id?: string;
   fullWidth?: boolean;
   disabled?: boolean;
-  passRef:
+  passRef?:
     | ((instance: HTMLSelectElement) => void)
     | React.RefObject<HTMLSelectElement>;
 }
@@ -66,7 +66,7 @@ export const Select = ({
   name,
   label,
   error = false,
-  passRef = null,
+  passRef,
   id = name,
   fullWidth = false,
   disabled = false,
