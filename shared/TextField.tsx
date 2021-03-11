@@ -46,7 +46,7 @@ export const TextField = ({
   name,
   label,
   error = '',
-  passRef = null,
+  passRef,
   type = 'text',
   id = name,
   placeholder,

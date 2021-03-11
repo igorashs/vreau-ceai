@@ -26,7 +26,7 @@ interface TextareaProps {
   error?: boolean;
   id?: string;
   rows?: number;
-  passRef:
+  passRef?:
     | ((instance: HTMLTextAreaElement) => void)
     | React.RefObject<HTMLTextAreaElement>;
 }
@@ -35,7 +35,7 @@ export const Textarea = ({
   name,
   label,
   error = false,
-  passRef = null,
+  passRef,
   id = name,
   rows = 2,
 }: TextareaProps) => {
