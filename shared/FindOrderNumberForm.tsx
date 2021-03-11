@@ -1,26 +1,38 @@
 import { TextField } from '@/shared/TextField';
-import { Button } from '@/shared/Button';
+import Button from '@/shared/Button';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
 import { orderNumberSchema } from '@/utils/validator/schemas/order';
 import { Form, FormAction } from '@/shared/Form';
 
-export function FindOrderNumberForm({ onFindOrderSubmit }) {
+type OrderInputs = {
+  number: string;
+};
+
+type InputsErrors = Array<{ message: string; name: 'number' }>;
+
+interface FindOrderNumberFormProps {
+  onFindOrderSubmit: (data: OrderInputs) => InputsErrors;
+}
+
+export const FindOrderNumberForm = ({
+  onFindOrderSubmit,
+}: FindOrderNumberFormProps) => {
   const {
     register,
     handleSubmit,
     setError,
-    formState: { errors }
+    formState: { errors },
   } = useForm({
     mode: 'onChange',
-    resolver: joiResolver(orderNumberSchema)
+    resolver: joiResolver(orderNumberSchema),
   });
 
-  const onSubmit = async (data) => {
-    const errors = await onFindOrderSubmit(data);
+  const onSubmit = async (data: OrderInputs) => {
+    const submitErrors = await onFindOrderSubmit(data);
 
-    if (errors) {
-      errors.forEach((error) => {
+    if (submitErrors) {
+      submitErrors.forEach((error) => {
         const { message, name } = error;
         setError(name, { message });
       });
@@ -41,4 +53,4 @@ export function FindOrderNumberForm({ onFindOrderSubmit }) {
       </FormAction>
     </Form>
   );
-}
+};
