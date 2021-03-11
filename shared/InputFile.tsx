@@ -7,7 +7,11 @@ const Wrapper = styled.div`
   gap: 7px;
 `;
 
-const StyledInputFile = styled.label`
+interface StyledInputFileProps {
+  fullWidth?: boolean;
+}
+
+const StyledInputFile = styled.label<StyledInputFileProps>`
   align-self: flex-start;
   padding: calc(var(--baseline) / 4) calc(var(--baseline) / 2);
   border-radius: 4px;
@@ -31,11 +35,19 @@ const Input = styled.input`
   display: none;
 `;
 
-const I = styled.i`
-  word-break: break-word;
-`;
+interface InputFileProps {
+  name: string;
+  label: string;
+  error?: string;
+  passRef?:
+    | ((instance: HTMLInputElement | null) => void)
+    | React.RefObject<HTMLInputElement>;
+  id?: string;
+  accept?: string;
+  fullWidth?: boolean;
+}
 
-export function InputFile({
+export const InputFile = ({
   name,
   label,
   error,
@@ -43,11 +55,11 @@ export function InputFile({
   id = name,
   fullWidth,
   accept,
-  children
-}) {
+  children,
+}: React.PropsWithChildren<InputFileProps>) => {
   return (
     <Wrapper>
-      <Label htmlFor={id} error={error}>
+      <Label htmlFor={id} error={!!error}>
         {error || label}
       </Label>
       <StyledInputFile fullWidth={fullWidth}>
@@ -56,4 +68,4 @@ export function InputFile({
       </StyledInputFile>
     </Wrapper>
   );
-}
+};
