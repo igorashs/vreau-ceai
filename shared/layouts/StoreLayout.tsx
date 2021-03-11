@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { withBaseLayout } from './BaseLayout';
 import { ManagementMenu } from '@/shared/ManagementMenu';
 import { CategoryMenu } from '@/shared/CategoryMenu';
 import breakpoints from 'GlobalStyle/breakpoints';
+import { withBaseLayout } from './BaseLayout';
 
 const StoreGrid = styled.div`
   display: grid;
@@ -21,7 +21,14 @@ const StoreContentWrapper = styled.div`
   gap: var(--baseline);
 `;
 
-function StoreLayout({ children, Menu = null }) {
+interface StoreLayoutProps {
+  Menu?: React.FC;
+}
+
+const StoreLayout = ({
+  children,
+  Menu = null,
+}: React.PropsWithChildren<StoreLayoutProps>) => {
   return (
     <>
       <StoreGrid>
@@ -30,10 +37,11 @@ function StoreLayout({ children, Menu = null }) {
       </StoreGrid>
     </>
   );
-}
+};
 
-export const createStoreLayout = (Menu) => (component) =>
-  withBaseLayout(<StoreLayout Menu={Menu}>{component}</StoreLayout>);
+export const createStoreLayout: (Menu: React.FC) => React.FC = (Menu) => (
+  component,
+) => withBaseLayout(<StoreLayout Menu={Menu}>{component}</StoreLayout>);
 
 export const withManagementStoreLayout = createStoreLayout(ManagementMenu);
 

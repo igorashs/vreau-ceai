@@ -1,7 +1,7 @@
 import styled from 'styled-components';
+import breakpoints from 'GlobalStyle/breakpoints';
 import { withLayout } from './Layout';
 import { Container } from '../Container';
-import breakpoints from 'GlobalStyle/breakpoints';
 
 const Wrapper = styled.div`
   padding-top: var(--baseline);
@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   }
 `;
 
-function BaseLayout({ children }) {
+const BaseLayout: React.FC = ({ children }) => {
   return (
     <>
       <Wrapper>
@@ -21,7 +21,8 @@ function BaseLayout({ children }) {
       </Wrapper>
     </>
   );
-}
+};
 
-export const withBaseLayout = (component) =>
-  withLayout(<BaseLayout>{component}</BaseLayout>);
+export const withBaseLayout: (page: React.ReactNode) => React.ReactElement = (
+  page,
+) => withLayout(<BaseLayout>{page}</BaseLayout>);

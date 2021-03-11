@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   min-height: calc(100vh - (var(--baseline) * 2));
 `;
 
-function Layout({ children }) {
+const Layout: React.FC = ({ children }) => {
   return (
     <>
       <Header />
@@ -14,6 +14,8 @@ function Layout({ children }) {
       <Footer />
     </>
   );
-}
+};
 
-export const withLayout = (page) => <Layout>{page}</Layout>;
+export const withLayout: (page: React.ReactNode) => React.ReactElement = (
+  page,
+) => <Layout>{page}</Layout>;
