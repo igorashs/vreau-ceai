@@ -30,7 +30,7 @@ const CheckBox = ({
   name,
   label,
   error = false,
-  passRef = null,
+  passRef,
   id = name,
 }: CheckBoxProps) => {
   return (
