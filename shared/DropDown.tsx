@@ -54,9 +54,9 @@ interface DropDownProps {
 export const DropDown = ({
   title,
   label,
-  onDeleteClick = null,
+  onDeleteClick,
   showInitial = false,
-  customHeading = null,
+  customHeading,
   children,
 }: React.PropsWithChildren<DropDownProps>) => {
   const [hide, setHide] = useState(!showInitial);
