@@ -23,7 +23,7 @@ interface CheckBoxProps {
   passRef?:
     | ((instance: HTMLInputElement) => void)
     | React.RefObject<HTMLInputElement>;
-  id: string;
+  id?: string;
 }
 
 const CheckBox = ({
