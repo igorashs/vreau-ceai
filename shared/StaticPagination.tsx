@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Button } from '@/shared/Button';
+import Button from '@/shared/Button';
 import ArrowSvg from '@/icons/arrow.svg';
-import { useEffect, useState } from 'react';
+import { nanoid } from 'nanoid';
 
 const Wrapper = styled.div`
   display: grid;
@@ -22,35 +22,41 @@ const Wrapper = styled.div`
   }
 `;
 
-export const Pagination = ({ onPageChange, min, max }) => {
-  const [page, setPage] = useState(min);
+interface StaticPaginationProps {
+  min: number;
+  max: number;
+  currPage: number;
+  onPageChange: (page: number) => void;
+}
 
-  useEffect(() => {
-    onPageChange(page);
-  }, [page]);
-
+export const StaticPagination = ({
+  onPageChange,
+  min,
+  max,
+  currPage,
+}: StaticPaginationProps) => {
   return (
     <Wrapper>
       <Button
-        onClick={() => setPage((n) => (n > min ? n - 1 : n))}
+        onClick={() => onPageChange(currPage > min ? currPage - 1 : currPage)}
         icon
-        disabled={page <= min}
+        disabled={currPage <= min}
       >
         <ArrowSvg />
       </Button>
       {[...Array(max + 1 || 0)].map((_, i) => (
         <Button
-          key={i}
-          btnStyle={page === i ? 'dark-text' : 'accent-text'}
-          onClick={() => setPage(i)}
+          key={nanoid()}
+          btnStyle={currPage === i ? 'dark-text' : 'accent-text'}
+          onClick={() => onPageChange(i)}
         >
           {i + 1}
         </Button>
       ))}
       <Button
-        onClick={() => setPage((n) => (n < max ? n + 1 : n))}
+        onClick={() => onPageChange(currPage < max ? currPage + 1 : currPage)}
         icon
-        disabled={page >= max}
+        disabled={currPage >= max}
       >
         <ArrowSvg />
       </Button>
