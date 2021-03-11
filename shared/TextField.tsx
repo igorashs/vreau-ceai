@@ -33,7 +33,7 @@ const StyledInput = styled.input`
 interface TextFieldProps {
   name: string;
   label: string;
-  error?: boolean;
+  error?: string;
   type?: string;
   id?: string;
   placeholder?: string;
@@ -45,7 +45,7 @@ interface TextFieldProps {
 export const TextField = ({
   name,
   label,
-  error = false,
+  error = '',
   passRef = null,
   type = 'text',
   id = name,
@@ -53,7 +53,7 @@ export const TextField = ({
 }: TextFieldProps) => {
   return (
     <Wrapper>
-      <Label htmlFor={id} error={error}>
+      <Label htmlFor={id} error={!!error}>
         {error || label}
       </Label>
       <StyledInput
