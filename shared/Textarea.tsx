@@ -23,7 +23,7 @@ const StyledTextarea = styled.textarea`
 interface TextareaProps {
   name: string;
   label: string;
-  error?: boolean;
+  error?: string;
   id?: string;
   rows?: number;
   passRef?:
@@ -34,14 +34,14 @@ interface TextareaProps {
 export const Textarea = ({
   name,
   label,
-  error = false,
+  error,
   passRef,
   id = name,
   rows = 2,
 }: TextareaProps) => {
   return (
     <Wrapper>
-      <Label htmlFor={id} error={error}>
+      <Label htmlFor={id} error={!!error}>
         {error || label}
       </Label>
 
