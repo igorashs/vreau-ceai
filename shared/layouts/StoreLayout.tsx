@@ -27,7 +27,7 @@ interface StoreLayoutProps {
 
 const StoreLayout = ({
   children,
-  Menu = null,
+  Menu,
 }: React.PropsWithChildren<StoreLayoutProps>) => {
   return (
     <>
