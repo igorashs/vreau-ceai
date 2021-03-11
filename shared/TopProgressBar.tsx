@@ -1,10 +1,10 @@
 import Router from 'next/router';
 import NProgress from 'nprogress';
 
-let timer;
-let state;
-let activeRequests = 0;
-const delay = 250;
+let timer: ReturnType<typeof setTimeout>;
+let state: string;
+let activeRequests: number = 0;
+const delay: number = 250;
 
 const load = () => {
   if (state === 'loading') return;
