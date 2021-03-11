@@ -15,9 +15,9 @@ interface FindCategoryFormProps {
   onFindCategorySubmit: (data: CategoryInputs) => Promise<InputsErrors | null>;
 }
 
-export function FindCategoryForm({
+export const FindCategoryForm = ({
   onFindCategorySubmit,
-}: FindCategoryFormProps) {
+}: FindCategoryFormProps) => {
   const {
     register,
     handleSubmit,
@@ -53,4 +53,4 @@ export function FindCategoryForm({
       </FormAction>
     </Form>
   );
-}
+};
