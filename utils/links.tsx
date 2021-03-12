@@ -10,7 +10,7 @@ interface Link {
   text: string;
   label?: string;
   Icon?: React.FC<React.SVGProps<SVGElement>>;
-  accent?: 'light' | 'dark' | false;
+  accent?: 'light' | 'dark';
   privatePath?: boolean;
   managementPath?: boolean;
   underline?: boolean;
@@ -20,7 +20,7 @@ const linkFactory = ({
   href,
   text,
   label = '',
-  Icon = null,
+  Icon,
   accent = 'light',
   privatePath = false,
   managementPath = false,
@@ -40,21 +40,18 @@ export const categoriesLink = linkFactory({
   href: '/categories',
   text: 'Ceai',
   label: 'Deschideți pagina cu categorii',
-  accent: false,
 });
 
 export const aboutLink = linkFactory({
   href: '/about',
   text: 'Despre',
   label: 'Deschideți pagina cu informații despre noi',
-  accent: false,
 });
 
 export const contactsLink = linkFactory({
   href: '/contacts',
   text: 'Contacte',
   label: 'Deschideți pagina cu contacte',
-  accent: false,
 });
 
 export const cartLink = linkFactory({
@@ -62,7 +59,6 @@ export const cartLink = linkFactory({
   text: 'Coș',
   label: 'Deschideți pagina cu coșul personal',
   Icon: CartSvg,
-  accent: false,
 });
 
 export const loginLink = linkFactory({
@@ -83,7 +79,6 @@ export const myOrdersLink = linkFactory({
   text: 'Comenzile Mele',
   label: 'Deschideți pagina cu comenziile efectuate',
   Icon: PackageSvg,
-  accent: false,
   privatePath: true,
 });
 
@@ -198,7 +193,6 @@ export const footerBlockLinksList = [
       href: '/faq',
       text: 'FAQ',
       label: 'Deschideți pagina cu întrebări frecvente',
-      accent: false,
     }),
     links: [
       linkFactory({
