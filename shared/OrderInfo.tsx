@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -23,7 +24,22 @@ const Summary = styled.div`
   gap: calc(var(--baseline) / 2);
 `;
 
-export const OrderInfo = ({ order }) => {
+type Product = {
+  name: string;
+  price: number;
+  quantity: number;
+};
+
+interface OrderInfoProps {
+  order: {
+    items: Array<{ product: Product }>;
+    total_price: number;
+    orderedAt: Date;
+    completedAt: Date;
+  };
+}
+
+export const OrderInfo = ({ order }: OrderInfoProps) => {
   return (
     <Wrapper>
       <List>
@@ -42,7 +58,7 @@ export const OrderInfo = ({ order }) => {
         <Small>
           {new Date(order.orderedAt).toLocaleDateString()}
           {order.completedAt &&
-            '-' + new Date(order.completedAt).toLocaleDateString()}
+            `-${new Date(order.completedAt).toLocaleDateString()}`}
         </Small>
       </Summary>
     </Wrapper>
