@@ -21,7 +21,7 @@ const linkFactory = ({
   text,
   label = '',
   Icon,
-  accent = 'light',
+  accent,
   privatePath = false,
   managementPath = false,
   underline = false,
@@ -66,6 +66,7 @@ export const loginLink = linkFactory({
   text: 'Conectați-vă',
   label: 'Deschideți pagina pentru conectare',
   Icon: LoginSvg,
+  accent: 'light',
 });
 
 export const signupLink = linkFactory({
@@ -96,6 +97,7 @@ export const phoneLink = linkFactory({
   text: '062222222',
   label: 'apelați nr de tel',
   Icon: PhoneSvg,
+  accent: 'light',
 });
 
 export const emailLink = linkFactory({
@@ -103,6 +105,7 @@ export const emailLink = linkFactory({
   text: 'vreauceai@gmail.com',
   label: 'trimiteți email',
   Icon: EmailSvg,
+  accent: 'light',
 });
 
 export const navLinks = {
@@ -185,6 +188,7 @@ export const footerBlockLinksList = [
         href: '/about',
         text: 'vreau ceai',
         label: 'Deschideți pagina cu informații despre noi',
+        accent: 'light',
       }),
     ],
   },
@@ -199,16 +203,19 @@ export const footerBlockLinksList = [
         href: '/faq#cum-comand',
         text: 'cum comand',
         label: 'Deschideți pagina cu întrebarea cum comand',
+        accent: 'light',
       }),
       linkFactory({
         href: '/faq#cum-achit',
         text: 'cum achit',
         label: 'Deschideți pagina cu întrebarea cum achit',
+        accent: 'light',
       }),
       linkFactory({
         href: '/faq#livrare',
         text: 'cum are loc livrarea',
         label: 'Deschideți pagina cu întrebarea despre cum are loc livrarea',
+        accent: 'light',
       }),
     ],
   },
