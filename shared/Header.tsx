@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Button } from './Button';
-import { Container } from './Container';
 import MenuSvg from '@/icons/menu.svg';
 import breakpoints from 'GlobalStyle/breakpoints';
 import { useState, useEffect } from 'react';
@@ -13,6 +11,8 @@ import AccountSvg from 'assets/icons/account.svg';
 import LogoutSvg from '@/icons/logout.svg';
 import { logout } from 'services/ceaiApi';
 import { useRouter } from 'next/router';
+import { Container } from './Container';
+import Button from './Button';
 
 const Wrapper = styled.div`
   display: flex;
@@ -29,7 +29,11 @@ const StyledHeader = styled.header`
   justify-items: end;
 `;
 
-const Nav = styled.nav`
+interface NavProps {
+  hide?: boolean;
+}
+
+const Nav = styled.nav<NavProps>`
   width: 100%;
   justify-self: start;
   grid-column: span 2;
@@ -92,10 +96,10 @@ const Account = styled(NavListItem)`
   color: var(--text-light);
 `;
 
-export function Header() {
+export const Header = () => {
   const [isHidden, setIsHidden] = useState(true);
   const { isAuth, user } = useSession();
-  const [links, setLinks] = useState();
+  const [links, setLinks] = useState(navLinks.public);
   const router = useRouter();
 
   const onLogoutClick = async () => {
@@ -109,7 +113,7 @@ export function Header() {
   useEffect(() => {
     if (!isAuth) {
       setLinks(navLinks.public);
-    } else if (user?.isManager || user?.isAdmin) {
+    } else if (user.isManager || user.isAdmin) {
       setLinks(navLinks.management);
     } else {
       setLinks(navLinks.private);
@@ -175,4 +179,4 @@ export function Header() {
       </Container>
     </Wrapper>
   );
-}
+};
