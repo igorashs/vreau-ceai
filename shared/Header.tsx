@@ -113,7 +113,7 @@ export const Header = () => {
   useEffect(() => {
     if (!isAuth) {
       setLinks(navLinks.public);
-    } else if (user.isManager || user.isAdmin) {
+    } else if (user?.isManager || user?.isAdmin) {
       setLinks(navLinks.management);
     } else {
       setLinks(navLinks.private);
