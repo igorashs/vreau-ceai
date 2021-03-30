@@ -2,7 +2,7 @@ import { createContext, useContext } from 'react';
 
 type Session = {
   isAuth: boolean;
-  user: {
+  user?: {
     _id: string;
     name: string;
     isAdmin: boolean;
@@ -14,7 +14,7 @@ type Session = {
 const SessionContext = createContext<Session>({} as Session);
 
 interface SessionProviderProps {
-  session: any;
+  session: Session;
 }
 
 const SessionProvider = ({
