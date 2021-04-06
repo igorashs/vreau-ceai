@@ -47,3 +47,5 @@ export type UserSignup = UserEmail & {
 };
 
 export type UserPermissions = { isManager: boolean };
+
+export type LabelMessage = { success: boolean; message: string };
