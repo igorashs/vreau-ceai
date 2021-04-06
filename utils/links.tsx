@@ -87,6 +87,7 @@ export const managementLink = linkFactory({
   href: '/management',
   text: 'Managment',
   label: 'Managment',
+  accent: 'light',
   Icon: BriefcaseSvg,
   privatePath: true,
   managementPath: true,
