@@ -3,6 +3,7 @@ import { TeaRecommendation } from '@/shared/TeaRecommendation';
 import breakpoints from 'GlobalStyle/breakpoints';
 import { useState, useEffect } from 'react';
 import { getRecommendedProducts } from 'services/ceaiApi';
+import { Product } from 'types';
 
 const List = styled.ul`
   display: flex;
@@ -20,14 +21,18 @@ const List = styled.ul`
 `;
 
 export const Recommendation = () => {
-  const [products, setProducts] = useState();
+  const [products, setProducts] = useState<Product[]>();
 
-  useEffect(async () => {
-    const res = await getRecommendedProducts(3);
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getRecommendedProducts(3);
 
-    if (res.success) {
-      setProducts(res.products);
-    }
+      if (res.success) {
+        setProducts(res.products);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (

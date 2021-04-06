@@ -1,8 +1,9 @@
 import styled from 'styled-components';
-import { StyledLink } from './StyledLink';
-import { DropDownList } from './DropDownList';
 import { useState, useEffect } from 'react';
 import { getCategories } from 'services/ceaiApi';
+import { Category } from 'types';
+import { StyledLink } from './StyledLink';
+import { DropDownList } from './DropDownList';
 
 const Wrapper = styled.div`
   h5 {
@@ -11,14 +12,18 @@ const Wrapper = styled.div`
 `;
 
 export function CategoryMenu() {
-  const [dbCategories, setDbCategories] = useState();
+  const [dbCategories, setDbCategories] = useState<Category[]>();
 
-  useEffect(async () => {
-    const res = await getCategories();
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getCategories();
 
-    if (res.success) {
-      setDbCategories(res.categories);
-    }
+      if (res.success) {
+        setDbCategories(res.categories);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
@@ -29,6 +34,7 @@ export function CategoryMenu() {
           {dbCategories.map((c) => (
             <li key={c._id}>
               <StyledLink
+                label={`Categoria ${c.name}`}
                 href={`/categories/${c.name}`}
                 text={c.name}
                 accent="dark"
