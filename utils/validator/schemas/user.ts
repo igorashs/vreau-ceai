@@ -1,9 +1,5 @@
-/* eslint-disable camelcase */
 import Joi from 'joi';
-
-export interface UserEmail {
-  email: string;
-}
+import { UserEmail, UserLogin, UserSignup } from 'types';
 
 const email = Joi.string()
   .email({ tlds: { allow: false } })
@@ -20,12 +16,6 @@ const email = Joi.string()
   });
 
 export const emailSchema = Joi.object<UserEmail>({ email });
-
-export interface UserSignup extends UserEmail {
-  name: string;
-  password: string;
-  repeat_password: string;
-}
 
 export const signupSchema = Joi.object<UserSignup>({
   name: Joi.string().trim().max(60).required().messages({
@@ -56,10 +46,6 @@ export const signupSchema = Joi.object<UserSignup>({
     'any.only': 'parola nu coincide',
   }),
 });
-
-export interface UserLogin extends UserEmail {
-  password: string;
-}
 
 export const loginSchema = Joi.object<UserLogin>({
   email,
