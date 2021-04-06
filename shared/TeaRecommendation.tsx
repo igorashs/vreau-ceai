@@ -1,7 +1,7 @@
-/* eslint-disable camelcase */
 import styled from 'styled-components';
 import Image from 'next/image';
 import { StyledLink } from '@/shared/StyledLink';
+import { Product } from 'types';
 
 const Wrapper = styled.div`
   display: flex;
@@ -45,16 +45,7 @@ const Actions = styled.div`
 `;
 
 interface TeaRecommendationProps {
-  tea: {
-    name: string;
-    src: string;
-    description: string;
-    price: number;
-    quantity: number;
-    category_id: {
-      name: string;
-    };
-  };
+  tea: Product;
 }
 
 export const TeaRecommendation = ({ tea }: TeaRecommendationProps) => {
