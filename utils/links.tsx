@@ -9,7 +9,7 @@ interface Link {
   href: string;
   text: string;
   label?: string;
-  Icon?: React.FC<React.SVGProps<SVGElement>>;
+  Icon?: React.FC<React.SVGProps<SVGElement>> | null;
   accent?: 'light' | 'dark';
   privatePath?: boolean;
   managementPath?: boolean;

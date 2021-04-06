@@ -36,7 +36,7 @@ interface StyledLinkProps {
   label: string;
   text?: string;
   accent?: 'light' | 'dark';
-  Icon?: React.FC<React.SVGProps<SVGElement>>;
+  Icon?: React.FC<React.SVGProps<SVGElement>> | null;
   target?: string;
   rel?: string;
   underline?: boolean;
