@@ -1,4 +1,5 @@
 import { ValidationError } from 'joi';
+import { ErrorDetail } from 'types';
 import * as userValidation from './schemas/user';
 import * as categoryValidation from './schemas/category';
 import * as productValidation from './schemas/product';
@@ -71,14 +72,9 @@ export const throwValidationError = ({ message, key }: ErrorMessage) => {
   throw createValidationError({ message, key });
 };
 
-interface ErrorDetail {
-  message: string;
-  name?: string;
-}
-
 export const getValidationErrorDetails = (
   error: Error,
-): Array<ErrorDetail> | null => {
+): ErrorDetail[] | null => {
   if (error instanceof ValidationError) {
     return error.details.map((d) => ({
       message: d.message,
