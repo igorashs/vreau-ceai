@@ -26,3 +26,24 @@ export type ApiResponse = {
   message: string;
   errors?: ErrorDetail[];
 };
+
+export type User = {
+  _id: string;
+  name: string;
+  email: string;
+  isManager: boolean;
+};
+
+export type UserEmail = {
+  email: string;
+};
+
+export type UserLogin = UserEmail & { password: string };
+
+export type UserSignup = UserEmail & {
+  name: string;
+  password: string;
+  repeat_password: string;
+};
+
+export type UserPermissions = { isManager: boolean };
