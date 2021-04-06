@@ -4,15 +4,16 @@ import breakpoints from 'GlobalStyle/breakpoints';
 import { withBaseLayout } from '@/layouts/BaseLayout';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
-import { signupSchema } from '@/utils/validator/schemas/user';
-import { Button } from '@/shared/Button';
+import { loginSchema } from '@/utils/validator/schemas/user';
+import Button from '@/shared/Button';
 import { StyledLink } from '@/shared/StyledLink';
-import { loginLink } from '@/utils/links';
+import { signupLink } from '@/utils/links';
 import { TextField } from '@/shared/TextField';
 import { useRouter } from 'next/router';
 import { Form, FormAction } from '@/shared/Form';
-import { signup } from 'services/ceaiApi';
-import { withSession } from '@/utils/withSession';
+import { login } from 'services/ceaiApi';
+import { withSessionServerSideProps } from '@/utils/withSession';
+import { UserLogin } from 'types';
 
 const Wrapper = styled.div`
   width: var(--max-input-width);
@@ -40,21 +41,21 @@ const FormWrapper = styled.div`
   width: var(--max-input-width);
 `;
 
-export default function Signup() {
+export default function Login() {
   const {
     register,
     handleSubmit,
     setError,
-    formState: { errors }
+    formState: { errors },
   } = useForm({
     mode: 'onChange',
-    resolver: joiResolver(signupSchema)
+    resolver: joiResolver(loginSchema),
   });
 
   const router = useRouter();
 
-  const onSubmit = async (data) => {
-    const res = await signup(data);
+  const onSubmit = async (data: UserLogin) => {
+    const res = await login(data);
 
     if (res.success) {
       router.reload();
@@ -63,7 +64,7 @@ export default function Signup() {
     if (res?.errors) {
       res.errors.forEach((error) => {
         const { message, name } = error;
-        setError(name, { message });
+        if (name) setError(name, { message });
       });
     }
   };
@@ -71,25 +72,18 @@ export default function Signup() {
   return (
     <>
       <Head>
-        <title>Înregistrare</title>
+        <title>Conectare</title>
         <meta
           name="description"
-          content="Înregistreazăte pentru a putea face comenzi din magazinul vreauceai!"
+          content="Conecteazăte pentru a putea face comenzi din magazinul vreauceai!"
         />
       </Head>
 
       <Wrapper>
-        <h1>Creare Cont</h1>
+        <h1>Conectare</h1>
 
         <FormWrapper>
           <Form onSubmit={handleSubmit(onSubmit)}>
-            <TextField
-              name="name"
-              label="nume"
-              error={errors?.name?.message}
-              passRef={register}
-              type="text"
-            />
             <TextField
               name="email"
               label="e-mail"
@@ -104,20 +98,12 @@ export default function Signup() {
               passRef={register}
               type="password"
             />
-            <TextField
-              name="repeat_password"
-              label="repetați parola"
-              error={errors?.repeat_password?.message}
-              passRef={register}
-              type="password"
-            />
             <FormAction justify="space-between">
               <StyledLink
                 {...{
-                  ...loginLink,
-                  Icon: null,
+                  ...signupLink,
                   accent: 'dark',
-                  underline: true
+                  underline: true,
                 }}
               />
               <Button>înainte</Button>
@@ -129,19 +115,22 @@ export default function Signup() {
   );
 }
 
-export const getServerSideProps = withSession(async ({ req }) => {
-  const { isAuth } = req.session;
+export const getServerSideProps = withSessionServerSideProps(
+  async ({ req }) => {
+    // console.log(req.headers.referer);
+    const { isAuth } = req.session;
 
-  if (isAuth) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false
-      }
-    };
-  }
+    if (isAuth) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
+    }
 
-  return { props: {} };
-});
+    return { props: {} };
+  },
+);
 
-Signup.withLayout = withBaseLayout;
+Login.withLayout = withBaseLayout;
