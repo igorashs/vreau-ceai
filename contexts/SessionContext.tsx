@@ -1,20 +1,10 @@
 import { createContext, useContext } from 'react';
+import { UserSession } from 'types';
 
-type Session = {
-  isAuth: boolean;
-  user?: {
-    _id: string;
-    name: string;
-    isAdmin: boolean;
-    isManager: boolean;
-  };
-  needRefresh: boolean;
-};
-
-const SessionContext = createContext<Session>({} as Session);
+const SessionContext = createContext<UserSession>({} as UserSession);
 
 interface SessionProviderProps {
-  session: Session;
+  session: UserSession;
 }
 
 const SessionProvider = ({

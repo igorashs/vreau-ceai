@@ -2,6 +2,7 @@ import * as session from 'lib/session';
 import dbConnect from '@/utils/dbConnect';
 import UserModel, { User } from 'models/User';
 import SessionModel, { Session } from '@/models/Session';
+import { UserAuth } from 'types';
 
 interface VerifySessionProps {
   cookies: {
@@ -18,13 +19,6 @@ interface RefreshClaims {
   isAdmin: boolean;
   isManager: boolean;
 }
-
-type UserAuth = {
-  _id: string;
-  name: string;
-  isAdmin: boolean;
-  isManager: boolean;
-};
 
 export interface SessionAuth {
   isAuth: boolean;

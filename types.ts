@@ -49,3 +49,16 @@ export type UserSignup = UserEmail & {
 export type UserPermissions = { isManager: boolean };
 
 export type LabelMessage = { success: boolean; message: string };
+
+export type UserAuth = {
+  _id: string;
+  name: string;
+  isAdmin: boolean;
+  isManager: boolean;
+};
+
+export type UserSession = {
+  isAuth: boolean;
+  user: UserAuth | null;
+  needRefresh: boolean;
+};
