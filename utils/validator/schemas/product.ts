@@ -1,9 +1,5 @@
-/* eslint-disable camelcase */
 import Joi from 'joi';
-
-export interface ProductName {
-  name: string;
-}
+import { ProductFields, ProductName } from 'types';
 
 const name = Joi.string().trim().max(60).required().messages({
   'string.base': 'numele trebuie sa fie de tip text',
@@ -14,17 +10,7 @@ const name = Joi.string().trim().max(60).required().messages({
 
 export const nameSchema = Joi.object<ProductName>({ name });
 
-export interface Product extends ProductName {
-  src?: string;
-  price: number;
-  quantity: number;
-  total_quantity: number;
-  description: string;
-  recommend: boolean;
-  category_id: string;
-}
-
-export const productSchema = Joi.object<Product>({
+export const productSchema = Joi.object<ProductFields>({
   name,
 
   src: Joi.any().default('placeholder.png'),

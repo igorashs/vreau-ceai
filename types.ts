@@ -1,3 +1,6 @@
+import FormidableLib from 'formidable';
+import { ValidationError } from 'joi';
+
 export type Product = {
   _id: string;
   name: string;
@@ -62,3 +65,23 @@ export type UserSession = {
   user: UserAuth | null;
   needRefresh: boolean;
 };
+
+export type ProductName = {
+  name: string;
+};
+
+export type ProductFields = ProductName & {
+  src?: string;
+  price: number;
+  quantity: number;
+  total_quantity: number;
+  description: string;
+  recommend: boolean;
+  category_id: string;
+};
+
+type dataType = 'data' | 'error' | 'field' | 'fileBegin' | 'file' | 'progress';
+
+export declare class Formidable extends FormidableLib {
+  emit(name: dataType, data: FormidableLib.EmitData | ValidationError): void;
+}

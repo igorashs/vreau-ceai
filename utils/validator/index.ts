@@ -1,9 +1,20 @@
 import { ValidationError } from 'joi';
-import { ErrorDetail, UserEmail, UserLogin, UserSignup } from 'types';
+import {
+  ErrorDetail,
+  ProductFields,
+  ProductName,
+  UserEmail,
+  UserLogin,
+  UserSignup,
+} from 'types';
 import * as userValidation from './schemas/user';
 import * as categoryValidation from './schemas/category';
 import * as productValidation from './schemas/product';
 import * as orderValidation from './schemas/order';
+
+interface Fields {
+  [key: string]: string | string[];
+}
 
 export const validateUserSignup = (user: UserSignup): Promise<UserSignup> =>
   userValidation.signupSchema.validateAsync(user);
@@ -17,8 +28,8 @@ export const validateCategory = (
   categoryValidation.categorySchema.validateAsync(category);
 
 export const validateProduct = (
-  product: productValidation.Product,
-): Promise<productValidation.Product> =>
+  product: ProductFields | Fields,
+): Promise<ProductFields> =>
   productValidation.productSchema.validateAsync(product);
 
 export const validateOrderSubmit = (
@@ -84,7 +95,5 @@ export const getValidationErrorDetails = (
 export const validateEmail = (email: UserEmail): Promise<UserEmail> =>
   userValidation.emailSchema.validateAsync(email);
 
-export const validateProductName = (
-  name: productValidation.ProductName,
-): Promise<productValidation.ProductName> =>
+export const validateProductName = (name: ProductName): Promise<ProductName> =>
   productValidation.nameSchema.validateAsync(name);
