@@ -5,14 +5,10 @@ import {
   useReducer,
   useRef,
 } from 'react';
-
-type Product = {
-  name: string;
-  price: number;
-};
+import { Product } from 'types';
 
 interface Cart {
-  items: Array<{ product: Product; count: number }>;
+  items: { product: Product; count: number }[];
   itemsCount: number;
   totalPrice: number;
   updated: boolean;
@@ -55,7 +51,7 @@ const cartReducer = (state: Cart, action: ACTION_TYPE): Cart => {
   switch (action.type) {
     case 'add-item': {
       const { product, count } = action.payload;
-      const item = state.items.find((i) => i.product.name === product.name);
+      const item = state.items.find((i) => i.product._id === product._id);
 
       // check if item exists in cart
       if (item) {
@@ -81,7 +77,7 @@ const cartReducer = (state: Cart, action: ACTION_TYPE): Cart => {
 
     case 'update-item': {
       const { product, count } = action.payload;
-      const item = state.items.find((i) => i.product.name === product.name);
+      const item = state.items.find((i) => i.product._id === product._id);
 
       return item && +count > 0
         ? {
@@ -100,7 +96,7 @@ const cartReducer = (state: Cart, action: ACTION_TYPE): Cart => {
 
     case 'remove-item': {
       const { product } = action.payload;
-      const item = state.items.find((i) => i.product.name === product.name);
+      const item = state.items.find((i) => i.product._id === product._id);
 
       return item
         ? {
@@ -173,7 +169,7 @@ const useCartDispatch = () => {
   return context;
 };
 
-const useCart = () => {
+const useCart = (): [cart: Cart, cartDispatch: React.Dispatch<ACTION_TYPE>] => {
   return [useCartState(), useCartDispatch()];
 };
 
