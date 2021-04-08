@@ -55,7 +55,7 @@ export default function About() {
             ...categoriesLink,
             text: 'vezi catalogul',
             accent: 'dark',
-            underline: true
+            underline: true,
           }}
         />
       </Wrapper>

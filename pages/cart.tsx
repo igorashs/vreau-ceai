@@ -2,7 +2,7 @@ import { withBaseLayout } from '@/layouts/BaseLayout';
 import Head from 'next/head';
 import { useCart } from 'contexts/CartContext';
 import { DropDown } from '@/shared/DropDown';
-import { Button } from '@/shared/Button';
+import Button from '@/shared/Button';
 import styled from 'styled-components';
 import { Counter } from '@/shared/Counter';
 import { useSession } from 'contexts/SessionContext';
@@ -71,15 +71,14 @@ export default function Cart() {
               {cart.items.map(({ product, count }) => (
                 <li key={product.name}>
                   <DropDown
-                    error
                     title={product.name}
                     showInitial
                     onDeleteClick={() =>
                       cartDispatch({
                         type: 'remove-item',
                         payload: {
-                          product
-                        }
+                          product,
+                        },
                       })
                     }
                   >
@@ -90,13 +89,13 @@ export default function Cart() {
                           count={count}
                           min={1}
                           max={10000}
-                          onChange={(count) =>
+                          onChange={(itemCount) =>
                             cartDispatch({
                               type: 'update-item',
                               payload: {
                                 product,
-                                count
-                              }
+                                count: +itemCount,
+                              },
                             })
                           }
                         />
