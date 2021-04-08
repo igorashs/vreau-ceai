@@ -102,7 +102,7 @@ export default function Home() {
                   {...{
                     ...categoriesLink,
                     text: 'vezi catalogul',
-                    button: true
+                    button: true,
                   }}
                 />
               </Hgroup>

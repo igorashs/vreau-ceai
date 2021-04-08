@@ -1,30 +1,42 @@
-import { GlobalStyle } from 'GlobalStyle';
 import { withLayout as withPageLayout } from '@/layouts/Layout';
 import Head from 'next/head';
-import App from 'next/app';
+import App, { AppContext, AppProps } from 'next/app';
 import { SessionProvider } from 'contexts/SessionContext';
 import { verifyToken } from 'lib/session';
 import { refreshUser } from 'services/ceaiApi';
 import { useEffect, useState } from 'react';
 import { CartProvider } from 'contexts/CartContext';
 import dynamic from 'next/dynamic';
+import GlobalStyle from 'GlobalStyle';
+import { UserAuth, UserSession } from 'types';
 
 const TopProgressBar = dynamic(() => import('@/shared/TopProgressBar'), {
-  ssr: false
+  ssr: false,
 });
 
-function MyApp({ Component, pageProps, initialSession }) {
+type MyAppProps = AppProps & {
+  initialSession: UserSession;
+  Component: {
+    withLayout?: (page: React.ReactNode) => React.ReactElement;
+  };
+};
+
+function MyApp({ Component, pageProps, initialSession }: MyAppProps) {
   const withLayout = Component.withLayout || withPageLayout;
   const [session, setSession] = useState(initialSession);
 
-  useEffect(async () => {
-    if (initialSession.needRefresh) {
+  useEffect(() => {
+    const refreshSession = async () => {
       const res = await refreshUser();
 
       if (res.success) {
         // update session
         setSession(res.session);
       }
+    };
+
+    if (initialSession.needRefresh) {
+      refreshSession();
     }
   }, []);
 
@@ -48,8 +60,20 @@ function MyApp({ Component, pageProps, initialSession }) {
   );
 }
 
-MyApp.getInitialProps = async (appContext) => {
-  let session = { isAuth: false, user: null, needRefresh: false };
+type InitialProps = AppContext & {
+  ctx: {
+    req: {
+      cookies?: { [key: string]: any };
+    };
+  };
+};
+
+MyApp.getInitialProps = async (appContext: InitialProps) => {
+  const session: UserSession = {
+    isAuth: false,
+    user: null,
+    needRefresh: false,
+  };
 
   if (appContext.ctx.req && appContext.ctx.req.cookies) {
     const { access, refresh } = appContext.ctx.req.cookies;
@@ -58,7 +82,7 @@ MyApp.getInitialProps = async (appContext) => {
       const refreshClaims = verifyToken(refresh);
 
       if (refreshClaims) {
-        const accessClaims = verifyToken(access);
+        const accessClaims = verifyToken<UserAuth>(access);
         session.isAuth = true;
 
         if (accessClaims) {
@@ -74,7 +98,6 @@ MyApp.getInitialProps = async (appContext) => {
 
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
-
   return { ...appProps, initialSession: session };
 };
 
