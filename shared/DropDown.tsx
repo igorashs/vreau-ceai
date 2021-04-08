@@ -43,7 +43,7 @@ const Body = styled.div<HideStyledProps>`
 
 interface DropDownProps {
   title: string;
-  label: string;
+  label?: string;
   showInitial?: boolean;
   onDeleteClick?: (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
