@@ -1,9 +1,15 @@
 import dbConnect from '@/utils/dbConnect';
-import Category from '@/models/Category';
-import { withSession } from '@/utils/withSession';
+import CategoryModel, { Category } from '@/models/Category';
+import { withSessionApi } from '@/utils/withSession';
 import * as validator from '@/utils/validator';
+import { ApiResponse } from 'types';
 
-export default withSession(async function handler(req, res) {
+export default withSessionApi<
+  ApiResponse & {
+    category?: Category;
+    categories?: Category[];
+  }
+>(async function handler(req, res) {
   await dbConnect();
 
   switch (req.method) {
@@ -13,20 +19,32 @@ export default withSession(async function handler(req, res) {
 
         if (search) {
           // query one item
-          const { name } = await validator.validateCategory({ name: search });
-          const dbCategory = await Category.findOne({ name });
+          const { name } = await validator.validateCategory({
+            name: typeof search === 'string' ? search : search[0],
+          });
+          const dbCategory: Category = await CategoryModel.findOne({
+            name,
+          });
 
           if (dbCategory) {
-            res.status(200).json({ success: true, category: dbCategory });
+            res.status(200).json({
+              success: true,
+              message: 'Success',
+              category: dbCategory,
+            });
           } else {
             res.status(404).json({ success: false, message: 'Not Found' });
           }
         } else {
           // query all items
-          const dbCategories = await Category.find({});
+          const dbCategories: Array<Category> = await CategoryModel.find({});
 
           if (dbCategories.length) {
-            res.status(200).json({ success: true, categories: dbCategories });
+            res.status(200).json({
+              success: true,
+              message: 'Success',
+              categories: dbCategories,
+            });
           } else {
             res.status(404).json({ success: false, message: 'Not Found' });
           }
@@ -38,7 +56,7 @@ export default withSession(async function handler(req, res) {
           res.status(400).json({
             success: false,
             message: 'Validation Errors',
-            errors: details
+            errors: details,
           });
         } else {
           res.status(400).json({ success: false, message: 'Bad Request' });
@@ -48,21 +66,23 @@ export default withSession(async function handler(req, res) {
 
     case 'POST':
       try {
-        if (req.session.isAuth && req.session.user.isAdmin) {
+        if (req.session.isAuth && req.session.user?.isAdmin) {
           const { name } = req.body;
           const values = await validator.validateCategory({ name });
-          const dbCategory = await Category.findOne({ name: values.name });
+          const dbCategory: Category = await CategoryModel.findOne({
+            name: values.name,
+          });
 
           if (dbCategory)
             validator.throwValidationError({
               message: 'Categoria cu acest nume deja există',
-              key: 'name'
+              key: 'name',
             });
 
-          const category = new Category({ name: values.name });
+          const category: Category = new CategoryModel({ name: values.name });
           await category.save();
 
-          res.status(201).json({ success: true });
+          res.status(201).json({ success: true, message: 'Success' });
         } else {
           res.status(401).json({ success: false, message: 'Unauthorized' });
         }
@@ -73,7 +93,7 @@ export default withSession(async function handler(req, res) {
           res.status(400).json({
             success: false,
             message: 'Validation Errors',
-            errors: details
+            errors: details,
           });
         } else {
           res.status(400).json({ success: false, message: 'Bad Request' });
