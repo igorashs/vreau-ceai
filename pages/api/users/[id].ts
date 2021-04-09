@@ -1,5 +1,6 @@
 import UserModel, { User } from '@/models/User';
 import dbConnect from '@/utils/dbConnect';
+import { getQueryElements } from '@/utils/getQueryElements';
 import * as validator from '@/utils/validator';
 import { withSessionApi } from '@/utils/withSession';
 import { ApiResponse, UserPermissions } from 'types';
@@ -12,7 +13,7 @@ export default withSessionApi<ApiResponse & { user?: User }>(
       case 'PUT':
         try {
           if (req.session.isAuth && req.session.user?.isAdmin) {
-            const { id } = req.query;
+            const { id } = getQueryElements(req.query);
             const { isManager }: UserPermissions = req.body;
 
             if (typeof isManager !== 'boolean')
@@ -22,7 +23,7 @@ export default withSessionApi<ApiResponse & { user?: User }>(
               });
 
             const dbUser: User = await UserModel.findById(
-              typeof id === 'string' ? id : id[0],
+              id,
               'isManager _id name email',
             );
 

@@ -1,5 +1,6 @@
 import UserModel, { User } from '@/models/User';
 import dbConnect from '@/utils/dbConnect';
+import { getQueryElements } from '@/utils/getQueryElements';
 import * as validator from '@/utils/validator';
 import { withSessionApi } from '@/utils/withSession';
 import { ApiResponse } from 'types';
@@ -12,9 +13,9 @@ export default withSessionApi<ApiResponse & { user?: User }>(
       case 'GET':
         try {
           if (req.session.isAuth && req.session.user?.isAdmin) {
-            const { search } = req.query;
+            const { search } = getQueryElements(req.query);
             const { email } = await validator.validateEmail({
-              email: typeof search === 'string' ? search : search[0],
+              email: search,
             });
 
             const dbUser: User = await UserModel.findOne(
