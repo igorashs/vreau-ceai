@@ -2,7 +2,8 @@ import dbConnect from '@/utils/dbConnect';
 import CategoryModel, { Category } from '@/models/Category';
 import { withSessionApi } from '@/utils/withSession';
 import * as validator from '@/utils/validator';
-import { ApiResponse } from 'types';
+import { ApiResponse, CategoryName } from 'types';
+import { getQueryElements } from '@/utils/getQueryElements';
 
 export default withSessionApi<ApiResponse & { category?: Category }>(
   async function handler(req, res) {
@@ -14,8 +15,8 @@ export default withSessionApi<ApiResponse & { category?: Category }>(
           const { isAuth, user } = req.session;
 
           if (isAuth && (user?.isAdmin || user?.isManager)) {
-            const { id } = req.query;
-            const { name } = req.body as { name: string };
+            const { id } = getQueryElements(req.query);
+            const { name }: CategoryName = req.body;
 
             const values = await validator.validateCategory({ name });
             const dbCategory: Category = await CategoryModel.findOne(
@@ -69,7 +70,7 @@ export default withSessionApi<ApiResponse & { category?: Category }>(
           const { isAuth, user } = req.session;
 
           if (isAuth && (user?.isAdmin || user?.isManager)) {
-            const { id } = req.query;
+            const { id } = getQueryElements(req.query);
 
             const dbCategory: Category = await CategoryModel.findByIdAndDelete(
               id,

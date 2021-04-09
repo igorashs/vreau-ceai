@@ -2,7 +2,8 @@ import dbConnect from '@/utils/dbConnect';
 import CategoryModel, { Category } from '@/models/Category';
 import { withSessionApi } from '@/utils/withSession';
 import * as validator from '@/utils/validator';
-import { ApiResponse } from 'types';
+import { ApiResponse, CategoryName } from 'types';
+import { getQueryElements } from '@/utils/getQueryElements';
 
 export default withSessionApi<
   ApiResponse & {
@@ -15,12 +16,12 @@ export default withSessionApi<
   switch (req.method) {
     case 'GET':
       try {
-        const { search } = req.query;
+        const { search } = getQueryElements(req.query);
 
         if (search) {
           // query one item
           const { name } = await validator.validateCategory({
-            name: typeof search === 'string' ? search : search[0],
+            name: search,
           });
           const dbCategory: Category = await CategoryModel.findOne({
             name,
@@ -67,7 +68,7 @@ export default withSessionApi<
     case 'POST':
       try {
         if (req.session.isAuth && req.session.user?.isAdmin) {
-          const { name } = req.body;
+          const { name }: CategoryName = req.body;
           const values = await validator.validateCategory({ name });
           const dbCategory: Category = await CategoryModel.findOne({
             name: values.name,
