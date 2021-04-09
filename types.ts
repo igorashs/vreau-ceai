@@ -112,3 +112,21 @@ export type OrderFields = {
   info: OrderSubmit;
   items: OrderItem[];
 };
+
+export type Order = {
+  _id: string;
+  user: string;
+  number: string;
+  total_price: number;
+  status: 'processing' | 'inDelivery' | 'canceled' | 'completed';
+  items: {
+    count: number;
+    product: { name: string; price: number; quantity: number };
+  }[];
+  address: string;
+  tel: string;
+  orderedAt: Date;
+  completedAt: Date;
+};
+
+export type UserOrders = { orders: Order[]; count: number };
