@@ -63,7 +63,7 @@ export default withSessionApi<
               .lean();
 
             if (dbCategory) {
-              const count = await ProductModel.countDocuments({
+              const count: number = await ProductModel.countDocuments({
                 ...matchFilter,
                 category_id: dbCategory._id,
               });
@@ -107,7 +107,9 @@ export default withSessionApi<
             : await ProductModel.find(matchFilter, null, options).lean();
 
           if (dbProducts.length) {
-            const count = await ProductModel.countDocuments(matchFilter);
+            const count: number = await ProductModel.countDocuments(
+              matchFilter,
+            );
 
             res.status(200).json({
               success: true,
