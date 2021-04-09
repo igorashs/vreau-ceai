@@ -107,3 +107,8 @@ export type OrderStatus = {
 export type OrderNumber = {
   number: string;
 };
+
+export type OrderFields = {
+  info: OrderSubmit;
+  items: OrderItem[];
+};
