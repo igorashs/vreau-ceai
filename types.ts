@@ -85,3 +85,7 @@ type dataType = 'data' | 'error' | 'field' | 'fileBegin' | 'file' | 'progress';
 export declare class Formidable extends FormidableLib {
   emit(name: dataType, data: FormidableLib.EmitData | ValidationError): void;
 }
+
+export type CategoryName = {
+  name: string;
+};

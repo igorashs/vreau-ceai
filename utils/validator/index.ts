@@ -1,5 +1,6 @@
 import { ValidationError } from 'joi';
 import {
+  CategoryName,
   ErrorDetail,
   ProductFields,
   ProductName,
@@ -23,8 +24,8 @@ export const validateUserLogin = (user: UserLogin): Promise<UserLogin> =>
   userValidation.loginSchema.validateAsync(user);
 
 export const validateCategory = (
-  category: categoryValidation.Category,
-): Promise<categoryValidation.Category> =>
+  category: CategoryName,
+): Promise<CategoryName> =>
   categoryValidation.categorySchema.validateAsync(category);
 
 export const validateProduct = (
