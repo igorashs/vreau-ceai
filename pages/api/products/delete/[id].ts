@@ -1,10 +1,12 @@
 import dbConnect from '@/utils/dbConnect';
-import Product from 'models/Product';
-import Category from 'models/Category';
-import { withSession } from '@/utils/withSession';
+import ProductModel, { Product } from 'models/Product';
+import CategoryModel from 'models/Category';
+import { withSessionApi } from '@/utils/withSession';
 import { promises as fs } from 'fs';
+import { getQueryElements } from '@/utils/getQueryElements';
+import { ApiResponse } from 'types';
 
-export default withSession(async function handler(req, res) {
+export default withSessionApi<ApiResponse>(async function handler(req, res) {
   await dbConnect();
 
   switch (req.method) {
@@ -12,27 +14,27 @@ export default withSession(async function handler(req, res) {
       try {
         const { isAuth, user } = req.session;
 
-        if (isAuth && (user.isAdmin || user.isManager)) {
-          const { id } = req.query;
+        if (isAuth && (user?.isAdmin || user?.isManager)) {
+          const { id } = getQueryElements(req.query);
 
-          const dbProduct = await Product.findByIdAndDelete(id, {
-            projection: 'src category_id'
+          const dbProduct: Product = await ProductModel.findByIdAndDelete(id, {
+            projection: 'src category_id',
           });
 
           if (dbProduct) {
             // remove from prev category product list
-            await Category.findByIdAndUpdate(
+            await CategoryModel.findByIdAndUpdate(
               dbProduct.category_id,
               { $pull: { products: dbProduct._id } },
-              { projection: 'name' }
+              { projection: 'name' },
             );
 
             if (dbProduct.src !== 'placeholder.png')
               await fs.unlink(
-                `${process.cwd()}/public/uploads/${dbProduct.src}`
+                `${process.cwd()}/public/uploads/${dbProduct.src}`,
               );
 
-            res.status(200).json({ success: true, message: 'Product deleted' });
+            res.status(200).json({ success: true, message: 'Success' });
           } else {
             res.status(404).json({ success: false, message: 'Not Found' });
           }
