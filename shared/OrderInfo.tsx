@@ -1,5 +1,5 @@
-/* eslint-disable camelcase */
 import styled from 'styled-components';
+import { Order } from 'types';
 
 const Wrapper = styled.div`
   display: grid;
@@ -24,19 +24,8 @@ const Summary = styled.div`
   gap: calc(var(--baseline) / 2);
 `;
 
-type Product = {
-  name: string;
-  price: number;
-  quantity: number;
-};
-
 interface OrderInfoProps {
-  order: {
-    items: Array<{ product: Product }>;
-    total_price: number;
-    orderedAt: Date;
-    completedAt: Date;
-  };
+  order: Order;
 }
 
 export const OrderInfo = ({ order }: OrderInfoProps) => {

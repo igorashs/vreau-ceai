@@ -5,19 +5,13 @@ import { Form, FormAction } from '@/shared/Form';
 import { Select } from '@/shared/Select';
 import Button from '@/shared/Button';
 import { useEffect } from 'react';
+import { OrderStatus } from 'types';
 
-type Status = 'processing' | 'inDelivery' | 'canceled' | 'completed';
-
-type OrderInputs = {
-  status: Status;
-};
-
-type InputsErrors = Array<{ message: string; name: 'status' }>;
+type InputsErrors = { message: string; name: 'status' }[];
 
 interface OrderFormProps {
-  onOrderSubmit: (data: OrderInputs) => InputsErrors;
-  order?: {
-    status: Status;
+  onOrderSubmit: (data: OrderStatus) => InputsErrors;
+  order?: OrderStatus & {
     _id: string;
   };
 }
@@ -29,7 +23,7 @@ export const OrderForm = ({ onOrderSubmit, order }: OrderFormProps) => {
     setError,
     reset,
     formState: { errors },
-  } = useForm<OrderInputs>({
+  } = useForm<OrderStatus>({
     mode: 'onChange',
     resolver: joiResolver(orderStatusSchema),
   });
@@ -40,7 +34,7 @@ export const OrderForm = ({ onOrderSubmit, order }: OrderFormProps) => {
     });
   }, [order]);
 
-  const onSubmit = async (data: OrderInputs) => {
+  const onSubmit = async (data: OrderStatus) => {
     const submitErrors = await onOrderSubmit(data);
 
     if (submitErrors) {

@@ -4,15 +4,12 @@ import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
 import { orderNumberSchema } from '@/utils/validator/schemas/order';
 import { Form, FormAction } from '@/shared/Form';
+import { OrderNumber } from 'types';
 
-type OrderInputs = {
-  number: string;
-};
-
-type InputsErrors = Array<{ message: string; name: 'number' }>;
+type InputsErrors = { message: string; name: 'number' }[];
 
 interface FindOrderNumberFormProps {
-  onFindOrderSubmit: (data: OrderInputs) => InputsErrors;
+  onFindOrderSubmit: (data: OrderNumber) => InputsErrors;
 }
 
 export const FindOrderNumberForm = ({
@@ -28,7 +25,7 @@ export const FindOrderNumberForm = ({
     resolver: joiResolver(orderNumberSchema),
   });
 
-  const onSubmit = async (data: OrderInputs) => {
+  const onSubmit = async (data: OrderNumber) => {
     const submitErrors = await onFindOrderSubmit(data);
 
     if (submitErrors) {
