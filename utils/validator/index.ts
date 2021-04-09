@@ -2,6 +2,10 @@ import { ValidationError } from 'joi';
 import {
   CategoryName,
   ErrorDetail,
+  OrderItem,
+  OrderNumber,
+  OrderStatus,
+  OrderSubmit,
   ProductFields,
   ProductName,
   UserEmail,
@@ -33,24 +37,22 @@ export const validateProduct = (
 ): Promise<ProductFields> =>
   productValidation.productSchema.validateAsync(product);
 
-export const validateOrderSubmit = (
-  order: orderValidation.OrderSubmit,
-): Promise<orderValidation.OrderSubmit> =>
+export const validateOrderSubmit = (order: OrderSubmit): Promise<OrderSubmit> =>
   orderValidation.orderSubmitSchema.validateAsync(order);
 
 export const validateOrderItems = (
-  items: Array<orderValidation.OrderItem>,
-): Promise<Array<orderValidation.OrderItem>> =>
+  items: Array<OrderItem>,
+): Promise<Array<OrderItem>> =>
   orderValidation.orderItemsSchema.validateAsync(items);
 
 export const validateOrderNumber = (
-  number: orderValidation.OrderNumber,
-): Promise<orderValidation.OrderNumber> =>
+  number: OrderNumber,
+): Promise<OrderNumber> =>
   orderValidation.orderNumberSchema.validateAsync(number);
 
 export const validateOrderStatus = (
-  status: orderValidation.OrderStatus,
-): Promise<orderValidation.OrderStatus> =>
+  status: OrderStatus,
+): Promise<OrderStatus> =>
   orderValidation.orderStatusSchema.validateAsync(status);
 
 interface ErrorMessage {

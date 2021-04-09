@@ -1,10 +1,5 @@
-/* eslint-disable camelcase */
 import Joi from 'joi';
-
-export interface OrderSubmit {
-  tel: string;
-  address: string;
-}
+import { OrderItem, OrderNumber, OrderStatus, OrderSubmit } from 'types';
 
 export const orderSubmitSchema = Joi.object<OrderSubmit>({
   tel: Joi.string()
@@ -22,21 +17,12 @@ export const orderSubmitSchema = Joi.object<OrderSubmit>({
   }),
 });
 
-export interface OrderItem {
-  product_id: string;
-  count: number;
-}
-
 export const orderItemsSchema = Joi.array().items(
   Joi.object<OrderItem>({
     product_id: Joi.string().required(),
     count: Joi.number().min(1).required(),
   }),
 );
-
-export interface OrderNumber {
-  number: string;
-}
 
 export const orderNumberSchema = Joi.object<OrderNumber>({
   number: Joi.string().length(16).required().messages({
@@ -45,10 +31,6 @@ export const orderNumberSchema = Joi.object<OrderNumber>({
     'any.required': 'numărul este obligatoriu',
   }),
 });
-
-export interface OrderStatus {
-  status: 'processing' | 'inDelivery' | 'canceled' | 'completed';
-}
 
 export const orderStatusSchema = Joi.object<OrderStatus>({
   status: Joi.string()

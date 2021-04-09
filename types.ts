@@ -89,3 +89,21 @@ export declare class Formidable extends FormidableLib {
 export type CategoryName = {
   name: string;
 };
+
+export type OrderSubmit = {
+  tel: string;
+  address: string;
+};
+
+export type OrderItem = {
+  product_id: string;
+  count: number;
+};
+
+export type OrderStatus = {
+  status: 'processing' | 'inDelivery' | 'canceled' | 'completed';
+};
+
+export type OrderNumber = {
+  number: string;
+};
