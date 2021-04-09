@@ -1,13 +1,14 @@
 import dbConnect from '@/utils/dbConnect';
-import Product from 'models/Product';
-import Order from 'models/Order';
-import { withSession } from '@/utils/withSession';
+import ProductModel, { Product } from 'models/Product';
+import OrderModel, { Order } from 'models/Order';
+import { withSessionApi } from '@/utils/withSession';
 import * as validator from '@/utils/validator';
 import { customAlphabet } from 'nanoid';
+import { ApiResponse, OrderItem, OrderSubmit } from 'types';
 
 const nanoid = customAlphabet('ABCDEFGHIJKLMNQPRST1234567890', 16);
 
-export default withSession(async function handler(req, res) {
+export default withSessionApi<ApiResponse>(async function handler(req, res) {
   await dbConnect();
 
   switch (req.method) {
@@ -15,14 +16,22 @@ export default withSession(async function handler(req, res) {
       try {
         const { isAuth, user } = req.session;
 
-        if (isAuth) {
-          const info = await validator.validateOrderSubmit(req.body.info);
-          const items = await validator.validateOrderItems(req.body.items);
+        if (isAuth && user) {
+          const {
+            info: bodyInfo,
+            items: bodyItems,
+          }: { info: OrderSubmit; items: OrderItem[] } = req.body;
 
-          const dbProducts = await Promise.all(
+          const info = await validator.validateOrderSubmit(bodyInfo);
+          const items = await validator.validateOrderItems(bodyItems);
+
+          const dbProducts: (Product | null)[] = await Promise.all(
             items.map((item) =>
-              Product.findById(item.product_id, 'name price quantity').lean()
-            )
+              ProductModel.findById(
+                item.product_id,
+                'name price quantity',
+              ).lean(),
+            ),
           );
 
           if (!dbProducts.length || dbProducts.includes(null))
@@ -30,54 +39,53 @@ export default withSession(async function handler(req, res) {
 
           const orderItems = items.map(({ product_id, count }) => {
             const dbProduct = dbProducts.find(
-              (p) => p._id.toString() === product_id
+              (p) => p?._id.toString() === product_id,
             );
+
+            if (!dbProduct) throw new Error('corrupt cart');
 
             return {
               count,
               product: {
                 price: dbProduct.price * count,
                 quantity: dbProduct.quantity * count,
-                name: dbProduct.name
-              }
+                name: dbProduct.name,
+              },
             };
           });
 
           const totalPrice = orderItems.reduce(
             (total, { product: { price } }) => total + price,
-            0
+            0,
           );
 
           const number = await nanoid();
 
-          const order = new Order({
+          const order: Order = new OrderModel({
             user: user._id,
             total_price: totalPrice,
             items: orderItems,
             ...info,
-            number
+            number,
           });
 
           await order.save();
 
           res.status(201).json({
             success: true,
-            message: `comanda cu nr. ${number} a fost trimisă, un operator vă va contacta încurând.`
+            message: `comanda cu nr. ${number} a fost trimisă, un operator vă va contacta încurând.`,
           });
         } else {
           res.status(401).json({ success: false, message: 'Unauthorized' });
         }
       } catch (error) {
-        console.log(error);
         const details = validator.getValidationErrorDetails(error);
-
-        console.log(details);
 
         if (details) {
           res.status(400).json({
             success: false,
             message: 'Validation Errors',
-            errors: details
+            errors: details,
           });
         } else {
           res.status(400).json({ success: false, message: 'Bad Request' });

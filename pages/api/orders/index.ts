@@ -1,10 +1,11 @@
 import dbConnect from '@/utils/dbConnect';
-import Order from 'models/Order';
-import User from 'models/User';
-import { withSession } from '@/utils/withSession';
+import OrderModel, { Order } from 'models/Order';
+import UserModel, { User } from 'models/User';
+import { withSessionApi } from '@/utils/withSession';
 import * as validator from '@/utils/validator';
+import { getQueryElements } from '@/utils/getQueryElements';
 
-export default withSession(async function handler(req, res) {
+export default withSessionApi(async function handler(req, res) {
   await dbConnect();
 
   switch (req.method) {
@@ -12,57 +13,64 @@ export default withSession(async function handler(req, res) {
       try {
         const { isAuth, user } = req.session;
 
-        if (isAuth) {
+        if (isAuth && user) {
           const {
             search,
             filters: filtersQuery,
             byUserId,
             byUserEmail,
             offset,
-            limit
-          } = req.query;
+            limit,
+          } = getQueryElements(req.query);
 
-          let matchFilter = {
-            status: []
+          const matchFilter: {
+            status?: [
+              processing?: 'processing',
+              inDelivery?: 'inDelivery',
+              canceled?: 'canceled',
+              completed?: 'completed',
+            ];
+          } = {
+            status: [],
           };
-          let sortFilter = {};
+          const sortFilter: { orderedAt?: -1 | 1 } = {};
 
           if (filtersQuery) {
             const filters = Object.fromEntries(
-              filtersQuery.split(' ').map((f) => [f, true])
+              filtersQuery.split(' ').map((f) => [f, true]),
             );
 
-            if (filters.processing) matchFilter.status.push('processing');
-            if (filters.inDelivery) matchFilter.status.push('inDelivery');
-            if (filters.canceled) matchFilter.status.push('canceled');
-            if (filters.completed) matchFilter.status.push('completed');
+            if (filters.processing) matchFilter.status?.push('processing');
+            if (filters.inDelivery) matchFilter.status?.push('inDelivery');
+            if (filters.canceled) matchFilter.status?.push('canceled');
+            if (filters.completed) matchFilter.status?.push('completed');
 
             if (filters.lastOrdered) sortFilter.orderedAt = -1;
             else if (filters.firstOrdered) sortFilter.orderedAt = 1;
           }
 
-          if (!matchFilter.status.length) delete matchFilter.status;
+          if (!matchFilter.status?.length) delete matchFilter.status;
 
           const options = {
             limit: +limit || 3,
             skip: +offset || 0,
-            sort: sortFilter
+            sort: sortFilter,
           };
 
           if (byUserId) {
-            const dbOrders = await Order.find(
+            const dbOrders: Order[] = await OrderModel.find(
               {
                 ...matchFilter,
-                user: user._id
+                user: user._id,
               },
               'number items total_price status orderedAt completedAt',
-              options
+              options,
             ).lean();
 
             if (dbOrders.length) {
-              const count = await Order.countDocuments({
+              const count: number = await OrderModel.countDocuments({
                 ...matchFilter,
-                user: user._id
+                user: user._id,
               });
 
               res.status(200).json({ success: true, orders: dbOrders, count });
@@ -73,35 +81,38 @@ export default withSession(async function handler(req, res) {
             if (search) {
               if (byUserEmail) {
                 const { email } = await validator.validateEmail({
-                  email: search
+                  email: search,
                 });
 
-                const dbUser = await User.findOne({ email }, '_id').lean();
+                const dbUser: User = await UserModel.findOne(
+                  { email },
+                  '_id',
+                ).lean();
 
                 if (!dbUser)
                   validator.throwValidationError({
                     message: 'utilizatorul cu acest email nu există',
-                    key: 'email'
+                    key: 'email',
                   });
 
-                const dbOrders = await Order.find(
+                const dbOrders: Order[] = await OrderModel.find(
                   {
                     ...matchFilter,
-                    user: dbUser._id
+                    user: dbUser._id,
                   },
                   null,
-                  options
+                  options,
                 )
                   .populate({
                     path: 'user',
-                    select: 'name email'
+                    select: 'name email',
                   })
                   .lean();
 
                 if (dbOrders.length) {
-                  const count = await Order.countDocuments({
+                  const count: number = await OrderModel.countDocuments({
                     ...matchFilter,
-                    user: dbUser._id
+                    user: dbUser._id,
                   });
 
                   res
@@ -114,13 +125,13 @@ export default withSession(async function handler(req, res) {
                 }
               } else {
                 const { number } = await validator.validateOrderNumber({
-                  number: search
+                  number: search,
                 });
 
-                const dbOrder = await Order.findOne({ number })
+                const dbOrder: Order = await OrderModel.findOne({ number })
                   .populate({
                     path: 'user',
-                    select: 'name email'
+                    select: 'name email',
                   })
                   .lean();
 
@@ -134,15 +145,21 @@ export default withSession(async function handler(req, res) {
               }
             } else {
               // find orders with filters
-              const dbOrders = await Order.find(matchFilter, null, options)
+              const dbOrders: Order[] = await OrderModel.find(
+                matchFilter,
+                null,
+                options,
+              )
                 .populate({
                   path: 'user',
-                  select: 'name email'
+                  select: 'name email',
                 })
                 .lean();
 
               if (dbOrders.length) {
-                const count = await Order.countDocuments(matchFilter);
+                const count: number = await OrderModel.countDocuments(
+                  matchFilter,
+                );
 
                 res
                   .status(200)
@@ -158,14 +175,13 @@ export default withSession(async function handler(req, res) {
           res.status(401).json({ success: false, message: 'Unauthorized' });
         }
       } catch (error) {
-        console.log(error);
         const details = validator.getValidationErrorDetails(error);
 
         if (details) {
           res.status(400).json({
             success: false,
             message: 'Validation Errors',
-            errors: details
+            errors: details,
           });
         } else {
           res.status(400).json({ success: false, message: 'Bad Request' });
