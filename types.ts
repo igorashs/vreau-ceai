@@ -112,8 +112,16 @@ export type OrderStatus = {
   status: 'processing' | 'inDelivery' | 'canceled' | 'completed';
 };
 
+export type OrderStatusErrorDetail = ErrorDetail & {
+  name?: keyof OrderStatus;
+};
+
 export type OrderNumber = {
   number: string;
+};
+
+export type OrderNumberErrorDetail = ErrorDetail & {
+  name?: keyof OrderNumber;
 };
 
 export type OrderFields = {
@@ -123,7 +131,10 @@ export type OrderFields = {
 
 export type Order = {
   _id: string;
-  user: string;
+  user: {
+    name: string;
+    email: string;
+  };
   number: string;
   total_price: number;
   status: 'processing' | 'inDelivery' | 'canceled' | 'completed';
@@ -138,3 +149,5 @@ export type Order = {
 };
 
 export type UserOrders = { orders: Order[]; count: number };
+
+export type ManagementOrders = { orders: Order[]; count: number };

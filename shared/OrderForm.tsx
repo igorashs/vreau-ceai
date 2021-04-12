@@ -5,12 +5,12 @@ import { Form, FormAction } from '@/shared/Form';
 import { Select } from '@/shared/Select';
 import Button from '@/shared/Button';
 import { useEffect } from 'react';
-import { OrderStatus } from 'types';
-
-type InputsErrors = { message: string; name: 'status' }[];
+import { OrderStatus, OrderStatusErrorDetail } from 'types';
 
 interface OrderFormProps {
-  onOrderSubmit: (data: OrderStatus) => InputsErrors;
+  onOrderSubmit: (
+    data: OrderStatus,
+  ) => Promise<OrderStatusErrorDetail[] | undefined>;
   order?: OrderStatus & {
     _id: string;
   };
@@ -40,7 +40,7 @@ export const OrderForm = ({ onOrderSubmit, order }: OrderFormProps) => {
     if (submitErrors) {
       submitErrors.forEach((error) => {
         const { message, name } = error;
-        setError(name, { message });
+        if (name) setError(name, { message });
       });
     }
   };
