@@ -1,8 +1,10 @@
 import { withCategoryStoreLayout } from '@/layouts/StoreLayout';
 import Head from 'next/head';
 import styled from 'styled-components';
-import CategoryModel from '@/models/Category';
-import Product from '@/models/Product';
+import CategoryModel, {
+  Category as CategoryModelType,
+} from '@/models/Category';
+import ProductModel from '@/models/Product';
 import dbConnect from '@/utils/dbConnect';
 import { TeaCard } from '@/shared/TeaCard';
 import breakpoints from 'GlobalStyle/breakpoints';
@@ -11,6 +13,9 @@ import { DropDownList } from '@/shared/DropDownList';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { StaticPagination } from '@/shared/StaticPagination';
+import { GetServerSideProps } from 'next';
+import { Product } from 'types';
+import { getQueryElements } from '@/utils/getQueryElements';
 
 const List = styled.ul`
   margin: var(--baseline) 0;
@@ -29,67 +34,81 @@ const List = styled.ul`
 const allowedFilters = [
   {
     text: 'Preț crescător',
-    value: 'ascPrice'
+    value: 'ascPrice',
   },
   {
     text: 'Preț descrescător',
-    value: 'descPrice'
-  }
+    value: 'descPrice',
+  },
 ];
 
 const PRODUCTS_PER_PAGE = 3;
 
-export default function Category({ category, currPage, totalPages, products }) {
+type CategoryProps = {
+  category: string;
+  currPage: number;
+  totalPages: number;
+  products: Product[];
+};
+
+export default function Category({
+  category,
+  currPage,
+  totalPages,
+  products,
+}: CategoryProps) {
   const router = useRouter();
-  const [filters, setFilters] = useState(new Set());
+  const [filters, setFilters] = useState(new Set<string>());
 
   useEffect(() => {
     setFilters(() => {
-      if (router.query.filters) {
-        return new Set(router.query.filters.split(' '));
+      const { filters: queryFilters } = getQueryElements(router.query);
+
+      if (queryFilters) {
+        return new Set(queryFilters.split(' '));
       }
 
       return new Set();
     });
   }, [category]);
 
-  const handlePageChange = (page) => {
+  const handlePageChange = (page: number) => {
     if (!router.query.page && page === 0) return;
     if (router.query.page && +router.query.page === page + 1) return;
 
-    const query = {};
+    const query: { [key: string]: string | string[] } = {};
 
     if (router.query.filters) query.filters = router.query.filters;
-    query.page = page + 1;
+    query.page = (page + 1).toString();
 
     router.replace({
       pathname: `/categories/${category}`,
-      query
+      query,
     });
   };
 
-  const handleFilterChange = (filter) => {
+  const handleFilterChange = (filter: string) => {
     setFilters((e) => {
-      const filters = new Set(e);
+      const newFilters = new Set(e);
 
-      if (filters.has(filter)) {
-        filters.delete(filter);
+      if (newFilters.has(filter)) {
+        newFilters.delete(filter);
       } else {
-        filters.add(filter);
+        newFilters.add(filter);
       }
 
-      let query = {};
+      const query: { [key: string]: string | string[] } = {};
 
-      if (filters.size) {
-        query.filters = [...filters].join(' ');
+      if (newFilters.size) {
+        query.filters = [...newFilters].join(' ');
       }
 
       router.replace({
         pathname: `/categories/${category}`,
-        query
+        query,
       });
 
-      return filters;
+      return newFilters;
     });
   };
 
@@ -107,7 +126,6 @@ export default function Category({ category, currPage, totalPages, products }) {
         {allowedFilters.map((f) => (
           <li key={f.value}>
             <Filter
-              id={f.value}
               text={f.text}
               checked={filters.has(f.value)}
               onChange={() => handleFilterChange(f.value)}
@@ -138,41 +156,45 @@ export default function Category({ category, currPage, totalPages, products }) {
 
 Category.withLayout = withCategoryStoreLayout;
 
-export const getServerSideProps = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   await dbConnect();
 
   try {
-    const { category, page = 1, filters: filtersQuery } = query;
-    let sortFilter = {};
+    const { category, page = 1, filters: queryFilters } = getQueryElements(
+      query,
+    );
+    const sortFilter: { price?: 1 | -1 } = {};
 
-    if (filtersQuery) {
+    if (queryFilters) {
       const filters = Object.fromEntries(
-        filtersQuery.split(' ').map((f) => [f, true])
+        queryFilters.split(' ').map((f) => [f, true]),
       );
 
       if (filters.ascPrice) sortFilter.price = 1;
       else if (filters.descPrice) sortFilter.price = -1;
     }
 
-    const dbCategory = await CategoryModel.findOne({ name: category })
+    const dbCategory: CategoryModelType = await CategoryModel.findOne({
+      name: category,
+    })
       .populate({
         path: 'products',
         options: {
           limit: PRODUCTS_PER_PAGE,
-          skip: PRODUCTS_PER_PAGE * (page - 1),
-          sort: sortFilter
-        }
+          skip: PRODUCTS_PER_PAGE * (+page - 1),
+          sort: sortFilter,
+        },
       })
       .lean();
 
     if (!dbCategory || !dbCategory.products.length) {
       return {
-        notFound: true
+        notFound: true,
       };
     }
 
-    const count = await Product.countDocuments({
-      category_id: dbCategory._id
+    const count: number = await ProductModel.countDocuments({
+      category_id: dbCategory._id,
     });
 
     const totalPages = Math.ceil(count / PRODUCTS_PER_PAGE);
@@ -182,12 +204,12 @@ export const getServerSideProps = async ({ query }) => {
         category,
         currPage: page,
         totalPages,
-        products: JSON.parse(JSON.stringify(dbCategory.products))
-      }
+        products: JSON.parse(JSON.stringify(dbCategory.products)),
+      },
     };
   } catch (error) {
     return {
-      notFound: true
+      notFound: true,
     };
   }
 };

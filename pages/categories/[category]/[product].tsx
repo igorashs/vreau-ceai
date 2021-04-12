@@ -1,15 +1,17 @@
 import { withCategoryStoreLayout } from '@/layouts/StoreLayout';
-import ProductModel from '@/models/Product';
+import ProductModel, { Product as ProductModelType } from '@/models/Product';
 import dbConnect from '@/utils/dbConnect';
 import Head from 'next/head';
 import breakpoints from 'GlobalStyle/breakpoints';
 import styled from 'styled-components';
 import Image from 'next/image';
-import { Button } from '@/shared/Button';
+import Button from '@/shared/Button';
 import { useState } from 'react';
 import { useCartDispatch } from 'contexts/CartContext';
 import { Counter } from '@/shared/Counter';
 import { Label } from '@/shared/Label';
+import { GetServerSideProps } from 'next';
+import { LabelMessage, Product as ProductType } from 'types';
 
 const Wrapper = styled.div`
   display: flex;
@@ -65,9 +67,13 @@ const Price = styled.p`
   grid-column: 1 / -1;
 `;
 
-export default function Product({ product }) {
+type ProductProps = {
+  product: ProductType;
+};
+
+export default function Product({ product }: ProductProps) {
   const [count, setCount] = useState(1);
-  const [label, setLabel] = useState();
+  const [label, setLabel] = useState<LabelMessage>();
   const cartDispatch = useCartDispatch();
 
   return (
@@ -93,20 +99,25 @@ export default function Product({ product }) {
         <ActionsWrapper>
           <Price>{`${product.price}lei - ${product.quantity}g`}</Price>
           <Actions>
-            <Counter count={count} min={1} max={100} onChange={setCount} />
+            <Counter
+              count={count}
+              min={1}
+              max={100}
+              onChange={(c) => setCount(+c)}
+            />
             <Button
               onClick={() => {
                 cartDispatch({
                   type: 'add-item',
                   payload: {
                     product,
-                    count
-                  }
+                    count,
+                  },
                 });
 
                 setLabel({
                   success: true,
-                  message: 'produsul a fost adăugat în coș'
+                  message: 'produsul a fost adăugat în coș',
                 });
               }}
             >
@@ -122,29 +133,29 @@ export default function Product({ product }) {
 
 Product.withLayout = withCategoryStoreLayout;
 
-export const getServerSideProps = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   await dbConnect();
 
   try {
-    const dbProduct = await ProductModel.findOne(
+    const dbProduct: ProductModelType = await ProductModel.findOne(
       { name: query.product },
-      'name description price quantity src'
+      'name description price quantity src',
     );
 
     if (!dbProduct) {
       return {
-        notFound: true
+        notFound: true,
       };
     }
 
     return {
       props: {
-        product: JSON.parse(JSON.stringify(dbProduct))
-      }
+        product: JSON.parse(JSON.stringify(dbProduct)),
+      },
     };
   } catch (error) {
     return {
-      notFound: true
+      notFound: true,
     };
   }
 };

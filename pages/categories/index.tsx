@@ -1,11 +1,14 @@
 import { withCategoryStoreLayout } from '@/layouts/StoreLayout';
 import Head from 'next/head';
 import styled from 'styled-components';
-import Category from '@/models/Category';
-import '@/models/Product';
+import CategoryModel, {
+  Category as CategoryModelType,
+} from '@/models/Category';
+import { Product } from '@/models/Product';
 import dbConnect from '@/utils/dbConnect';
 import { CategoryCard } from '@/shared/CategoryCard';
 import breakpoints from 'GlobalStyle/breakpoints';
+import { Category } from 'types';
 
 const List = styled.ul`
   display: grid;
@@ -20,7 +23,11 @@ const List = styled.ul`
   }
 `;
 
-export default function Categories({ categories }) {
+type CategoriesProps = {
+  categories: (Category & { src: string })[];
+};
+
+export default function Categories({ categories }: CategoriesProps) {
   return (
     <>
       <Head>
@@ -47,33 +54,35 @@ export const getStaticProps = async () => {
   await dbConnect();
 
   try {
-    const dbCategories = await Category.find({})
+    const dbCategories: (CategoryModelType & {
+      products: Product[];
+    })[] = await CategoryModel.find({})
       .populate({
         path: 'products',
         select: 'src',
         options: {
-          perDocumentLimit: 1
-        }
+          perDocumentLimit: 1,
+        },
       })
       .lean();
 
     const categories = dbCategories.map((c) => ({
       name: c.name,
-      src: c.products.length ? c.products[0].src : 'placeholder.png'
+      src: c.products.length ? c.products[0].src : 'placeholder.png',
     }));
 
     return {
       props: {
-        categories
+        categories,
       },
-      revalidate: 1
+      revalidate: 1,
     };
   } catch (error) {
     return {
       props: {
-        categories: []
+        categories: [],
       },
-      revalidate: 1
+      revalidate: 1,
     };
   }
 };
