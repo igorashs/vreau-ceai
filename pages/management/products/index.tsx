@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import { withManagementStoreLayout } from '@/layouts/StoreLayout';
-import { withSession } from '@/utils/withSession';
+import { withSessionServerSideProps } from '@/utils/withSession';
 import {
   getProducts,
   getCategories,
   updateProduct,
-  deleteProduct
+  deleteProduct,
 } from 'services/ceaiApi';
 import { useState, useEffect } from 'react';
 import { ProductForm } from '@/shared/ProductForm';
@@ -13,9 +13,9 @@ import { DropDown } from '@/shared/DropDown';
 import { DropDownList } from '@/shared/DropDownList';
 import { Label } from '@/shared/Label';
 import { Filter } from '@/shared/Filter';
-import { getFormData } from '@/utils/getFormData';
 import { Pagination } from '@/shared/Pagination';
 import Head from 'next/head';
+import { Category, LabelMessage, Product } from 'types';
 
 const List = styled.ul`
   margin: var(--baseline) 0;
@@ -27,46 +27,49 @@ const allowedFilters = [
   { text: 'Recomandate', value: 'recommend' },
   {
     text: 'Preț crescător',
-    value: 'ascPrice'
+    value: 'ascPrice',
   },
   {
     text: 'Preț descrescător',
-    value: 'descPrice'
+    value: 'descPrice',
   },
   {
     text: 'Cantitate crescătoare',
-    value: 'ascQuantity'
+    value: 'ascQuantity',
   },
-  ,
   {
     text: 'Cantitate descrescătoare',
-    value: 'descQuantity'
-  }
+    value: 'descQuantity',
+  },
 ];
 
 const PRODUCTS_PER_PAGE = 5;
 
 export default function Products() {
-  const [filters, setFilters] = useState(new Set());
-  const [dbProducts, setDbProducts] = useState();
-  const [dbCategories, setDbCategories] = useState();
-  const [label, setLabel] = useState();
-  const [totalPages, setTotalPages] = useState();
+  const [filters, setFilters] = useState(new Set<string>());
+  const [dbProducts, setDbProducts] = useState<Product[]>([]);
+  const [dbCategories, setDbCategories] = useState<Category[]>([]);
+  const [label, setLabel] = useState<LabelMessage>();
+  const [totalPages, setTotalPages] = useState(0);
 
-  useEffect(async () => {
-    const res = await getCategories();
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getCategories();
 
-    if (res.success) {
-      setDbCategories(res.categories);
-    }
+      if (res.success) {
+        setDbCategories(res.categories);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  const handlePageChange = async (pageNumber) => {
+  const handlePageChange = async (pageNumber: number) => {
     if (pageNumber >= 0 && pageNumber < totalPages) {
       const res = await getProducts(
         [...filters],
         PRODUCTS_PER_PAGE,
-        pageNumber * PRODUCTS_PER_PAGE
+        pageNumber * PRODUCTS_PER_PAGE,
       );
 
       if (res.success) {
@@ -74,49 +77,53 @@ export default function Products() {
       } else {
         setLabel({
           success: false,
-          message: 'Nu au fost găsit niciun produs'
+          message: 'Nu au fost găsit niciun produs',
         });
       }
     }
   };
 
-  useEffect(async () => {
-    const res = await getProducts([...filters], PRODUCTS_PER_PAGE);
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getProducts([...filters], PRODUCTS_PER_PAGE);
 
-    if (res.success) {
-      setDbProducts(res.products);
-      setTotalPages(Math.ceil(res.count / PRODUCTS_PER_PAGE));
-    } else {
-      setDbProducts(null);
-      setLabel({
-        success: false,
-        message: 'Nu au fost găsit niciun produs'
-      });
-    }
+      if (res.success) {
+        setDbProducts(res.products);
+        setTotalPages(Math.ceil(res.count / PRODUCTS_PER_PAGE));
+      } else {
+        setDbProducts([]);
+        setLabel({
+          success: false,
+          message: 'Nu au fost găsit niciun produs',
+        });
+      }
+    };
+
+    fetchData();
   }, [filters]);
 
-  const handleProductSubmit = async (id, data) => {
-    const formData = getFormData(data);
-    const res = await updateProduct(id, formData);
+  const handleProductSubmit = async (id: string, data: FormData) => {
+    const res = await updateProduct(id, data);
 
     if (res.success) {
       setLabel({ success: true, message: 'produsul a fost modificat' });
       setDbProducts((prev) =>
-        prev.map((p) => (p._id === id ? { ...res.product } : p))
+        prev.map((p) => (p._id === id ? { ...res.product } : p)),
       );
     } else {
       setLabel({ success: false, message: 'ceva nu a mers bine :(' });
-      return res.errors;
     }
+
+    return res.errors;
   };
 
-  const handleDeleteProduct = async (id) => {
+  const handleDeleteProduct = async (id: string) => {
     const res = await deleteProduct(id);
 
     if (res.success) {
       setLabel({ success: true, message: 'Produsul a fost șters' });
       setDbProducts((prev) =>
-        prev.length > 1 ? prev.filter((p) => p._id !== id) : null
+        prev.length > 1 ? prev.filter((p) => p._id !== id) : [],
       );
     } else {
       setLabel({ success: false, message: 'Produsul nu a fost șters :(' });
@@ -135,20 +142,19 @@ export default function Products() {
         {allowedFilters.map((f) => (
           <li key={f.value}>
             <Filter
-              id={f.value}
               text={f.text}
               checked={filters.has(f.value)}
               onChange={() =>
                 setFilters((e) => {
-                  const filters = new Set(e);
+                  const newFilters = new Set(e);
 
-                  if (filters.has(f.value)) {
-                    filters.delete(f.value);
+                  if (newFilters.has(f.value)) {
+                    newFilters.delete(f.value);
                   } else {
-                    filters.add(f.value);
+                    newFilters.add(f.value);
                   }
 
-                  return filters;
+                  return newFilters;
                 })
               }
             />
@@ -194,19 +200,21 @@ export default function Products() {
   );
 }
 
-export const getServerSideProps = withSession(async ({ req }) => {
-  const { isAuth, user } = req.session;
+export const getServerSideProps = withSessionServerSideProps(
+  async ({ req }) => {
+    const { isAuth, user } = req.session;
 
-  if (!isAuth || !(user.isAdmin || user.isManager)) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false
-      }
-    };
-  }
+    if (!isAuth || !(user?.isAdmin || user?.isManager)) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
+    }
 
-  return { props: {} };
-});
+    return { props: {} };
+  },
+);
 
 Products.withLayout = withManagementStoreLayout;

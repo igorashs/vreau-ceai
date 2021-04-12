@@ -1,34 +1,38 @@
 import { withManagementStoreLayout } from '@/layouts/StoreLayout';
-import { withSession } from '@/utils/withSession';
+import { withSessionServerSideProps } from '@/utils/withSession';
 import { Label } from '@/shared/Label';
 import { useState, useEffect } from 'react';
 import { DropDown } from '@/shared/DropDown';
 import { FindProductForm } from '@/shared/FindProductForm';
 import { ProductForm } from '@/shared/ProductForm';
-import { getFormData } from '@/utils/getFormData';
 import {
   getCategories,
   findProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
 } from 'services/ceaiApi';
 import Head from 'next/head';
+import { Category, LabelMessage, Product, ProductName } from 'types';
 
-export default function Products() {
-  const [dbProduct, setDbProduct] = useState();
-  const [label, setLabel] = useState();
-  const [dbCategories, setDbCategories] = useState();
+export default function Update() {
+  const [dbProduct, setDbProduct] = useState<Product | null>();
+  const [label, setLabel] = useState<LabelMessage>();
+  const [dbCategories, setDbCategories] = useState<Category[]>([]);
 
-  useEffect(async () => {
-    const res = await getCategories();
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getCategories();
 
-    if (res.success) {
-      setDbCategories(res.categories);
-    }
+      if (res.success) {
+        setDbCategories(res.categories);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  const handleFindProductSubmit = async ({ name }) => {
-    const res = await findProduct(name);
+  const handleFindProductSubmit = async (data: ProductName) => {
+    const res = await findProduct(data);
 
     if (res.success) {
       setLabel({ success: true, message: 'Produsul a fost găsit' });
@@ -36,24 +40,29 @@ export default function Products() {
     } else {
       setLabel({ success: false, message: 'Produsul nu a fost găsit :(' });
       setDbProduct(null);
-      return res.errors;
     }
+
+    return res.errors;
   };
 
-  const handleProductSubmit = async (data) => {
-    const formData = getFormData(data);
-    const res = await updateProduct(dbProduct._id, formData);
+  const handleProductSubmit = async (data: FormData) => {
+    if (!dbProduct) return [];
+
+    const res = await updateProduct(dbProduct._id, data);
 
     if (res.success) {
       setLabel({ success: true, message: 'produsul a fost modificat' });
       setDbProduct({ ...res.product });
     } else {
       setLabel({ success: false, message: 'ceva nu a mers bine :(' });
-      return res.errors;
     }
+
+    return res.errors;
   };
 
   const handleDeleteProduct = async () => {
+    if (!dbProduct) return;
+
     const res = await deleteProduct(dbProduct._id);
 
     if (res.success) {
@@ -82,7 +91,7 @@ export default function Products() {
       {dbProduct && (
         <DropDown
           title={dbProduct?.name}
-          showInitial={true}
+          showInitial
           onDeleteClick={handleDeleteProduct}
         >
           <ProductForm
@@ -96,19 +105,21 @@ export default function Products() {
   );
 }
 
-export const getServerSideProps = withSession(async ({ req }) => {
-  const { isAuth, user } = req.session;
+export const getServerSideProps = withSessionServerSideProps(
+  async ({ req }) => {
+    const { isAuth, user } = req.session;
 
-  if (!isAuth || !(user.isAdmin || user.isManager)) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false
-      }
-    };
-  }
+    if (!isAuth || !(user?.isAdmin || user?.isManager)) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
+    }
 
-  return { props: {} };
-});
+    return { props: {} };
+  },
+);
 
-Products.withLayout = withManagementStoreLayout;
+Update.withLayout = withManagementStoreLayout;
