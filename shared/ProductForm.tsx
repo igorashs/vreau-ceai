@@ -19,7 +19,7 @@ type ProductFormProps = {
     data: FormData,
   ) => Promise<ProductErrorDetail[] | undefined>;
   categories: Category[];
-  product: Product;
+  product?: Product;
 };
 
 export function ProductForm({

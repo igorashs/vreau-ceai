@@ -4,15 +4,12 @@ import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
 import { nameSchema } from '@/utils/validator/schemas/product';
 import { Form, FormAction } from '@/shared/Form';
-
-type ProductInputs = {
-  name: string;
-};
-
-type InputsErrors = Array<{ message: string; name: 'name' }>;
+import { ErrorDetail, ProductName } from 'types';
 
 interface FindProductFormProps {
-  onFindProductSubmit: (data: ProductInputs) => InputsErrors;
+  onFindProductSubmit: (
+    data: ProductName,
+  ) => Promise<ErrorDetail[] | undefined>;
 }
 
 export const FindProductForm = ({
@@ -28,13 +25,13 @@ export const FindProductForm = ({
     resolver: joiResolver(nameSchema),
   });
 
-  const onSubmit = async (data: ProductInputs) => {
+  const onSubmit = async (data: ProductName) => {
     const submitErrors = await onFindProductSubmit(data);
 
     if (submitErrors) {
       submitErrors.forEach((error) => {
         const { message, name } = error;
-        setError(name, { message });
+        if (name) setError(name, { message });
       });
     }
   };
