@@ -1,5 +1,5 @@
 import { withManagementStoreLayout } from '@/layouts/StoreLayout';
-import { withSession } from '@/utils/withSession';
+import { withSessionServerSideProps } from '@/utils/withSession';
 import { Label } from '@/shared/Label';
 import { useState } from 'react';
 import { DropDown } from '@/shared/DropDown';
@@ -10,6 +10,7 @@ import { OrderInfo } from '@/shared/OrderInfo';
 import { ConsumerInfo } from '@/shared/ConsumerInfo';
 import styled from 'styled-components';
 import { OrderForm } from '@/shared/OrderForm';
+import { LabelMessage, Order, OrderNumber, OrderStatus } from 'types';
 
 const OrderWrapper = styled.div`
   display: grid;
@@ -17,11 +18,11 @@ const OrderWrapper = styled.div`
 `;
 
 export default function Update() {
-  const [dbOrder, setDbOrder] = useState();
-  const [label, setLabel] = useState();
+  const [dbOrder, setDbOrder] = useState<Order | null>();
+  const [label, setLabel] = useState<LabelMessage>();
 
-  const handleFindOrderSubmit = async ({ number }) => {
-    const res = await findOrder(number);
+  const handleFindOrderSubmit = async (data: OrderNumber) => {
+    const res = await findOrder(data);
 
     if (res.success) {
       setLabel({ success: true, message: 'Comanda a fost găsită' });
@@ -29,11 +30,14 @@ export default function Update() {
     } else {
       setLabel({ success: false, message: 'Comanda nu a fost găsită :(' });
       setDbOrder(null);
-      return res.errors;
     }
+
+    return res.errors;
   };
 
-  const handleOrderSubmit = async (data) => {
+  const handleOrderSubmit = async (data: OrderStatus) => {
+    if (!dbOrder) return [];
+
     const res = await updateOrder(dbOrder._id, data);
 
     if (res.success) {
@@ -41,11 +45,14 @@ export default function Update() {
       setDbOrder({ ...res.order });
     } else {
       setLabel({ success: false, message: 'Comanda nu a fost modificată :(' });
-      return res.errors;
     }
+
+    return res.errors;
   };
 
   const handleDeleteOrder = async () => {
+    if (!dbOrder) return;
+
     const res = await deleteOrder(dbOrder._id);
 
     if (res.success) {
@@ -75,7 +82,7 @@ export default function Update() {
         <DropDown
           title={dbOrder?.number}
           label={dbOrder?.status}
-          showInitial={true}
+          showInitial
           onDeleteClick={handleDeleteOrder}
         >
           <OrderWrapper>
@@ -94,19 +101,21 @@ export default function Update() {
   );
 }
 
-export const getServerSideProps = withSession(async ({ req }) => {
-  const { isAuth, user } = req.session;
+export const getServerSideProps = withSessionServerSideProps(
+  async ({ req }) => {
+    const { isAuth, user } = req.session;
 
-  if (!isAuth || !(user.isAdmin || user.isManager)) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false
-      }
-    };
-  }
+    if (!isAuth || !(user?.isAdmin || user?.isManager)) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
+    }
 
-  return { props: {} };
-});
+    return { props: {} };
+  },
+);
 
 Update.withLayout = withManagementStoreLayout;

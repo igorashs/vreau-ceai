@@ -1,5 +1,5 @@
 import { withManagementStoreLayout } from '@/layouts/StoreLayout';
-import { withSession } from '@/utils/withSession';
+import { withSessionServerSideProps } from '@/utils/withSession';
 import { Label } from '@/shared/Label';
 import { useState, useEffect } from 'react';
 import { DropDown } from '@/shared/DropDown';
@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import { Filter } from '@/shared/Filter';
 import { Pagination } from '@/shared/Pagination';
 import { OrderForm } from '@/shared/OrderForm';
+import { LabelMessage, Order, OrderStatus } from 'types';
 
 const OrderWrapper = styled.div`
   display: grid;
@@ -28,57 +29,60 @@ const allowedFilters = [
   { text: 'În procesare', value: 'processing' },
   {
     text: 'În livrare',
-    value: 'inDelivery'
+    value: 'inDelivery',
   },
   {
     text: 'Anulate',
-    value: 'canceled'
+    value: 'canceled',
   },
   {
     text: 'Finalizate',
-    value: 'completed'
+    value: 'completed',
   },
-  ,
   {
     text: 'Ultimele comandate',
-    value: 'lastOrdered'
+    value: 'lastOrdered',
   },
   {
     text: 'Primele comandate',
-    value: 'firstOrdered'
-  }
+    value: 'firstOrdered',
+  },
 ];
 
 const ORDERS_PER_PAGE = 5;
 
 export default function Orders() {
-  const [filters, setFilters] = useState(new Set());
-  const [dbOrders, setDbOrders] = useState();
-  const [label, setLabel] = useState();
-  const [totalPages, setTotalPages] = useState();
+  const [filters, setFilters] = useState(new Set<string>());
+  const [dbOrders, setDbOrders] = useState<Order[]>([]);
+  const [label, setLabel] = useState<LabelMessage | null>();
+  const [totalPages, setTotalPages] = useState(0);
 
-  useEffect(async () => {
-    const res = await getOrders([...filters], ORDERS_PER_PAGE);
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getOrders([...filters], ORDERS_PER_PAGE);
 
-    if (res.success) {
-      setDbOrders(res.orders);
-      setTotalPages(Math.ceil(res.count / ORDERS_PER_PAGE));
-      setLabel(null);
-    } else {
-      setDbOrders(null);
-      setLabel({
-        success: false,
-        message: 'Nu au fost găsit nicio comandă'
-      });
-    }
+      if (res.success) {
+        setDbOrders(res.orders);
+        setTotalPages(Math.ceil(res.count / ORDERS_PER_PAGE));
+        setLabel(null);
+      } else {
+        setDbOrders([]);
+        setLabel({
+          success: false,
+          message: 'Nu au fost găsit nicio comandă',
+        });
+      }
+    };
+
+    fetchData();
   }, [filters]);
 
-  const handlePageChange = async (pageNumber) => {
+  const handlePageChange = async (pageNumber: number) => {
     if (pageNumber >= 0 && pageNumber < totalPages) {
       const res = await getOrders(
         [...filters],
         ORDERS_PER_PAGE,
-        pageNumber * ORDERS_PER_PAGE
+        pageNumber * ORDERS_PER_PAGE,
       );
 
       if (res.success) {
@@ -86,33 +90,34 @@ export default function Orders() {
       } else {
         setLabel({
           success: false,
-          message: 'Nu au fost găsit nicio comandă'
+          message: 'Nu au fost găsit nicio comandă',
         });
       }
     }
   };
 
-  const handleOrderSubmit = async (id, data) => {
+  const handleOrderSubmit = async (id: string, data: OrderStatus) => {
     const res = await updateOrder(id, data);
 
     if (res.success) {
       setLabel({ success: true, message: 'Comanda a fost modificată' });
       setDbOrders((prev) =>
-        prev.map((o) => (o._id === id ? { ...res.order } : o))
+        prev.map((o) => (o._id === id ? { ...res.order } : o)),
       );
     } else {
       setLabel({ success: false, message: 'Comanda nu a fost modificată :(' });
-      return res.errors;
     }
+
+    return res.errors;
   };
 
-  const handleDeleteOrder = async (id) => {
+  const handleDeleteOrder = async (id: string) => {
     const res = await deleteOrder(id);
 
     if (res.success) {
       setLabel({ success: true, message: 'Comanda a fost ștearsă' });
       setDbOrders((prev) =>
-        prev.length > 1 ? prev.filter((o) => o._id !== id) : null
+        prev.length > 1 ? prev.filter((o) => o._id !== id) : [],
       );
     } else {
       setLabel({ success: false, message: 'Comanda nu a fost ștearsă :(' });
@@ -131,20 +136,19 @@ export default function Orders() {
         {allowedFilters.map((f) => (
           <li key={f.value}>
             <Filter
-              id={f.value}
               text={f.text}
               checked={filters.has(f.value)}
               onChange={() =>
                 setFilters((e) => {
-                  const filters = new Set(e);
+                  const newFilters = new Set(e);
 
-                  if (filters.has(f.value)) {
-                    filters.delete(f.value);
+                  if (newFilters.has(f.value)) {
+                    newFilters.delete(f.value);
                   } else {
-                    filters.add(f.value);
+                    newFilters.add(f.value);
                   }
 
-                  return filters;
+                  return newFilters;
                 })
               }
             />
@@ -199,19 +203,21 @@ export default function Orders() {
   );
 }
 
-export const getServerSideProps = withSession(async ({ req }) => {
-  const { isAuth, user } = req.session;
+export const getServerSideProps = withSessionServerSideProps(
+  async ({ req }) => {
+    const { isAuth, user } = req.session;
 
-  if (!isAuth || !(user.isAdmin || user.isManager)) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false
-      }
-    };
-  }
+    if (!isAuth || !(user?.isAdmin || user?.isManager)) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
+    }
 
-  return { props: {} };
-});
+    return { props: {} };
+  },
+);
 
 Orders.withLayout = withManagementStoreLayout;
