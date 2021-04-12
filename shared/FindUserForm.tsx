@@ -4,10 +4,12 @@ import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
 import { emailSchema } from '@/utils/validator/schemas/user';
 import { Form, FormAction } from '@/shared/Form';
-import { ErrorDetail, UserEmail } from 'types';
+import { UserEmail, UserEmailErrorDetail } from 'types';
 
 interface FindUserFormProps {
-  onFindUserSubmit: (data: UserEmail) => Promise<ErrorDetail[] | undefined>;
+  onFindUserSubmit: (
+    data: UserEmail,
+  ) => Promise<UserEmailErrorDetail[] | undefined>;
 }
 
 export function FindUserForm({ onFindUserSubmit }: FindUserFormProps) {
@@ -16,7 +18,7 @@ export function FindUserForm({ onFindUserSubmit }: FindUserFormProps) {
     handleSubmit,
     setError,
     formState: { errors },
-  } = useForm({
+  } = useForm<UserEmail>({
     mode: 'onChange',
     resolver: joiResolver(emailSchema),
   });

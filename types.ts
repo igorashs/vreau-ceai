@@ -17,8 +17,17 @@ export type ProductWithCategory = Product & {
   category_id: { name: string };
 };
 
+export type ErrorDetail = {
+  message: string;
+  name?: string;
+};
+
 export type ProductName = {
   name: string;
+};
+
+export type ProductNameErrorDetail = ErrorDetail & {
+  name?: keyof ProductName;
 };
 
 export type ProductFields = ProductName & {
@@ -35,11 +44,6 @@ export type Category = {
   _id: string;
   name: string;
   products: Product[];
-};
-
-export type ErrorDetail = {
-  message: string;
-  name?: string;
 };
 
 export type ProductErrorDetail = ErrorDetail & {
@@ -61,6 +65,10 @@ export type User = {
 
 export type UserEmail = {
   email: string;
+};
+
+export type UserEmailErrorDetail = ErrorDetail & {
+  name?: keyof UserEmail;
 };
 
 export type UserLogin = UserEmail & { password: string };

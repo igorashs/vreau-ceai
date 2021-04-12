@@ -4,12 +4,12 @@ import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
 import { nameSchema } from '@/utils/validator/schemas/product';
 import { Form, FormAction } from '@/shared/Form';
-import { ErrorDetail, ProductName } from 'types';
+import { ProductName, ProductNameErrorDetail } from 'types';
 
 interface FindProductFormProps {
   onFindProductSubmit: (
     data: ProductName,
-  ) => Promise<ErrorDetail[] | undefined>;
+  ) => Promise<ProductNameErrorDetail[] | undefined>;
 }
 
 export const FindProductForm = ({
@@ -20,7 +20,7 @@ export const FindProductForm = ({
     handleSubmit,
     setError,
     formState: { errors },
-  } = useForm({
+  } = useForm<ProductName>({
     mode: 'onChange',
     resolver: joiResolver(nameSchema),
   });
