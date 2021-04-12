@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Image from 'next/image';
 import { StyledLink } from '@/shared/StyledLink';
-import { Product } from 'types';
+import { ProductWithCategory } from 'types';
 
 const Wrapper = styled.div`
   display: flex;
@@ -45,7 +45,7 @@ const Actions = styled.div`
 `;
 
 interface TeaRecommendationProps {
-  tea: Product;
+  tea: ProductWithCategory;
 }
 
 export const TeaRecommendation = ({ tea }: TeaRecommendationProps) => {

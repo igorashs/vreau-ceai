@@ -4,13 +4,31 @@ import { ValidationError } from 'joi';
 export type Product = {
   _id: string;
   name: string;
-  category_id: { name: string };
+  category_id: string;
   src: string;
   price: number;
   quantity: number;
   total_quantity: number;
   description: string;
   recommend: boolean;
+};
+
+export type ProductWithCategory = Product & {
+  category_id: { name: string };
+};
+
+export type ProductName = {
+  name: string;
+};
+
+export type ProductFields = ProductName & {
+  src?: string;
+  price: number;
+  quantity: number;
+  total_quantity: number;
+  description: string;
+  recommend: boolean;
+  category_id: string;
 };
 
 export type Category = {
@@ -22,6 +40,10 @@ export type Category = {
 export type ErrorDetail = {
   message: string;
   name?: string;
+};
+
+export type ProductErrorDetail = ErrorDetail & {
+  name?: keyof ProductFields;
 };
 
 export type ApiResponse = {
@@ -64,20 +86,6 @@ export type UserSession = {
   isAuth: boolean;
   user: UserAuth | null;
   needRefresh: boolean;
-};
-
-export type ProductName = {
-  name: string;
-};
-
-export type ProductFields = ProductName & {
-  src?: string;
-  price: number;
-  quantity: number;
-  total_quantity: number;
-  description: string;
-  recommend: boolean;
-  category_id: string;
 };
 
 type dataType = 'data' | 'error' | 'field' | 'fileBegin' | 'file' | 'progress';
