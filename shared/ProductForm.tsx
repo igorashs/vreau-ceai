@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
 import { productSchema } from '@/utils/validator/schemas/product';
@@ -10,44 +9,18 @@ import { Select } from '@/shared/Select';
 import { InputFile } from '@/shared/InputFile';
 import { Textarea } from '@/shared/Textarea';
 import { useEffect } from 'react';
+import { Category, Product, ProductErrorDetail, ProductFields } from 'types';
+import { getProductFormData } from '@/utils/getProductFormData';
 
-type Category = {
-  _id: string;
-  name: string;
-};
+type ProductInputs = ProductFields & { src: FileList };
 
-type Product = {
-  _id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  total_quantity: number;
-  description: string;
-  category_id: string;
-  recommend: boolean;
-  src?: FileList;
-};
-
-type ProductInputs = Omit<Product, '_id'>;
-
-type InputsErrors = Array<{
-  message: string;
-  name:
-    | 'name'
-    | 'price'
-    | 'quantity'
-    | 'total_quantity'
-    | 'description'
-    | 'category_id'
-    | 'recommend'
-    | 'src';
-}>;
-
-interface ProductFormProps {
-  onProductSubmit: (data: ProductInputs) => Promise<InputsErrors>;
-  categories: Array<Category>;
+type ProductFormProps = {
+  onProductSubmit: (
+    data: FormData,
+  ) => Promise<ProductErrorDetail[] | undefined>;
+  categories: Category[];
   product: Product;
-}
+};
 
 export function ProductForm({
   onProductSubmit,
@@ -82,12 +55,13 @@ export function ProductForm({
   }, [product, categories]);
 
   const onSubmit = async (data: ProductInputs) => {
-    const submitErrors = await onProductSubmit(data);
+    const formData = getProductFormData(data);
+    const submitErrors = await onProductSubmit(formData);
 
     if (submitErrors) {
       submitErrors.forEach((error) => {
         const { message, name } = error;
-        setError(name, { message });
+        if (name) setError(name, { message });
       });
     }
   };
