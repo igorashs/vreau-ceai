@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import { StyledLink } from '@/shared/StyledLink';
 import breakpoints from 'GlobalStyle/breakpoints';
+import { Product } from 'types';
 
 const Wrapper = styled.div`
   display: flex;
@@ -63,13 +64,7 @@ const Actions = styled.div`
 `;
 
 interface TeaCardProps {
-  tea: {
-    name: string;
-    src: string;
-    description: string;
-    price: number;
-    quantity: number;
-  };
+  tea: Product;
   category: string;
 }
 
