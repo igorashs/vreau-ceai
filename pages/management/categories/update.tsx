@@ -1,19 +1,20 @@
 import { withManagementStoreLayout } from '@/layouts/StoreLayout';
 import { useState } from 'react';
 import { Label } from '@/shared/Label';
-import { withSession } from '@/utils/withSession';
+import { withSessionServerSideProps } from '@/utils/withSession';
 import Head from 'next/head';
 import { DropDown } from '@/shared/DropDown';
 import { findCategory, updateCategory, deleteCategory } from 'services/ceaiApi';
 import { CategoryForm } from '@/shared/CategoryForm';
 import { FindCategoryForm } from '@/shared/FindCategoryForm';
+import { Category, CategoryName, LabelMessage } from 'types';
 
 export default function Update() {
-  const [dbCategory, setDbCategory] = useState();
-  const [label, setLabel] = useState();
+  const [dbCategory, setDbCategory] = useState<Category | null>();
+  const [label, setLabel] = useState<LabelMessage>();
 
-  const handleFindCategorySubmit = async ({ name }) => {
-    const res = await findCategory(name);
+  const handleFindCategorySubmit = async (data: CategoryName) => {
+    const res = await findCategory(data);
 
     if (res.success) {
       setLabel({ success: true, message: 'Categoria a fost găsită' });
@@ -21,11 +22,14 @@ export default function Update() {
     } else {
       setLabel({ success: false, message: 'Categoria nu a fost găsită :(' });
       setDbCategory(null);
-      return res.errors;
     }
+
+    return res.errors;
   };
 
-  const handleCategorySubmit = async (data) => {
+  const handleCategorySubmit = async (data: CategoryName) => {
+    if (!dbCategory) return undefined;
+
     const res = await updateCategory(dbCategory._id, data);
 
     if (res.success) {
@@ -34,13 +38,16 @@ export default function Update() {
     } else {
       setLabel({
         success: false,
-        message: 'Categoria nu a fost modificată :('
+        message: 'Categoria nu a fost modificată :(',
       });
-      return res.errors;
     }
+
+    return res.errors;
   };
 
   const handleDeleteCategory = async () => {
+    if (!dbCategory) return;
+
     const res = await deleteCategory(dbCategory._id);
 
     if (res.success) {
@@ -69,7 +76,7 @@ export default function Update() {
       {dbCategory && (
         <DropDown
           title={dbCategory?.name}
-          showInitial={true}
+          showInitial
           onDeleteClick={handleDeleteCategory}
         >
           <CategoryForm
@@ -82,19 +89,21 @@ export default function Update() {
   );
 }
 
-export const getServerSideProps = withSession(async ({ req }) => {
-  const { isAuth, user } = req.session;
+export const getServerSideProps = withSessionServerSideProps(
+  async ({ req }) => {
+    const { isAuth, user } = req.session;
 
-  if (!isAuth || !(user.isAdmin || user.isManager)) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false
-      }
-    };
-  }
+    if (!isAuth || !(user?.isAdmin || user?.isManager)) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
+    }
 
-  return { props: {} };
-});
+    return { props: {} };
+  },
+);
 
 Update.withLayout = withManagementStoreLayout;

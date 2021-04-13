@@ -2,28 +2,25 @@ import { withManagementStoreLayout } from '@/layouts/StoreLayout';
 import { Label } from '@/shared/Label';
 import { createCategory } from 'services/ceaiApi';
 import { useState } from 'react';
-import { withSession } from '@/utils/withSession';
+import { withSessionServerSideProps } from '@/utils/withSession';
 import { CategoryForm } from '@/shared/CategoryForm';
 import Head from 'next/head';
+import { CategoryName, LabelMessage } from 'types';
 
 export default function Create() {
-  const [label, setLabel] = useState();
+  const [label, setLabel] = useState<LabelMessage | null>();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: CategoryName) => {
     const res = await createCategory(data);
 
     if (res.success) {
       setLabel({ success: true, message: 'categoria a fost creată ^-^' });
     } else {
       setLabel(null);
+      setLabel({ success: false, message: 'categoria nu fost creată :(' });
     }
 
-    if (res?.errors) {
-      res.errors.forEach((error) => {
-        const { message, name } = error;
-        setError(name, { message });
-      });
-    }
+    return res.errors;
   };
 
   return (
@@ -45,19 +42,21 @@ export default function Create() {
   );
 }
 
-export const getServerSideProps = withSession(async ({ req }) => {
-  const { isAuth, user } = req.session;
+export const getServerSideProps = withSessionServerSideProps(
+  async ({ req }) => {
+    const { isAuth, user } = req.session;
 
-  if (!isAuth || !(user.isAdmin || user.isManager)) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false
-      }
-    };
-  }
+    if (!isAuth || !(user?.isAdmin || user?.isManager)) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
+    }
 
-  return { props: {} };
-});
+    return { props: {} };
+  },
+);
 
 Create.withLayout = withManagementStoreLayout;

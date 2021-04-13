@@ -1,16 +1,17 @@
 import styled from 'styled-components';
 import { withManagementStoreLayout } from '@/layouts/StoreLayout';
-import { withSession } from '@/utils/withSession';
+import { withSessionServerSideProps } from '@/utils/withSession';
 import { DropDown } from '@/shared/DropDown';
 import {
   getCategories,
   updateCategory,
-  deleteCategory
+  deleteCategory,
 } from 'services/ceaiApi';
 import { useState, useEffect } from 'react';
 import { Label } from '@/shared/Label';
 import Head from 'next/head';
 import { CategoryForm } from '@/shared/CategoryForm';
+import { Category, CategoryName, LabelMessage } from 'types';
 
 const List = styled.ul`
   display: grid;
@@ -18,46 +19,51 @@ const List = styled.ul`
 `;
 
 export default function Categories() {
-  const [dbCategories, setDbCategories] = useState();
-  const [label, setLabel] = useState();
+  const [dbCategories, setDbCategories] = useState<Category[]>([]);
+  const [label, setLabel] = useState<LabelMessage>();
 
-  useEffect(async () => {
-    const res = await getCategories();
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getCategories();
 
-    if (res.success) {
-      setDbCategories(res.categories);
-    } else {
-      setLabel({
-        success: false,
-        message: 'Nu au fost găsite nicio categorie'
-      });
-    }
+      if (res.success) {
+        setDbCategories(res.categories);
+      } else {
+        setLabel({
+          success: false,
+          message: 'Nu au fost găsite nicio categorie',
+        });
+      }
+    };
+
+    fetchData();
   }, []);
 
-  const handleCategorySubmit = async (id, data) => {
+  const handleCategorySubmit = async (id: string, data: CategoryName) => {
     const res = await updateCategory(id, data);
 
     if (res.success) {
       setLabel({ success: true, message: 'Categoria a fost modificată' });
       setDbCategories((prev) =>
-        prev.map((c) => (c._id === id ? { ...res.category } : c))
+        prev.map((c) => (c._id === id ? { ...res.category } : c)),
       );
     } else {
       setLabel({
         success: false,
-        message: 'Categoria nu a fost modificată :('
+        message: 'Categoria nu a fost modificată :(',
       });
-      return res.errors;
     }
+
+    return res.errors;
   };
 
-  const handleDeleteCategory = async (id) => {
+  const handleDeleteCategory = async (id: string) => {
     const res = await deleteCategory(id);
 
     if (res.success) {
       setLabel({ success: true, message: 'Categoria a fost ștearsă' });
       setDbCategories((prev) =>
-        prev.length > 1 ? prev.filter((c) => c._id !== id) : null
+        prev.length > 1 ? prev.filter((c) => c._id !== id) : [],
       );
     } else {
       setLabel({ success: false, message: 'Categoria nu a fost ștearsă :(' });
@@ -72,7 +78,7 @@ export default function Categories() {
 
       <h4>Toate categoriile</h4>
 
-      {dbCategories && (
+      {!!dbCategories.length && (
         <List>
           {dbCategories.map((category) => (
             <li key={category._id}>
@@ -101,19 +107,21 @@ export default function Categories() {
   );
 }
 
-export const getServerSideProps = withSession(async ({ req }) => {
-  const { isAuth, user } = req.session;
+export const getServerSideProps = withSessionServerSideProps(
+  async ({ req }) => {
+    const { isAuth, user } = req.session;
 
-  if (!isAuth || !(user.isAdmin || user.isManager)) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false
-      }
-    };
-  }
+    if (!isAuth || !(user?.isAdmin || user?.isManager)) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
+    }
 
-  return { props: {} };
-});
+    return { props: {} };
+  },
+);
 
 Categories.withLayout = withManagementStoreLayout;
