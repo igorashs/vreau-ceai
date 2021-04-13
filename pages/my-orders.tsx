@@ -124,6 +124,7 @@ export default function MyOrders() {
                 onChange={() =>
                   setFilters((e) => {
                     const newFilters = new Set(e);
+                    setTotalPages(0);
 
                     if (newFilters.has(f.value)) {
                       newFilters.delete(f.value);

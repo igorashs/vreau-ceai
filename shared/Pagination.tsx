@@ -33,8 +33,14 @@ const Pagination = ({ onPageChange, min, max }: PaginationProps) => {
   const [page, setPage] = useState(min);
 
   useEffect(() => {
+    setPage(min);
+  }, [max]);
+
+  useEffect(() => {
     onPageChange(page);
   }, [page]);
+
+  if (max <= 0) return null;
 
   return (
     <Wrapper>
