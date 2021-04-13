@@ -4,15 +4,12 @@ import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
 import { categorySchema } from '@/utils/validator/schemas/category';
 import { Form, FormAction } from '@/shared/Form';
-
-type CategoryInputs = {
-  name: string;
-};
-
-type InputsErrors = Array<{ message: string; name: 'name' }>;
+import { CategoryName, CategoryNameErrorDetail } from 'types';
 
 interface FindCategoryFormProps {
-  onFindCategorySubmit: (data: CategoryInputs) => Promise<InputsErrors | null>;
+  onFindCategorySubmit: (
+    data: CategoryName,
+  ) => Promise<CategoryNameErrorDetail[] | undefined>;
 }
 
 export const FindCategoryForm = ({
@@ -23,18 +20,18 @@ export const FindCategoryForm = ({
     handleSubmit,
     setError,
     formState: { errors },
-  } = useForm({
+  } = useForm<CategoryName>({
     mode: 'onChange',
     resolver: joiResolver(categorySchema),
   });
 
-  const onSubmit = async (data: CategoryInputs) => {
+  const onSubmit = async (data: CategoryName) => {
     const submitErrors = await onFindCategorySubmit(data);
 
     if (submitErrors) {
       submitErrors.forEach((error) => {
         const { message, name } = error;
-        setError(name, { message });
+        if (name) setError(name, { message });
       });
     }
   };

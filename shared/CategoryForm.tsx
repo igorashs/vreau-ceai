@@ -5,19 +5,13 @@ import { Form, FormAction } from '@/shared/Form';
 import { TextField } from '@/shared/TextField';
 import Button from '@/shared/Button';
 import { useEffect } from 'react';
-
-type CategoryInputs = {
-  name: string;
-};
-
-type InputsErrors = Array<{ message: string; name: 'name' }>;
+import { Category, CategoryName, CategoryNameErrorDetail } from 'types';
 
 interface CategoryFormProps {
-  onCategorySubmit: (data: CategoryInputs) => Promise<InputsErrors | null>;
-  category?: {
-    _id: string;
-    name: string;
-  };
+  onCategorySubmit: (
+    data: CategoryName,
+  ) => Promise<CategoryNameErrorDetail[] | undefined>;
+  category?: Category;
 }
 
 export const CategoryForm = ({
@@ -30,7 +24,7 @@ export const CategoryForm = ({
     setError,
     reset,
     formState: { errors },
-  } = useForm<CategoryInputs>({
+  } = useForm<CategoryName>({
     mode: 'onChange',
     resolver: joiResolver(categorySchema),
   });
@@ -41,13 +35,13 @@ export const CategoryForm = ({
     });
   }, [category]);
 
-  const onSubmit = async (data: CategoryInputs) => {
+  const onSubmit = async (data: CategoryName) => {
     const submitErrors = await onCategorySubmit(data);
 
     if (submitErrors) {
       submitErrors.forEach((error) => {
         const { message, name } = error;
-        setError(name, { message });
+        if (name) setError(name, { message });
       });
     }
   };

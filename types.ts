@@ -43,7 +43,6 @@ export type ProductFields = ProductName & {
 export type Category = {
   _id: string;
   name: string;
-  products: Product[];
 };
 
 export type ProductErrorDetail = ErrorDetail & {
@@ -104,6 +103,10 @@ export declare class Formidable extends FormidableLib {
 
 export type CategoryName = {
   name: string;
+};
+
+export type CategoryNameErrorDetail = ErrorDetail & {
+  name?: keyof CategoryName;
 };
 
 export type OrderSubmit = {
