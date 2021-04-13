@@ -48,7 +48,20 @@
     ],
     "react/react-in-jsx-scope": "off",
     "react/prop-types": 0,
-    "no-unused-vars": "warn",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error",
+    "react/require-default-props": "off",
+    "no-underscore-dangle": "off",
+    "jsx-a11y/anchor-is-valid": [
+      "error",
+      {
+        "components": ["Link"],
+        "specialLink": ["hrefLeft", "hrefRight"],
+        "aspects": ["invalidHref", "preferButton"]
+      }
+    ],
+    "camelcase": "off",
+    "react/jsx-props-no-spreading": 0,
     "react/jsx-filename-extension": [
       1,
       {
