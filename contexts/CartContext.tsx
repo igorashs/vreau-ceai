@@ -63,7 +63,7 @@ const cartReducer = (state: Cart, action: ACTION_TYPE): Cart => {
           items,
           itemsCount: state.itemsCount + count,
           totalPrice: state.totalPrice + count * product.price,
-          updated: state.updated,
+          updated: false,
         };
       }
       // add item in cart
@@ -71,7 +71,7 @@ const cartReducer = (state: Cart, action: ACTION_TYPE): Cart => {
         items: [...state.items, { product, count }],
         itemsCount: state.itemsCount + count,
         totalPrice: state.totalPrice + count * product.price,
-        updated: state.updated,
+        updated: false,
       };
     }
 
@@ -89,7 +89,7 @@ const cartReducer = (state: Cart, action: ACTION_TYPE): Cart => {
               state.totalPrice -
               item.count * item.product.price +
               count * product.price,
-            updated: state.updated,
+            updated: false,
           }
         : state;
     }
@@ -103,7 +103,7 @@ const cartReducer = (state: Cart, action: ACTION_TYPE): Cart => {
             items: state.items.filter((i) => i !== item),
             itemsCount: state.itemsCount - item.count,
             totalPrice: state.totalPrice - item.count * item.product.price,
-            updated: state.updated,
+            updated: false,
           }
         : state;
     }
