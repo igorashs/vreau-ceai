@@ -11,14 +11,14 @@ const StyledFilter = styled.div`
   }
 `;
 
-interface FilterProps {
+type FilterProps = {
   label?: string;
   text: string;
   checked?: boolean;
   onChange: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-}
+};
 
-export const Filter = ({
+const Filter = ({
   label = '',
   text,
   checked = false,
@@ -39,3 +39,5 @@ export const Filter = ({
     </StyledFilter>
   );
 };
+
+export default Filter;

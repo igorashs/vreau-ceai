@@ -1,15 +1,15 @@
 import styled from 'styled-components';
 
-export const Form = styled.form`
+const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: calc(var(--baseline) / 2);
 `;
 
-interface FormActionProps {
+type FormActionProps = {
   justify?: 'space-between' | 'flex-end' | 'flex-start' | 'center';
   align?: 'flex-end' | 'flex-start' | 'center';
-}
+};
 
 export const FormAction = styled.div<FormActionProps>`
   margin-top: calc(var(--baseline) / 2);
@@ -43,3 +43,5 @@ export const FormAction = styled.div<FormActionProps>`
     }
   }}
 `;
+
+export default Form;

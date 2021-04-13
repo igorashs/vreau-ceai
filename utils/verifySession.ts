@@ -4,26 +4,26 @@ import UserModel, { User } from 'models/User';
 import SessionModel, { Session } from '@/models/Session';
 import { UserAuth } from 'types';
 
-interface VerifySessionProps {
+type VerifySessionProps = {
   cookies: {
     access?: string;
     refresh?: string;
   };
 
   updateAccess?: boolean;
-}
+};
 
-interface RefreshClaims {
+type RefreshClaims = {
   user_id: string;
   name: string;
   isAdmin: boolean;
   isManager: boolean;
-}
+};
 
-export interface SessionAuth {
+export type SessionAuth = {
   isAuth: boolean;
   user: UserAuth | null;
-}
+};
 
 type UserSession = [session: SessionAuth, cookies?: Array<string>];
 
@@ -33,7 +33,7 @@ type UserSession = [session: SessionAuth, cookies?: Array<string>];
  * @param updateAccess - (force to create a new accessCookie?)
  *
  */
-export const verifySession = async ({
+const verifySession = async ({
   cookies: { access, refresh },
   updateAccess = false,
 }: VerifySessionProps): Promise<UserSession> => {
@@ -79,3 +79,5 @@ export const verifySession = async ({
     return [{ isAuth: false, user: null }, cookies];
   }
 };
+
+export default verifySession;

@@ -1,10 +1,10 @@
 import { withManagementStoreLayout } from '@/layouts/StoreLayout';
 import { withSessionServerSideProps } from '@/utils/withSession';
-import { Label } from '@/shared/Label';
+import Label from '@/shared/Label';
 import { useState, useEffect } from 'react';
-import { DropDown } from '@/shared/DropDown';
-import { FindProductForm } from '@/shared/FindProductForm';
-import { ProductForm } from '@/shared/ProductForm';
+import DropDown from '@/shared/DropDown';
+import FindProductForm from '@/shared/FindProductForm';
+import ProductForm from '@/shared/ProductForm';
 import {
   getCategories,
   findProduct,

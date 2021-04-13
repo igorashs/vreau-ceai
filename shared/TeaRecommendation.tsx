@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Image from 'next/image';
-import { StyledLink } from '@/shared/StyledLink';
+import StyledLink from '@/shared/StyledLink';
 import { ProductWithCategory } from 'types';
 
 const Wrapper = styled.div`
@@ -44,11 +44,11 @@ const Actions = styled.div`
   display: grid;
 `;
 
-interface TeaRecommendationProps {
+type TeaRecommendationProps = {
   tea: ProductWithCategory;
-}
+};
 
-export const TeaRecommendation = ({ tea }: TeaRecommendationProps) => {
+const TeaRecommendation = ({ tea }: TeaRecommendationProps) => {
   return (
     <Wrapper>
       <ImgContainer>
@@ -73,3 +73,5 @@ export const TeaRecommendation = ({ tea }: TeaRecommendationProps) => {
     </Wrapper>
   );
 };
+
+export default TeaRecommendation;

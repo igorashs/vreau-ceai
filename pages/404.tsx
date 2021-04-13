@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { withBaseLayout } from '@/layouts/BaseLayout';
+import withBaseLayout from '@/layouts/BaseLayout';
 
 export default function FourOhFour() {
   return (

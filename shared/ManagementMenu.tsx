@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { managementLinks } from '@/utils/links';
 import { useSession } from 'contexts/SessionContext';
-import { StyledLink } from './StyledLink';
-import { DropDownList } from './DropDownList';
+import StyledLink from './StyledLink';
+import DropDownList from './DropDownList';
 
 const Wrapper = styled.div`
   h4 {
@@ -17,7 +17,7 @@ const Wrapper = styled.div`
 
 const { users, orders, products, categories } = managementLinks;
 
-export const ManagementMenu = () => {
+const ManagementMenu = () => {
   const { user } = useSession();
 
   return (
@@ -68,3 +68,5 @@ export const ManagementMenu = () => {
     </Wrapper>
   );
 };
+
+export default ManagementMenu;

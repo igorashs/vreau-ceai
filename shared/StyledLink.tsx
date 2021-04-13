@@ -2,10 +2,10 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Button from './Button';
 
-interface StyledAProps {
+type StyledAProps = {
   accent?: 'light' | 'dark';
   underline?: boolean;
-}
+};
 
 const StyledA = styled.a<StyledAProps>`
   text-decoration: none;
@@ -31,7 +31,7 @@ const StyledA = styled.a<StyledAProps>`
   ${({ underline }) => `text-decoration: ${underline ? 'underline' : 'none'};`}
 `;
 
-interface StyledLinkProps {
+type StyledLinkProps = {
   href: string;
   label: string;
   text?: string;
@@ -41,9 +41,9 @@ interface StyledLinkProps {
   rel?: string;
   underline?: boolean;
   button?: boolean;
-}
+};
 
-export const StyledLink = ({
+const StyledLink = ({
   href,
   label,
   text = '',
@@ -75,3 +75,5 @@ export const StyledLink = ({
     )}
   </Link>
 );
+
+export default StyledLink;

@@ -1,4 +1,4 @@
-import { SessionAuth, verifySession } from '@/utils/verifySession';
+import verifySession, { SessionAuth } from '@/utils/verifySession';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { ApiResponse } from 'types';
 

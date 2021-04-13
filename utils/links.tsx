@@ -5,7 +5,7 @@ import EmailSvg from '@/icons/email.svg';
 import PackageSvg from '@/icons/package.svg';
 import BriefcaseSvg from '@/icons/briefcase.svg';
 
-interface Link {
+type Link = {
   href: string;
   text: string;
   label?: string;
@@ -14,7 +14,7 @@ interface Link {
   privatePath?: boolean;
   managementPath?: boolean;
   underline?: boolean;
-}
+};
 
 const linkFactory = ({
   href,

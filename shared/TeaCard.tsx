@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Image from 'next/image';
-import { StyledLink } from '@/shared/StyledLink';
+import StyledLink from '@/shared/StyledLink';
 import breakpoints from 'GlobalStyle/breakpoints';
 import { Product } from 'types';
 
@@ -63,12 +63,12 @@ const Actions = styled.div`
   }
 `;
 
-interface TeaCardProps {
+type TeaCardProps = {
   tea: Product;
   category: string;
-}
+};
 
-export const TeaCard = ({ tea, category }: TeaCardProps) => {
+const TeaCard = ({ tea, category }: TeaCardProps) => {
   return (
     <Wrapper>
       <ImgContainer>
@@ -93,3 +93,5 @@ export const TeaCard = ({ tea, category }: TeaCardProps) => {
     </Wrapper>
   );
 };
+
+export default TeaCard;

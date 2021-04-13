@@ -1,4 +1,4 @@
-import { withLayout as withPageLayout } from '@/layouts/Layout';
+import withPageLayout from '@/layouts/Layout';
 import Head from 'next/head';
 import App, { AppContext, AppProps } from 'next/app';
 import { SessionProvider } from 'contexts/SessionContext';
@@ -21,7 +21,11 @@ type MyAppProps = AppProps & {
   };
 };
 
-function MyApp({ Component, pageProps, initialSession }: MyAppProps) {
+export default function MyApp({
+  Component,
+  pageProps,
+  initialSession,
+}: MyAppProps) {
   const withLayout = Component.withLayout || withPageLayout;
   const [session, setSession] = useState(initialSession);
 
@@ -100,5 +104,3 @@ MyApp.getInitialProps = async (appContext: InitialProps) => {
   const appProps = await App.getInitialProps(appContext);
   return { ...appProps, initialSession: session };
 };
-
-export default MyApp;

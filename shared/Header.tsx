@@ -5,13 +5,13 @@ import MenuSvg from '@/icons/menu.svg';
 import breakpoints from 'GlobalStyle/breakpoints';
 import { useState, useEffect } from 'react';
 import { navLinks } from '@/utils/links';
-import { StyledLink } from '@/shared/StyledLink';
+import StyledLink from '@/shared/StyledLink';
 import { useSession } from 'contexts/SessionContext';
 import AccountSvg from 'assets/icons/account.svg';
 import LogoutSvg from '@/icons/logout.svg';
 import { logout } from 'services/ceaiApi';
 import { useRouter } from 'next/router';
-import { Container } from './Container';
+import Container from './Container';
 import Button from './Button';
 
 const Wrapper = styled.div`
@@ -29,9 +29,9 @@ const StyledHeader = styled.header`
   justify-items: end;
 `;
 
-interface NavProps {
+type NavProps = {
   hide?: boolean;
-}
+};
 
 const Nav = styled.nav<NavProps>`
   width: 100%;
@@ -96,7 +96,7 @@ const Account = styled(NavListItem)`
   color: var(--text-light);
 `;
 
-export const Header = () => {
+const Header = () => {
   const [isHidden, setIsHidden] = useState(true);
   const { isAuth, user } = useSession();
   const [links, setLinks] = useState(navLinks.public);
@@ -180,3 +180,5 @@ export const Header = () => {
     </Wrapper>
   );
 };
+
+export default Header;

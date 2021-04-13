@@ -1,23 +1,20 @@
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
 import { categorySchema } from '@/utils/validator/schemas/category';
-import { Form, FormAction } from '@/shared/Form';
-import { TextField } from '@/shared/TextField';
+import Form, { FormAction } from '@/shared/Form';
+import TextField from '@/shared/TextField';
 import Button from '@/shared/Button';
 import { useEffect } from 'react';
 import { Category, CategoryName, CategoryNameErrorDetail } from 'types';
 
-interface CategoryFormProps {
+type CategoryFormProps = {
   onCategorySubmit: (
     data: CategoryName,
   ) => Promise<CategoryNameErrorDetail[] | undefined>;
   category?: Category;
-}
+};
 
-export const CategoryForm = ({
-  onCategorySubmit,
-  category,
-}: CategoryFormProps) => {
+const CategoryForm = ({ onCategorySubmit, category }: CategoryFormProps) => {
   const {
     register,
     handleSubmit,
@@ -62,3 +59,5 @@ export const CategoryForm = ({
     </Form>
   );
 };
+
+export default CategoryForm;

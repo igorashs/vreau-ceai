@@ -29,19 +29,14 @@ const Info = styled.div`
   }
 `;
 
-interface ConsumerInfoProps {
+type ConsumerInfoProps = {
   name: string;
   email: string;
   tel: string;
   address: string;
-}
+};
 
-export const ConsumerInfo = ({
-  name,
-  email,
-  tel,
-  address,
-}: ConsumerInfoProps) => {
+const ConsumerInfo = ({ name, email, tel, address }: ConsumerInfoProps) => {
   return (
     <Wrapper>
       <Title>Consumator</Title>
@@ -64,3 +59,5 @@ export const ConsumerInfo = ({
     </Wrapper>
   );
 };
+
+export default ConsumerInfo;

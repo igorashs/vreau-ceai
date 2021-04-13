@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import Button from '@/shared/Button';
 import { useForm } from 'react-hook-form';
-import { Form, FormAction } from '@/shared/Form';
+import Form, { FormAction } from '@/shared/Form';
 import CheckBox from '@/shared/CheckBox';
 import { useEffect } from 'react';
-import { Label } from '@/shared/Label';
+import Label from '@/shared/Label';
 import { User, UserPermissions } from 'types';
 
 const UserData = styled.div`
@@ -15,12 +15,12 @@ const UserData = styled.div`
   border-bottom: 1px solid var(--layout);
 `;
 
-interface UserFormProps {
+type UserFormProps = {
   onUserSubmit: (data: UserPermissions) => void;
   user: User;
-}
+};
 
-export const UserForm = ({ onUserSubmit, user }: UserFormProps) => {
+const UserForm = ({ onUserSubmit, user }: UserFormProps) => {
   const { register, handleSubmit, reset } = useForm<UserPermissions>({
     mode: 'onChange',
     defaultValues: {
@@ -56,3 +56,5 @@ export const UserForm = ({ onUserSubmit, user }: UserFormProps) => {
     </Form>
   );
 };
+
+export default UserForm;

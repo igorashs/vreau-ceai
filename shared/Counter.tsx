@@ -30,16 +30,16 @@ const CountInput = styled.input`
   }
 `;
 
-interface CounterProps {
+type CounterProps = {
   count?: number;
   min?: number;
   max?: number;
   onChange: (value: string | number) => void;
   onDecrement?: (value: string | number) => void;
   onIncrement?: (value: string | number) => void;
-}
+};
 
-export const Counter = ({
+const Counter = ({
   count = 0,
   min = 0,
   max = Infinity,
@@ -83,3 +83,5 @@ export const Counter = ({
     </Wrapper>
   );
 };
+
+export default Counter;

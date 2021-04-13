@@ -6,13 +6,13 @@ import CategoryModel, {
 } from '@/models/Category';
 import ProductModel from '@/models/Product';
 import dbConnect from '@/utils/dbConnect';
-import { TeaCard } from '@/shared/TeaCard';
+import TeaCard from '@/shared/TeaCard';
 import breakpoints from 'GlobalStyle/breakpoints';
-import { Filter } from '@/shared/Filter';
-import { DropDownList } from '@/shared/DropDownList';
+import Filter from '@/shared/Filter';
+import DropDownList from '@/shared/DropDownList';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { StaticPagination } from '@/shared/StaticPagination';
+import StaticPagination from '@/shared/StaticPagination';
 import { GetServerSideProps } from 'next';
 import { Product } from 'types';
 import { getQueryElements } from '@/utils/getQueryElements';

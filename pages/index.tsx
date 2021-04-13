@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import Image from 'next/image';
 import Head from 'next/head';
-import { Container } from '@/shared/Container';
-import { StyledLink } from '@/shared/StyledLink';
+import Container from '@/shared/Container';
+import StyledLink from '@/shared/StyledLink';
 import { categoriesLink } from '@/utils/links';
 import breakpoints from 'GlobalStyle/breakpoints';
-import { Recommendation } from '@/shared/Recommendation';
+import Recommendation from '@/shared/Recommendation';
 
 const Hero = styled.div`
   position: relative;

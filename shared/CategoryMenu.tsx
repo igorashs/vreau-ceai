@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { getCategories } from 'services/ceaiApi';
 import { Category } from 'types';
-import { StyledLink } from './StyledLink';
-import { DropDownList } from './DropDownList';
+import StyledLink from './StyledLink';
+import DropDownList from './DropDownList';
 
 const Wrapper = styled.div`
   h5 {
@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export function CategoryMenu() {
+const CategoryMenu = () => {
   const [dbCategories, setDbCategories] = useState<Category[]>();
 
   useEffect(() => {
@@ -45,4 +45,6 @@ export function CategoryMenu() {
       )}
     </Wrapper>
   );
-}
+};
+
+export default CategoryMenu;

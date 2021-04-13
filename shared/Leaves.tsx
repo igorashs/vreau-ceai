@@ -9,15 +9,17 @@ const StyledFigure = styled.figure`
   justify-content: center;
 `;
 
-interface LeavesProps {
+type LeavesProps = {
   height?: string;
   width?: string;
-}
+};
 
-export const Leaves = ({ height = '112', width = '112' }: LeavesProps) => {
+const Leaves = ({ height = '112', width = '112' }: LeavesProps) => {
   return (
     <StyledFigure>
       <LeavesSvg height={height} width={width} />
     </StyledFigure>
   );
 };
+
+export default Leaves;

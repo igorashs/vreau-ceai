@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Label } from './Label';
+import Label from './Label';
 
 const Wrapper = styled.div`
   display: flex;
@@ -16,7 +16,7 @@ const StyledInput = styled.input`
   cursor: pointer;
 `;
 
-interface CheckBoxProps {
+type CheckBoxProps = {
   name: string;
   label: string;
   error?: boolean;
@@ -24,7 +24,7 @@ interface CheckBoxProps {
     | ((instance: HTMLInputElement) => void)
     | React.RefObject<HTMLInputElement>;
   id?: string;
-}
+};
 
 const CheckBox = ({
   name,

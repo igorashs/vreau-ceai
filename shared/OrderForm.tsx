@@ -1,22 +1,22 @@
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
 import { orderStatusSchema } from '@/utils/validator/schemas/order';
-import { Form, FormAction } from '@/shared/Form';
-import { Select } from '@/shared/Select';
+import Form, { FormAction } from '@/shared/Form';
+import Select from '@/shared/Select';
 import Button from '@/shared/Button';
 import { useEffect } from 'react';
 import { OrderStatus, OrderStatusErrorDetail } from 'types';
 
-interface OrderFormProps {
+type OrderFormProps = {
   onOrderSubmit: (
     data: OrderStatus,
   ) => Promise<OrderStatusErrorDetail[] | undefined>;
   order?: OrderStatus & {
     _id: string;
   };
-}
+};
 
-export const OrderForm = ({ onOrderSubmit, order }: OrderFormProps) => {
+const OrderForm = ({ onOrderSubmit, order }: OrderFormProps) => {
   const {
     register,
     handleSubmit,
@@ -67,3 +67,5 @@ export const OrderForm = ({ onOrderSubmit, order }: OrderFormProps) => {
     </Form>
   );
 };
+
+export default OrderForm;

@@ -1,6 +1,6 @@
 import { ProductFields } from 'types';
 
-export const getProductFormData = (data: ProductFields & { src: FileList }) => {
+const getProductFormData = (data: ProductFields & { src: FileList }) => {
   const formData = new FormData();
 
   Object.entries(data).forEach(([name, value]) => {
@@ -14,3 +14,5 @@ export const getProductFormData = (data: ProductFields & { src: FileList }) => {
 
   return formData;
 };
+
+export default getProductFormData;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Label } from './Label';
+import Label from './Label';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -30,7 +30,7 @@ const StyledInput = styled.input`
   }
 `;
 
-interface TextFieldProps {
+type TextFieldProps = {
   name: string;
   label: string;
   error?: string;
@@ -40,9 +40,9 @@ interface TextFieldProps {
   passRef?:
     | ((instance: HTMLInputElement) => void)
     | React.RefObject<HTMLInputElement>;
-}
+};
 
-export const TextField = ({
+const TextField = ({
   name,
   label,
   error = '',
@@ -66,3 +66,5 @@ export const TextField = ({
     </Wrapper>
   );
 };
+
+export default TextField;

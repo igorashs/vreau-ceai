@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Label } from './Label';
+import Label from './Label';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -20,7 +20,7 @@ const StyledTextarea = styled.textarea`
   resize: none;
 `;
 
-interface TextareaProps {
+type TextareaProps = {
   name: string;
   label: string;
   error?: string;
@@ -29,9 +29,9 @@ interface TextareaProps {
   passRef?:
     | ((instance: HTMLTextAreaElement) => void)
     | React.RefObject<HTMLTextAreaElement>;
-}
+};
 
-export const Textarea = ({
+const Textarea = ({
   name,
   label,
   error,
@@ -49,3 +49,5 @@ export const Textarea = ({
     </Wrapper>
   );
 };
+
+export default Textarea;

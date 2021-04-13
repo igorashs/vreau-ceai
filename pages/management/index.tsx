@@ -1,5 +1,5 @@
 import { withManagementStoreLayout } from '@/layouts/StoreLayout';
-import { Leaves } from '@/shared/Leaves';
+import Leaves from '@/shared/Leaves';
 import { withSessionServerSideProps } from '@/utils/withSession';
 import Head from 'next/head';
 

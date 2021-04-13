@@ -8,9 +8,9 @@ const itemStyle = css`
   border-bottom: 1px solid var(--layout);
 `;
 
-interface HideStyledProps {
+type HideStyledProps = {
   hide?: boolean;
-}
+};
 
 const Header = styled.div<HideStyledProps>`
   display: flex;
@@ -42,11 +42,11 @@ const List = styled.ul<HideStyledProps>`
   ${({ hide }) => hide && 'display: none;'}
 `;
 
-interface DropDownListProps {
+type DropDownListProps = {
   label: string;
-}
+};
 
-export const DropDownList = ({
+const DropDownList = ({
   label,
   children,
 }: React.PropsWithChildren<DropDownListProps>) => {
@@ -64,3 +64,5 @@ export const DropDownList = ({
     </div>
   );
 };
+
+export default DropDownList;

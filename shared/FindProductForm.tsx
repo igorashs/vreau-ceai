@@ -1,20 +1,18 @@
-import { TextField } from '@/shared/TextField';
+import TextField from '@/shared/TextField';
 import Button from '@/shared/Button';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
 import { nameSchema } from '@/utils/validator/schemas/product';
-import { Form, FormAction } from '@/shared/Form';
+import Form, { FormAction } from '@/shared/Form';
 import { ProductName, ProductNameErrorDetail } from 'types';
 
-interface FindProductFormProps {
+type FindProductFormProps = {
   onFindProductSubmit: (
     data: ProductName,
   ) => Promise<ProductNameErrorDetail[] | undefined>;
-}
+};
 
-export const FindProductForm = ({
-  onFindProductSubmit,
-}: FindProductFormProps) => {
+const FindProductForm = ({ onFindProductSubmit }: FindProductFormProps) => {
   const {
     register,
     handleSubmit,
@@ -51,3 +49,5 @@ export const FindProductForm = ({
     </Form>
   );
 };
+
+export default FindProductForm;

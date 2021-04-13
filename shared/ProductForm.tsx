@@ -1,16 +1,16 @@
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
 import { productSchema } from '@/utils/validator/schemas/product';
-import { Form, FormAction } from '@/shared/Form';
-import { TextField } from '@/shared/TextField';
+import Form, { FormAction } from '@/shared/Form';
+import TextField from '@/shared/TextField';
 import CheckBox from '@/shared/CheckBox';
 import Button from '@/shared/Button';
-import { Select } from '@/shared/Select';
-import { InputFile } from '@/shared/InputFile';
-import { Textarea } from '@/shared/Textarea';
+import Select from '@/shared/Select';
+import InputFile from '@/shared/InputFile';
+import Textarea from '@/shared/Textarea';
 import { useEffect } from 'react';
 import { Category, Product, ProductErrorDetail, ProductFields } from 'types';
-import { getProductFormData } from '@/utils/getProductFormData';
+import getProductFormData from '@/utils/getProductFormData';
 
 type ProductInputs = ProductFields & { src: FileList };
 
@@ -22,11 +22,11 @@ type ProductFormProps = {
   product?: Product;
 };
 
-export function ProductForm({
+const ProductForm = ({
   onProductSubmit,
   categories,
   product,
-}: ProductFormProps) {
+}: ProductFormProps) => {
   const {
     register,
     handleSubmit,
@@ -146,4 +146,6 @@ export function ProductForm({
       </FormAction>
     </Form>
   );
-}
+};
+
+export default ProductForm;

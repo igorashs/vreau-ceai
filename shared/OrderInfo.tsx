@@ -24,11 +24,11 @@ const Summary = styled.div`
   gap: calc(var(--baseline) / 2);
 `;
 
-interface OrderInfoProps {
+type OrderInfoProps = {
   order: Order;
-}
+};
 
-export const OrderInfo = ({ order }: OrderInfoProps) => {
+const OrderInfo = ({ order }: OrderInfoProps) => {
   return (
     <Wrapper>
       <List>
@@ -53,3 +53,5 @@ export const OrderInfo = ({ order }: OrderInfoProps) => {
     </Wrapper>
   );
 };
+
+export default OrderInfo;

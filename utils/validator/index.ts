@@ -17,9 +17,9 @@ import * as categoryValidation from './schemas/category';
 import * as productValidation from './schemas/product';
 import * as orderValidation from './schemas/order';
 
-interface Fields {
+type Fields = {
   [key: string]: string | string[];
-}
+};
 
 export const validateUserSignup = (user: UserSignup): Promise<UserSignup> =>
   userValidation.signupSchema.validateAsync(user);
@@ -55,10 +55,10 @@ export const validateOrderStatus = (
 ): Promise<OrderStatus> =>
   orderValidation.orderStatusSchema.validateAsync(status);
 
-interface ErrorMessage {
+type ErrorMessage = {
   message: string;
   key: string;
-}
+};
 
 export const createValidationError = ({
   message,

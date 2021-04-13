@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import breakpoints from 'GlobalStyle/breakpoints';
 import { footerBlockLinksList } from '@/utils/links';
-import { StyledLink } from '@/shared/StyledLink';
-import { Container } from './Container';
+import StyledLink from '@/shared/StyledLink';
+import Container from './Container';
 
 const Wrapper = styled.div`
   margin-top: calc(var(--baseline) * 2);
@@ -75,7 +75,7 @@ const Divider = styled.span`
   background-color: var(--layout-light);
 `;
 
-export function Footer() {
+const Footer = () => {
   return (
     <Wrapper>
       <Container>
@@ -113,4 +113,6 @@ export function Footer() {
       </Container>
     </Wrapper>
   );
-}
+};
+
+export default Footer;

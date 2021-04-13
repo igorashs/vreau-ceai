@@ -1,9 +1,9 @@
 import { withManagementStoreLayout } from '@/layouts/StoreLayout';
 import { withSessionServerSideProps } from '@/utils/withSession';
-import { Label } from '@/shared/Label';
+import Label from '@/shared/Label';
 import { useState, useEffect } from 'react';
 import { createProduct, getCategories } from 'services/ceaiApi';
-import { ProductForm } from '@/shared/ProductForm';
+import ProductForm from '@/shared/ProductForm';
 import Head from 'next/head';
 import { Category, LabelMessage } from 'types';
 

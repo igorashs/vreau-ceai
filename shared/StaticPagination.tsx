@@ -22,14 +22,14 @@ const Wrapper = styled.div`
   }
 `;
 
-interface StaticPaginationProps {
+type StaticPaginationProps = {
   min: number;
   max: number;
   currPage: number;
   onPageChange: (page: number) => void;
-}
+};
 
-export const StaticPagination = ({
+const StaticPagination = ({
   onPageChange,
   min,
   max,
@@ -63,3 +63,5 @@ export const StaticPagination = ({
     </Wrapper>
   );
 };
+
+export default StaticPagination;

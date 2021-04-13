@@ -7,12 +7,12 @@ import {
 } from 'react';
 import { Product } from 'types';
 
-interface Cart {
+type Cart = {
   items: { product: Product; count: number }[];
   itemsCount: number;
   totalPrice: number;
   updated: boolean;
-}
+};
 
 type ACTION_TYPE =
   | {
@@ -130,11 +130,10 @@ const CartProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     if (firstLoad.current) {
-      const cart = JSON.parse(localStorage.getItem('cart') || '');
+      const cart: Cart = JSON.parse(localStorage.getItem('cart') || '') ?? {};
       firstLoad.current = false;
 
-      if (cart)
-        dispatch({ type: 'update-cart', payload: { ...INITIAL, ...cart } });
+      dispatch({ type: 'update-cart', payload: { ...INITIAL, ...cart } });
     } else if (!state.updated) {
       localStorage.setItem('cart', JSON.stringify(state));
     }

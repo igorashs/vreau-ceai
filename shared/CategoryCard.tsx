@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import styled from 'styled-components';
-import { StyledLink } from '@/shared/StyledLink';
+import StyledLink from '@/shared/StyledLink';
 
 const Wrapper = styled.div`
   display: grid;
@@ -33,14 +33,14 @@ const Label = styled.p`
   background-color: var(--accent-dark);
 `;
 
-interface CategoryCardProps {
+type CategoryCardProps = {
   category: {
     name: string;
     src: string;
   };
-}
+};
 
-export const CategoryCard = ({ category }: CategoryCardProps) => {
+const CategoryCard = ({ category }: CategoryCardProps) => {
   return (
     <StyledLink href={`/categories/${category.name}`} label="vedeți categoria">
       <Wrapper>
@@ -59,3 +59,5 @@ export const CategoryCard = ({ category }: CategoryCardProps) => {
     </StyledLink>
   );
 };
+
+export default CategoryCard;

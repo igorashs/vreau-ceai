@@ -8,8 +8,8 @@ import Image from 'next/image';
 import Button from '@/shared/Button';
 import { useState } from 'react';
 import { useCartDispatch } from 'contexts/CartContext';
-import { Counter } from '@/shared/Counter';
-import { Label } from '@/shared/Label';
+import Counter from '@/shared/Counter';
+import Label from '@/shared/Label';
 import { GetServerSideProps } from 'next';
 import { LabelMessage, Product as ProductType } from 'types';
 

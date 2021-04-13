@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Label } from '@/shared/Label';
+import Label from '@/shared/Label';
 
 const Wrapper = styled.div`
   display: flex;
@@ -7,9 +7,9 @@ const Wrapper = styled.div`
   gap: 7px;
 `;
 
-interface StyledInputFileProps {
+type StyledInputFileProps = {
   fullWidth?: boolean;
-}
+};
 
 const StyledInputFile = styled.label<StyledInputFileProps>`
   align-self: flex-start;
@@ -35,7 +35,7 @@ const Input = styled.input`
   display: none;
 `;
 
-interface InputFileProps {
+type InputFileProps = {
   name: string;
   label: string;
   error?: string;
@@ -45,9 +45,9 @@ interface InputFileProps {
   id?: string;
   accept?: string;
   fullWidth?: boolean;
-}
+};
 
-export const InputFile = ({
+const InputFile = ({
   name,
   label,
   error,
@@ -69,3 +69,5 @@ export const InputFile = ({
     </Wrapper>
   );
 };
+
+export default InputFile;

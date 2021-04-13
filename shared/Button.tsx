@@ -1,10 +1,10 @@
 import styled, { css } from 'styled-components';
 
-interface ButtonProps {
+type ButtonProps = {
   btnStyle?: 'danger' | 'none' | 'danger-text' | 'accent-text' | 'dark-text';
   icon?: boolean;
   noPadding?: boolean;
-}
+};
 
 export const buttonStyle = css`
   padding: calc(var(--baseline) / 4) calc(var(--baseline) / 2);

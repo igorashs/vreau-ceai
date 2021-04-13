@@ -1,18 +1,18 @@
-import { TextField } from '@/shared/TextField';
+import TextField from '@/shared/TextField';
 import Button from '@/shared/Button';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
 import { emailSchema } from '@/utils/validator/schemas/user';
-import { Form, FormAction } from '@/shared/Form';
+import Form, { FormAction } from '@/shared/Form';
 import { UserEmail, UserEmailErrorDetail } from 'types';
 
-interface FindUserFormProps {
+type FindUserFormProps = {
   onFindUserSubmit: (
     data: UserEmail,
   ) => Promise<UserEmailErrorDetail[] | undefined>;
-}
+};
 
-export function FindUserForm({ onFindUserSubmit }: FindUserFormProps) {
+const FindUserForm = ({ onFindUserSubmit }: FindUserFormProps) => {
   const {
     register,
     handleSubmit,
@@ -48,4 +48,6 @@ export function FindUserForm({ onFindUserSubmit }: FindUserFormProps) {
       </FormAction>
     </Form>
   );
-}
+};
+
+export default FindUserForm;

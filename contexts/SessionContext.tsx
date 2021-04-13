@@ -3,9 +3,9 @@ import { UserSession } from 'types';
 
 const SessionContext = createContext<UserSession>({} as UserSession);
 
-interface SessionProviderProps {
+type SessionProviderProps = {
   session: UserSession;
-}
+};
 
 const SessionProvider = ({
   children,

@@ -1,14 +1,14 @@
-import { withBaseLayout } from '@/layouts/BaseLayout';
+import withBaseLayout from '@/layouts/BaseLayout';
 import Head from 'next/head';
-import { DropDown } from '@/shared/DropDown';
+import DropDown from '@/shared/DropDown';
 import { useState, useEffect } from 'react';
-import { DropDownList } from '@/shared/DropDownList';
+import DropDownList from '@/shared/DropDownList';
 import styled from 'styled-components';
 import { getUserOrders, deleteOrder } from 'services/ceaiApi';
-import { OrderInfo } from '@/shared/OrderInfo';
-import { Label } from '@/shared/Label';
-import { Filter } from '@/shared/Filter';
-import { Pagination } from '@/shared/Pagination';
+import OrderInfo from '@/shared/OrderInfo';
+import Label from '@/shared/Label';
+import Filter from '@/shared/Filter';
+import Pagination from '@/shared/Pagination';
 import { withSessionServerSideProps } from '@/utils/withSession';
 import { LabelMessage, Order } from 'types';
 

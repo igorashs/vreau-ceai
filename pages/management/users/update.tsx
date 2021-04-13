@@ -1,11 +1,11 @@
 import { withManagementStoreLayout } from '@/layouts/StoreLayout';
 import { findUser, updateUserManagerPermission } from 'services/ceaiApi';
 import { useState } from 'react';
-import { Label } from '@/shared/Label';
+import Label from '@/shared/Label';
 import { withSessionServerSideProps } from '@/utils/withSession';
 import Head from 'next/head';
-import { FindUserForm } from '@/shared/FindUserForm';
-import { UserForm } from '@/shared/UserForm';
+import FindUserForm from '@/shared/FindUserForm';
+import UserForm from '@/shared/UserForm';
 import { LabelMessage, User, UserEmail, UserPermissions } from 'types';
 
 export default function Update() {

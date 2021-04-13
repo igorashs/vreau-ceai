@@ -1,10 +1,10 @@
-import { withBaseLayout } from '@/layouts/BaseLayout';
+import withBaseLayout from '@/layouts/BaseLayout';
 import Head from 'next/head';
 import { useCart } from 'contexts/CartContext';
-import { DropDown } from '@/shared/DropDown';
+import DropDown from '@/shared/DropDown';
 import Button from '@/shared/Button';
 import styled from 'styled-components';
-import { Counter } from '@/shared/Counter';
+import Counter from '@/shared/Counter';
 import { useSession } from 'contexts/SessionContext';
 import { useRouter } from 'next/router';
 

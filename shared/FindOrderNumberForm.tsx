@@ -1,18 +1,18 @@
-import { TextField } from '@/shared/TextField';
+import TextField from '@/shared/TextField';
 import Button from '@/shared/Button';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
 import { orderNumberSchema } from '@/utils/validator/schemas/order';
-import { Form, FormAction } from '@/shared/Form';
+import Form, { FormAction } from '@/shared/Form';
 import { OrderNumber, OrderNumberErrorDetail } from 'types';
 
-interface FindOrderNumberFormProps {
+type FindOrderNumberFormProps = {
   onFindOrderSubmit: (
     data: OrderNumber,
   ) => Promise<OrderNumberErrorDetail[] | undefined>;
-}
+};
 
-export const FindOrderNumberForm = ({
+const FindOrderNumberForm = ({
   onFindOrderSubmit,
 }: FindOrderNumberFormProps) => {
   const {
@@ -51,3 +51,5 @@ export const FindOrderNumberForm = ({
     </Form>
   );
 };
+
+export default FindOrderNumberForm;

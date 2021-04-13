@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import breakpoints from 'GlobalStyle/breakpoints';
 
-export const Container = styled.div`
+const Container = styled.div`
   /* mobile first */
   @media (min-width: ${breakpoints.sm}) {
     width: 540px;
@@ -29,3 +29,5 @@ export const Container = styled.div`
     padding: 0 15px;
   }
 `;
+
+export default Container;

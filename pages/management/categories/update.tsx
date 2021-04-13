@@ -1,12 +1,12 @@
 import { withManagementStoreLayout } from '@/layouts/StoreLayout';
 import { useState } from 'react';
-import { Label } from '@/shared/Label';
+import Label from '@/shared/Label';
 import { withSessionServerSideProps } from '@/utils/withSession';
 import Head from 'next/head';
-import { DropDown } from '@/shared/DropDown';
+import DropDown from '@/shared/DropDown';
 import { findCategory, updateCategory, deleteCategory } from 'services/ceaiApi';
-import { CategoryForm } from '@/shared/CategoryForm';
-import { FindCategoryForm } from '@/shared/FindCategoryForm';
+import CategoryForm from '@/shared/CategoryForm';
+import FindCategoryForm from '@/shared/FindCategoryForm';
 import { Category, CategoryName, LabelMessage } from 'types';
 
 export default function Update() {

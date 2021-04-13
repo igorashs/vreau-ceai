@@ -23,13 +23,13 @@ const Wrapper = styled.div`
   }
 `;
 
-interface PaginationProps {
+type PaginationProps = {
   min: number;
   max: number;
   onPageChange: (page: number) => void;
-}
+};
 
-export const Pagination = ({ onPageChange, min, max }: PaginationProps) => {
+const Pagination = ({ onPageChange, min, max }: PaginationProps) => {
   const [page, setPage] = useState(min);
 
   useEffect(() => {
@@ -64,3 +64,5 @@ export const Pagination = ({ onPageChange, min, max }: PaginationProps) => {
     </Wrapper>
   );
 };
+
+export default Pagination;

@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import ArrowSvg from 'assets/icons/arrow.svg';
-import { Label } from '@/shared/Label';
+import Label from '@/shared/Label';
 
-interface SelectWrapperProps {
+type SelectWrapperProps = {
   fullWidth?: boolean;
-}
+};
 
 const Wrapper = styled.div`
   display: flex;
@@ -50,7 +50,7 @@ const StyledSvg = styled(ArrowSvg)`
   pointer-events: none;
 `;
 
-interface SelectProps {
+type SelectProps = {
   name: string;
   label: string;
   error?: string;
@@ -60,9 +60,9 @@ interface SelectProps {
   passRef?:
     | ((instance: HTMLSelectElement) => void)
     | React.RefObject<HTMLSelectElement>;
-}
+};
 
-export const Select = ({
+const Select = ({
   name,
   label,
   error,
@@ -86,3 +86,5 @@ export const Select = ({
     </Wrapper>
   );
 };
+
+export default Select;

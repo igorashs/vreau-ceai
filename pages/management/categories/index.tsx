@@ -1,16 +1,16 @@
 import styled from 'styled-components';
 import { withManagementStoreLayout } from '@/layouts/StoreLayout';
 import { withSessionServerSideProps } from '@/utils/withSession';
-import { DropDown } from '@/shared/DropDown';
+import DropDown from '@/shared/DropDown';
 import {
   getCategories,
   updateCategory,
   deleteCategory,
 } from 'services/ceaiApi';
 import { useState, useEffect } from 'react';
-import { Label } from '@/shared/Label';
+import Label from '@/shared/Label';
 import Head from 'next/head';
-import { CategoryForm } from '@/shared/CategoryForm';
+import CategoryForm from '@/shared/CategoryForm';
 import { Category, CategoryName, LabelMessage } from 'types';
 
 const List = styled.ul`

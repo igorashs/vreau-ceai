@@ -1,20 +1,18 @@
-import { TextField } from '@/shared/TextField';
+import TextField from '@/shared/TextField';
 import Button from '@/shared/Button';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
 import { categorySchema } from '@/utils/validator/schemas/category';
-import { Form, FormAction } from '@/shared/Form';
+import Form, { FormAction } from '@/shared/Form';
 import { CategoryName, CategoryNameErrorDetail } from 'types';
 
-interface FindCategoryFormProps {
+type FindCategoryFormProps = {
   onFindCategorySubmit: (
     data: CategoryName,
   ) => Promise<CategoryNameErrorDetail[] | undefined>;
-}
+};
 
-export const FindCategoryForm = ({
-  onFindCategorySubmit,
-}: FindCategoryFormProps) => {
+const FindCategoryForm = ({ onFindCategorySubmit }: FindCategoryFormProps) => {
   const {
     register,
     handleSubmit,
@@ -51,3 +49,5 @@ export const FindCategoryForm = ({
     </Form>
   );
 };
+
+export default FindCategoryForm;

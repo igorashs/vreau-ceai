@@ -6,7 +6,7 @@ import CategoryModel, {
 } from '@/models/Category';
 import { Product } from '@/models/Product';
 import dbConnect from '@/utils/dbConnect';
-import { CategoryCard } from '@/shared/CategoryCard';
+import CategoryCard from '@/shared/CategoryCard';
 import breakpoints from 'GlobalStyle/breakpoints';
 import { Category } from 'types';
 

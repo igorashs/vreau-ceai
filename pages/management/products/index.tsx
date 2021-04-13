@@ -8,12 +8,12 @@ import {
   deleteProduct,
 } from 'services/ceaiApi';
 import { useState, useEffect } from 'react';
-import { ProductForm } from '@/shared/ProductForm';
-import { DropDown } from '@/shared/DropDown';
-import { DropDownList } from '@/shared/DropDownList';
-import { Label } from '@/shared/Label';
-import { Filter } from '@/shared/Filter';
-import { Pagination } from '@/shared/Pagination';
+import ProductForm from '@/shared/ProductForm';
+import DropDown from '@/shared/DropDown';
+import DropDownList from '@/shared/DropDownList';
+import Label from '@/shared/Label';
+import Filter from '@/shared/Filter';
+import Pagination from '@/shared/Pagination';
 import Head from 'next/head';
 import { Category, LabelMessage, Product } from 'types';
 

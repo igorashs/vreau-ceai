@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { TeaRecommendation } from '@/shared/TeaRecommendation';
+import TeaRecommendation from '@/shared/TeaRecommendation';
 import breakpoints from 'GlobalStyle/breakpoints';
 import { useState, useEffect } from 'react';
 import { getRecommendedProducts } from 'services/ceaiApi';
@@ -20,7 +20,7 @@ const List = styled.ul`
   }
 `;
 
-export const Recommendation = () => {
+const Recommendation = () => {
   const [products, setProducts] = useState<ProductWithCategory[]>();
 
   useEffect(() => {
@@ -49,3 +49,5 @@ export const Recommendation = () => {
     </>
   );
 };
+
+export default Recommendation;

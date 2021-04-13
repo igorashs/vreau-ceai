@@ -19,9 +19,9 @@ const Header = styled.div`
   gap: calc(var(--baseline) / 2);
 `;
 
-interface HideStyledProps {
+type HideStyledProps = {
   hide?: boolean;
-}
+};
 
 const Action = styled.div<HideStyledProps>`
   flex: 1;
@@ -41,7 +41,7 @@ const Body = styled.div<HideStyledProps>`
   ${({ hide }) => hide && 'display: none;'}
 `;
 
-interface DropDownProps {
+type DropDownProps = {
   title: string;
   label?: string;
   showInitial?: boolean;
@@ -49,9 +49,9 @@ interface DropDownProps {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => void;
   customHeading?: React.ReactElement;
-}
+};
 
-export const DropDown = ({
+const DropDown = ({
   title,
   label,
   onDeleteClick,
@@ -85,3 +85,5 @@ export const DropDown = ({
     </Wrapper>
   );
 };
+
+export default DropDown;

@@ -1,17 +1,17 @@
 import { withManagementStoreLayout } from '@/layouts/StoreLayout';
 import { withSessionServerSideProps } from '@/utils/withSession';
-import { Label } from '@/shared/Label';
+import Label from '@/shared/Label';
 import { useState, useEffect } from 'react';
-import { DropDown } from '@/shared/DropDown';
-import { DropDownList } from '@/shared/DropDownList';
+import DropDown from '@/shared/DropDown';
+import DropDownList from '@/shared/DropDownList';
 import Head from 'next/head';
 import { getOrders, updateOrder, deleteOrder } from 'services/ceaiApi';
-import { OrderInfo } from '@/shared/OrderInfo';
-import { ConsumerInfo } from '@/shared/ConsumerInfo';
+import OrderInfo from '@/shared/OrderInfo';
+import ConsumerInfo from '@/shared/ConsumerInfo';
 import styled from 'styled-components';
-import { Filter } from '@/shared/Filter';
-import { Pagination } from '@/shared/Pagination';
-import { OrderForm } from '@/shared/OrderForm';
+import Filter from '@/shared/Filter';
+import Pagination from '@/shared/Pagination';
+import OrderForm from '@/shared/OrderForm';
 import { LabelMessage, Order, OrderStatus } from 'types';
 
 const OrderWrapper = styled.div`
