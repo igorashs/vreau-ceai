@@ -8,9 +8,9 @@ import { getUserOrders, deleteOrder } from 'services/ceaiApi';
 import OrderInfo from '@/shared/OrderInfo';
 import Label from '@/shared/Label';
 import Filter from '@/shared/Filter';
-import Pagination from '@/shared/Pagination';
 import { withSessionServerSideProps } from '@/utils/withSession';
 import { LabelMessage, Order } from 'types';
+import Pagination from '@/shared/Pagination';
 
 const List = styled.ul`
   margin: var(--baseline) 0;
@@ -52,27 +52,28 @@ const ORDERS_PER_PAGE = 3;
 export default function MyOrders() {
   const [filters, setFilters] = useState(new Set<string>());
   const [dbOrders, setDbOrders] = useState<Order[]>([]);
-  const [label, setLabel] = useState<LabelMessage | null>();
-  const [totalPages, setTotalPages] = useState<number>(0);
+  const [label, setLabel] = useState<LabelMessage>();
+  const [totalPages, setTotalPages] = useState(0);
+  const [currPage, setCurrPage] = useState(0);
+
+  const fetchUserOrderList = async () => {
+    const res = await getUserOrders([...filters], ORDERS_PER_PAGE);
+
+    if (res.success) {
+      setDbOrders(res.orders);
+      setTotalPages(Math.ceil(res.count / ORDERS_PER_PAGE));
+      setCurrPage(0);
+    } else {
+      setDbOrders([]);
+      setLabel({
+        success: false,
+        message: 'Nu au fost găsit nicio comandă',
+      });
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await getUserOrders([...filters], ORDERS_PER_PAGE);
-
-      if (res.success) {
-        setDbOrders(res.orders);
-        setTotalPages(Math.ceil(res.count / ORDERS_PER_PAGE));
-        setLabel(null);
-      } else {
-        setDbOrders([]);
-        setLabel({
-          success: false,
-          message: 'Nu au fost găsit nicio comandă',
-        });
-      }
-    };
-
-    fetchData();
+    fetchUserOrderList();
   }, [filters]);
 
   const handlePageChange = async (pageNumber: number) => {
@@ -85,6 +86,7 @@ export default function MyOrders() {
 
       if (res.success) {
         setDbOrders(res.orders);
+        setCurrPage(pageNumber);
       } else {
         setLabel({
           success: false,
@@ -99,9 +101,7 @@ export default function MyOrders() {
 
     if (res.success) {
       setLabel({ success: true, message: 'Comanda a fost ștearsă' });
-      setDbOrders((prev) =>
-        prev.length > 1 ? prev.filter((o) => o._id !== id) : [],
-      );
+      fetchUserOrderList();
     } else {
       setLabel({ success: false, message: 'Comanda nu a fost ștearsă :(' });
     }
@@ -167,11 +167,14 @@ export default function MyOrders() {
               ))}
             </List>
 
-            <Pagination
-              onPageChange={handlePageChange}
-              min={0}
-              max={totalPages - 1}
-            />
+            {!!totalPages && (
+              <Pagination
+                onPageChange={handlePageChange}
+                currPage={currPage}
+                min={0}
+                max={totalPages - 1}
+              />
+            )}
           </>
         )}
       </Wrapper>

@@ -12,7 +12,7 @@ import Filter from '@/shared/Filter';
 import DropDownList from '@/shared/DropDownList';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import StaticPagination from '@/shared/StaticPagination';
+import Pagination from '@/shared/Pagination';
 import { GetServerSideProps } from 'next';
 import { Product } from 'types';
 import { getQueryElements } from '@/utils/getQueryElements';
@@ -143,7 +143,7 @@ export default function Category({
       </List>
 
       {totalPages && (
-        <StaticPagination
+        <Pagination
           onPageChange={handlePageChange}
           currPage={currPage - 1}
           min={0}

@@ -13,9 +13,9 @@ import DropDown from '@/shared/DropDown';
 import DropDownList from '@/shared/DropDownList';
 import Label from '@/shared/Label';
 import Filter from '@/shared/Filter';
-import Pagination from '@/shared/Pagination';
 import Head from 'next/head';
 import { Category, LabelMessage, Product } from 'types';
+import Pagination from '@/shared/Pagination';
 
 const List = styled.ul`
   margin: var(--baseline) 0;
@@ -51,6 +51,23 @@ export default function Products() {
   const [dbCategories, setDbCategories] = useState<Category[]>([]);
   const [label, setLabel] = useState<LabelMessage>();
   const [totalPages, setTotalPages] = useState(0);
+  const [currPage, setCurrPage] = useState(0);
+
+  const fetchProductList = async () => {
+    const res = await getProducts([...filters], PRODUCTS_PER_PAGE);
+
+    if (res.success) {
+      setDbProducts(res.products);
+      setTotalPages(Math.ceil(res.count / PRODUCTS_PER_PAGE));
+      setCurrPage(0);
+    } else {
+      setDbProducts([]);
+      setLabel({
+        success: false,
+        message: 'Nu au fost găsit niciun produs',
+      });
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,6 +91,7 @@ export default function Products() {
 
       if (res.success) {
         setDbProducts(res.products);
+        setCurrPage(pageNumber);
       } else {
         setLabel({
           success: false,
@@ -84,22 +102,7 @@ export default function Products() {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await getProducts([...filters], PRODUCTS_PER_PAGE);
-
-      if (res.success) {
-        setDbProducts(res.products);
-        setTotalPages(Math.ceil(res.count / PRODUCTS_PER_PAGE));
-      } else {
-        setDbProducts([]);
-        setLabel({
-          success: false,
-          message: 'Nu au fost găsit niciun produs',
-        });
-      }
-    };
-
-    fetchData();
+    fetchProductList();
   }, [filters]);
 
   const handleProductSubmit = async (id: string, data: FormData) => {
@@ -122,9 +125,7 @@ export default function Products() {
 
     if (res.success) {
       setLabel({ success: true, message: 'Produsul a fost șters' });
-      setDbProducts((prev) =>
-        prev.length > 1 ? prev.filter((p) => p._id !== id) : [],
-      );
+      fetchProductList();
     } else {
       setLabel({ success: false, message: 'Produsul nu a fost șters :(' });
     }
@@ -189,11 +190,14 @@ export default function Products() {
             ))}
           </List>
 
-          <Pagination
-            onPageChange={handlePageChange}
-            min={0}
-            max={totalPages - 1}
-          />
+          {!!totalPages && (
+            <Pagination
+              onPageChange={handlePageChange}
+              currPage={currPage}
+              min={0}
+              max={totalPages - 1}
+            />
+          )}
         </>
       )}
     </>
