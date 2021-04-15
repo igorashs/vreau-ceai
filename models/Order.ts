@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import mongoose, { Document } from 'mongoose';
 
 export interface Order extends Document {
