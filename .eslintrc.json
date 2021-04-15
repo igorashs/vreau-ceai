@@ -1,9 +1,32 @@
 {
   "env": {
     "browser": true,
-    "es2021": true
+    "es2021": true,
+    "node": true
   },
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "settings": {
+    "react": "detect",
+    "import/resolver": {
+      "node": {
+        "extensions": [".mjs", ".js", ".json", ".jsx", ".ts", ".tsx"]
+      },
+      "alias": [
+        ["@/layouts", "./shared/layouts"],
+        ["@/icons", "./assets/icons"],
+        ["@/shared", "./shared"],
+        ["@/utils", "./utils"],
+        ["@/models", "./models"]
+      ],
+      "typescript": { "directory": "." }
+    },
+    "import/extensions": [".js", ".jsx", ".ts", ".tsx"]
+  },
+  "extends": [
+    "plugin:react/recommended",
+    "airbnb",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -11,11 +34,40 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react"],
+  "plugins": ["react", "@typescript-eslint"],
   "rules": {
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
     "react/react-in-jsx-scope": "off",
-    "react/prop-types": "false",
-    "no-unused-vars": "warn"
+    "react/prop-types": 0,
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error",
+    "react/require-default-props": "off",
+    "no-underscore-dangle": "off",
+    "jsx-a11y/anchor-is-valid": [
+      "error",
+      {
+        "components": ["Link"],
+        "specialLink": ["hrefLeft", "hrefRight"],
+        "aspects": ["invalidHref", "preferButton"]
+      }
+    ],
+    "camelcase": "off",
+    "react/jsx-props-no-spreading": 0,
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    ]
   },
   "globals": {
     "React": "writable"
