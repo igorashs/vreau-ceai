@@ -4,7 +4,7 @@ module.exports = {
   modulePaths: ['<rootDir>'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   moduleNameMapper: {
-    '\\.svg$': '<rootDir>/__mocks__/svgrMock.ts',
+    '\\.svg$': '<rootDir>/test/__mocks__/svgrMock.ts',
     '@/icons/(.*)': '<rootDir>/assets/icons/$1',
     '@/layouts/(.*)': '<rootDir>/shared/layouts/$1',
     '@/shared/(.*)': '<rootDir>/shared/$1',
