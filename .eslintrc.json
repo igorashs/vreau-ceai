@@ -2,7 +2,8 @@
   "env": {
     "browser": true,
     "es2021": true,
-    "node": true
+    "node": true,
+    "jest": true
   },
   "settings": {
     "react": "detect",
@@ -34,7 +35,7 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint"],
+  "plugins": ["react", "jest", "jest-dom", "@typescript-eslint"],
   "rules": {
     "import/extensions": [
       "error",
@@ -62,6 +63,10 @@
     ],
     "camelcase": "off",
     "react/jsx-props-no-spreading": 0,
+    "import/no-extraneous-dependencies": [
+      "error",
+      { "devDependencies": ["**/*.spec.tsx", "**/test-utils.tsx"] }
+    ],
     "react/jsx-filename-extension": [
       1,
       {
