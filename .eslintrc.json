@@ -35,7 +35,7 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react", "jest", "jest-dom", "@typescript-eslint"],
+  "plugins": ["react", "jest-dom", "@typescript-eslint"],
   "rules": {
     "import/extensions": [
       "error",
