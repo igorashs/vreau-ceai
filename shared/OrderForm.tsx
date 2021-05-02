@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
+import { joiResolver } from '@hookform/resolvers/joi';
 import { orderStatusSchema } from '@/utils/validator/schemas/order';
 import Form, { FormAction } from '@/shared/Form';
 import Select from '@/shared/Select';

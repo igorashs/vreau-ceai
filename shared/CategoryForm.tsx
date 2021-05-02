@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
+import { joiResolver } from '@hookform/resolvers/joi';
 import { categorySchema } from '@/utils/validator/schemas/category';
 import Form, { FormAction } from '@/shared/Form';
 import TextField from '@/shared/TextField';
