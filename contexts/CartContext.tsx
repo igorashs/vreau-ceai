@@ -130,7 +130,7 @@ const CartProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     if (firstLoad.current) {
-      const cart: Cart = JSON.parse(localStorage.getItem('cart') || '') ?? {};
+      const cart: Cart = JSON.parse(localStorage.getItem('cart') || '{}');
       firstLoad.current = false;
 
       dispatch({ type: 'update-cart', payload: { ...INITIAL, ...cart } });
