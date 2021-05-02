@@ -3,6 +3,7 @@ module.exports = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'json', 'jsx'],
   modulePaths: ['<rootDir>'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/'],
   moduleNameMapper: {
     '\\.svg$': '<rootDir>/test/__mocks__/svgrMock.ts',
     '@/icons/(.*)': '<rootDir>/assets/icons/$1',
