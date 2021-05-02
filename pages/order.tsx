@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Form, { FormAction } from '@/shared/Form';
 import { withSessionServerSideProps } from '@/utils/withSession';
 import { useForm } from 'react-hook-form';
-import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
+import { joiResolver } from '@hookform/resolvers/joi';
 import { orderSubmitSchema } from '@/utils/validator/schemas/order';
 import TextField from '@/shared/TextField';
 import Button from '@/shared/Button';

@@ -1,7 +1,7 @@
 import TextField from '@/shared/TextField';
 import Button from '@/shared/Button';
 import { useForm } from 'react-hook-form';
-import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
+import { joiResolver } from '@hookform/resolvers/joi';
 import { nameSchema } from '@/utils/validator/schemas/product';
 import Form, { FormAction } from '@/shared/Form';
 import { ProductName, ProductNameErrorDetail } from 'types';

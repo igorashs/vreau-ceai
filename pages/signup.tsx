@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import breakpoints from 'GlobalStyle/breakpoints';
 import withBaseLayout from '@/layouts/BaseLayout';
 import { useForm } from 'react-hook-form';
-import { joiResolver } from '@hookform/resolvers/dist/ie11/joi';
+import { joiResolver } from '@hookform/resolvers/joi';
 import { signupSchema } from '@/utils/validator/schemas/user';
 import Button from '@/shared/Button';
 import StyledLink from '@/shared/StyledLink';
