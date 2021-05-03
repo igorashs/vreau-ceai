@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConsumerInfo renders correctly 1`] = `
+.c0 {
+  display: grid;
+  gap: 7px;
+  padding-top: 7px;
+  border-top: 1px solid var(--layout);
+}
+
+.c1 {
+  font-weight: 500;
+}
+
+.c3 {
+  font-weight: 500;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: 7px;
+}
+
+.c2 svg {
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+<div
+  class="c0"
+>
+  <p
+    class="c1"
+  >
+    Consumator
+  </p>
+  <div
+    class="c2"
+  >
+    <svg />
+    <small
+      class="c3"
+    >
+      qwerty
+    </small>
+  </div>
+  <div
+    class="c2"
+  >
+    <svg />
+    <small
+      class="c3"
+    >
+      1@1.com
+    </small>
+  </div>
+  <div
+    class="c2"
+  >
+    <svg />
+    <small
+      class="c3"
+    >
+      061111111
+    </small>
+  </div>
+  <div
+    class="c2"
+  >
+    <svg />
+    <small
+      class="c3"
+    >
+      add1
+    </small>
+  </div>
+</div>
+`;
