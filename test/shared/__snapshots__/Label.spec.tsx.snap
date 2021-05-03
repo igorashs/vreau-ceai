@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Label renders correctly 1`] = `
+.c0 {
+  font-weight: 500;
+}
+
+<label
+  class="c0"
+>
+  heyo
+</label>
+`;

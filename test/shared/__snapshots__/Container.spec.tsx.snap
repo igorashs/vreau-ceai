@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Container renders correctly 1`] = `
+@media (min-width:576px) {
+  .c0 {
+    width: 540px;
+    max-width: 540px;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width:768px) {
+  .c0 {
+    width: 720px;
+    max-width: 720px;
+  }
+}
+
+@media (min-width:992px) {
+  .c0 {
+    width: 960px;
+    max-width: 960px;
+  }
+}
+
+@media (min-width:1200px) {
+  .c0 {
+    width: 1140px;
+    max-width: 1140px;
+  }
+}
+
+@media (max-width:576px) {
+  .c0 {
+    width: 100%;
+    padding: 0 15px;
+  }
+}
+
+<div
+  class="c0"
+>
+  content
+</div>
+`;
