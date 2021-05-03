@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CheckBox renders correctly 1`] = `
+.c1 {
+  font-weight: 500;
+  color: var(--accent-text-dark);
+  font-weight: 400;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: 7px;
+}
+
+.c2 {
+  margin: 0;
+  width: 16px;
+  height: 16px;
+  -webkit-order: -1;
+  -ms-flex-order: -1;
+  order: -1;
+  cursor: pointer;
+}
+
+<div
+  class="c0"
+>
+  <label
+    class="c1"
+    for="checkbox"
+  >
+    checkbox label
+  </label>
+  <input
+    class="c2"
+    id="checkbox"
+    name="checkbox"
+    type="checkbox"
+  />
+</div>
+`;
