@@ -50,6 +50,7 @@
     "react/react-in-jsx-scope": "off",
     "react/prop-types": 0,
     "no-unused-vars": "off",
+    "no-use-before-define": "off",
     "@typescript-eslint/no-unused-vars": "error",
     "react/require-default-props": "off",
     "no-underscore-dangle": "off",
