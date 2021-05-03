@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TextField renders correctly 1`] = `
+.c1 {
+  font-weight: 500;
+}
+
+.c0 {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.c2 {
+  width: 100%;
+  background-color: var(--input);
+  border: 1px solid var(--layout-dark);
+  border-radius: 4px;
+  padding: calc(var(--baseline) / 4) 0 calc(var(--baseline) / 4) calc(var(--baseline) / 2);
+  color: var(--text-dark);
+}
+
+.c2::-webkit-outer-spin-button,
+.c2::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.c2[type='number'] {
+  -moz-appearance: textfield;
+}
+
+<div
+  class="c0"
+>
+  <label
+    class="c1"
+    for="field"
+  >
+    field label
+  </label>
+  <input
+    class="c2"
+    id="field"
+    name="field"
+    placeholder="text field"
+    type="text"
+  />
+</div>
+`;
