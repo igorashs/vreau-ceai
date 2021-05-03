@@ -19,7 +19,7 @@ const StyledInput = styled.input`
 type CheckBoxProps = {
   name: string;
   label: string;
-  error?: boolean;
+  error?: string;
   passRef?:
     | ((instance: HTMLInputElement) => void)
     | React.RefObject<HTMLInputElement>;
@@ -29,13 +29,13 @@ type CheckBoxProps = {
 const CheckBox = ({
   name,
   label,
-  error = false,
+  error = '',
   passRef,
   id = name,
 }: CheckBoxProps) => {
   return (
     <Wrapper>
-      <Label htmlFor={id} error={error} success>
+      <Label htmlFor={id} error={!!error} success>
         {error || label}
       </Label>
 
