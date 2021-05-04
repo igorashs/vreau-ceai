@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OrderInfo renders correctly 1`] = `
+.c0 {
+  display: grid;
+  gap: var(--baseline);
+}
+
+.c1 {
+  display: grid;
+  gap: calc(var(--baseline) / 2);
+}
+
+.c2 {
+  font-weight: 500;
+}
+
+.c4 {
+  font-weight: 500;
+}
+
+.c3 {
+  display: grid;
+  gap: calc(var(--baseline) / 2);
+}
+
+<div
+  class="c0"
+>
+  <ul
+    class="c1"
+  >
+    <li>
+      <p>
+        product1
+      </p>
+      <small
+        class="c2"
+      >
+        100
+        lei(
+        50
+        g)
+      </small>
+    </li>
+    <li>
+      <p>
+        product2
+      </p>
+      <small
+        class="c2"
+      >
+        400
+        lei(
+        100
+        g)
+      </small>
+    </li>
+  </ul>
+  <div
+    class="c3"
+  >
+    <p
+      class="c4"
+    >
+      total: 
+      500
+      lei
+    </p>
+    <small
+      class="c2"
+    >
+      1/1/2021
+      -1/3/2021
+    </small>
+  </div>
+</div>
+`;
