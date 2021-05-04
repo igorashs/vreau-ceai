@@ -156,7 +156,7 @@ export type Order = {
   address: string;
   tel: string;
   orderedAt: Date;
-  completedAt: Date;
+  completedAt?: Date;
 };
 
 export type UserOrders = { orders: Order[]; count: number };

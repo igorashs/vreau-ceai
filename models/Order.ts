@@ -12,7 +12,7 @@ export interface Order extends Document {
   address: string;
   tel: string;
   orderedAt: Date;
-  completedAt: Date;
+  completedAt?: Date;
 }
 
 const orderSchema = new mongoose.Schema<Order>({
