@@ -64,7 +64,7 @@ const TeaRecommendation = ({ tea }: TeaRecommendationProps) => {
       <Price>{`${tea.price}lei - ${tea.quantity}g`}</Price>
       <Actions>
         <StyledLink
-          href={`/categories/${tea.category_id.name || ''}/${tea.name}`}
+          href={`/categories/${tea.category_id.name}/${tea.name}`}
           button
           label="vezi produs"
           text="vezi produs"
