@@ -19,7 +19,7 @@ describe('TextField', () => {
   });
 
   describe('error prop', () => {
-    it('it renders with error message', () => {
+    it('renders with error message', () => {
       const name = 'field';
       const label = 'field label';
       const errorMsg = 'error';
