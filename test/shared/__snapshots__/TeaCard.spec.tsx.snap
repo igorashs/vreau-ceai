@@ -1,0 +1,154 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TeaCard renders correctly 1`] = `
+.c6 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  gap: 7px;
+  padding: calc(var(--baseline) / 4) calc(var(--baseline) / 2);
+  border-radius: 4px;
+  border: 0;
+  color: var(--text-light);
+  background-color: var(--accent-dark);
+  box-shadow: 1px 1px 2px #00000066;
+  text-transform: lowercase;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.c6:hover {
+  background-color: var(--accent);
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: calc(var(--baseline) / 2);
+  border-radius: 4px;
+  border: 1px solid var(--accent-dark);
+  padding: calc(var(--baseline) / 2);
+  background-color: #fff;
+}
+
+.c1 {
+  width: 224px;
+  height: 224px;
+  overflow: hidden;
+  border-radius: 4px;
+  border: 1px solid var(--accent-text-light);
+}
+
+.c2 {
+  grid-column: 1;
+  text-align: center;
+}
+
+.c3 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  grid-row: 1;
+  grid-column: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.c4 {
+  text-align: center;
+  grid-column: 1;
+  font-weight: 500;
+}
+
+.c5 {
+  display: grid;
+}
+
+@media (min-width:992px) {
+  .c0 {
+    display: grid;
+    grid-template-columns: auto 1fr;
+  }
+}
+
+@media (min-width:992px) {
+  .c3 {
+    -webkit-line-clamp: 4;
+  }
+}
+
+@media (min-width:992px) {
+  .c5 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: end;
+    -webkit-justify-content: flex-end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    gap: var(--baseline);
+  }
+}
+
+<div
+  class="c0"
+>
+  <figure
+    class="c1"
+  >
+    <img
+      alt="green-tea"
+      height="700"
+      src="/uploads/tea.png"
+      width="700"
+    />
+  </figure>
+  <h5
+    class="c2"
+  >
+    green-tea
+  </h5>
+  <p
+    class="c3"
+  >
+    tasty tea
+  </p>
+  <p
+    class="c4"
+  >
+    69lei - 100g
+  </p>
+  <div
+    class="c5"
+  >
+    <a
+      aria-label="vezi produs"
+      class="c6"
+      href="/categories/green/green-tea"
+      rel=""
+      target=""
+    >
+      vezi produs
+    </a>
+  </div>
+</div>
+`;
