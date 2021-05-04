@@ -48,7 +48,7 @@ type DropDownProps = {
   onDeleteClick?: (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => void;
-  customHeading?: React.ReactElement;
+  CustomHeading?: React.FC;
 };
 
 const DropDown = ({
@@ -56,7 +56,7 @@ const DropDown = ({
   label,
   onDeleteClick,
   showInitial = false,
-  customHeading,
+  CustomHeading,
   children,
 }: React.PropsWithChildren<DropDownProps>) => {
   const [hide, setHide] = useState(!showInitial);
@@ -64,7 +64,9 @@ const DropDown = ({
   return (
     <Wrapper>
       <Header>
-        {customHeading || (
+        {CustomHeading ? (
+          <CustomHeading />
+        ) : (
           <>
             <h5>{title}</h5>
             {label && <small>{label}</small>}
