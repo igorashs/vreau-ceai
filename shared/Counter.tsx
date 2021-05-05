@@ -34,50 +34,51 @@ type CounterProps = {
   count?: number;
   min?: number;
   max?: number;
-  onChange: (value: string | number) => void;
-  onDecrement?: (value: string | number) => void;
-  onIncrement?: (value: string | number) => void;
+  onChange: (value: number) => void;
+  onDecrement?: (value: number) => void;
+  onIncrement?: (value: number) => void;
 };
 
 const Counter = ({
-  count = 0,
   min = 0,
   max = Infinity,
+  count = min,
   onChange,
   onDecrement = onChange,
   onIncrement = onChange,
 }: CounterProps) => {
+  const getValidCount = (curCount: number, minVal: number, maxVal: number) => {
+    if (curCount < minVal) return minVal;
+    if (curCount > maxVal) return maxVal;
+    return curCount;
+  };
+
+  const handleDecrement = () => {
+    const validCount = getValidCount(count, min, max);
+
+    onDecrement(validCount > min ? validCount - 1 : min);
+  };
+
+  const handleIncrement = () => {
+    const validCount = getValidCount(count, min, max);
+
+    onIncrement(validCount < max ? validCount + 1 : max);
+  };
+
   return (
     <Wrapper>
-      <Button
-        icon
-        noPadding
-        onClick={() => onDecrement(count > min ? count - 1 : count)}
-      >
+      <Button icon noPadding onClick={handleDecrement}>
         <MinusSvg />
       </Button>
       <CountInput
         type="number"
-        value={count}
-        onBlur={(e) => !e.currentTarget.value && onChange(min)}
+        value={getValidCount(count, min, max)}
         onFocus={(e) => e.currentTarget.select()}
-        onChange={(e) => {
-          if (!e.currentTarget.value) {
-            onChange('');
-          } else {
-            const value = +e.currentTarget.value;
-
-            if (value >= min && value <= max) {
-              onChange(value);
-            }
-          }
-        }}
+        onChange={(e) =>
+          onChange(getValidCount(+e.currentTarget.value, min, max))
+        }
       />
-      <Button
-        icon
-        noPadding
-        onClick={() => onIncrement(count < max ? count + 1 : count)}
-      >
+      <Button icon noPadding onClick={handleIncrement}>
         <PlusSvg />
       </Button>
     </Wrapper>
