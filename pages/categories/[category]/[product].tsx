@@ -103,7 +103,7 @@ export default function Product({ product }: ProductProps) {
               count={count}
               min={1}
               max={100}
-              onChange={(c) => setCount(+c)}
+              onChange={(c) => setCount(c)}
             />
             <Button
               onClick={() => {

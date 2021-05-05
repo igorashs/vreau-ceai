@@ -94,7 +94,7 @@ export default function Cart() {
                               type: 'update-item',
                               payload: {
                                 product,
-                                count: +itemCount,
+                                count: itemCount,
                               },
                             })
                           }
