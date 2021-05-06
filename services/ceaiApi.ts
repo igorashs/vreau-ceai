@@ -54,12 +54,12 @@ export const signup = async <P extends UserSignup, R extends ApiResponse>(
   return res.json() as Promise<R>;
 };
 
-export const logout = async () => {
+export const logout = async <R extends ApiResponse>() => {
   const res = await fetch(`${URL}/api/users/logout`, {
     method: 'POST',
   });
 
-  return res.json();
+  return res.json() as Promise<R>;
 };
 
 export const findUser = async <
