@@ -54,7 +54,7 @@ export default function MyOrders() {
   const [dbOrders, setDbOrders] = useState<Order[]>([]);
   const [label, setLabel] = useState<LabelMessage>();
   const [totalPages, setTotalPages] = useState(0);
-  const [currPage, setCurrPage] = useState(0);
+  const [currPage, setCurrPage] = useState(1);
 
   const fetchUserOrderList = async () => {
     const res = await getUserOrders([...filters], ORDERS_PER_PAGE);
@@ -62,7 +62,7 @@ export default function MyOrders() {
     if (res.success) {
       setDbOrders(res.orders);
       setTotalPages(Math.ceil(res.count / ORDERS_PER_PAGE));
-      setCurrPage(0);
+      setCurrPage(1);
     } else {
       setDbOrders([]);
       setLabel({
@@ -77,22 +77,20 @@ export default function MyOrders() {
   }, [filters]);
 
   const handlePageChange = async (pageNumber: number) => {
-    if (pageNumber >= 0 && pageNumber < totalPages) {
-      const res = await getUserOrders(
-        [...filters],
-        ORDERS_PER_PAGE,
-        pageNumber * ORDERS_PER_PAGE,
-      );
+    const res = await getUserOrders(
+      [...filters],
+      ORDERS_PER_PAGE,
+      (pageNumber - 1) * ORDERS_PER_PAGE,
+    );
 
-      if (res.success) {
-        setDbOrders(res.orders);
-        setCurrPage(pageNumber);
-      } else {
-        setLabel({
-          success: false,
-          message: 'Nu au fost găsit nicio comandă',
-        });
-      }
+    if (res.success) {
+      setDbOrders(res.orders);
+      setCurrPage(pageNumber);
+    } else {
+      setLabel({
+        success: false,
+        message: 'Nu au fost găsit nicio comandă',
+      });
     }
   };
 
@@ -167,14 +165,12 @@ export default function MyOrders() {
               ))}
             </List>
 
-            {!!totalPages && (
-              <Pagination
-                onPageChange={handlePageChange}
-                currPage={currPage}
-                min={0}
-                max={totalPages - 1}
-              />
-            )}
+            <Pagination
+              onPageChange={handlePageChange}
+              currPage={currPage}
+              min={1}
+              max={totalPages}
+            />
           </>
         )}
       </Wrapper>

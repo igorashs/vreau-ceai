@@ -51,7 +51,7 @@ export default function Products() {
   const [dbCategories, setDbCategories] = useState<Category[]>([]);
   const [label, setLabel] = useState<LabelMessage>();
   const [totalPages, setTotalPages] = useState(0);
-  const [currPage, setCurrPage] = useState(0);
+  const [currPage, setCurrPage] = useState(1);
 
   const fetchProductList = async () => {
     const res = await getProducts([...filters], PRODUCTS_PER_PAGE);
@@ -59,7 +59,7 @@ export default function Products() {
     if (res.success) {
       setDbProducts(res.products);
       setTotalPages(Math.ceil(res.count / PRODUCTS_PER_PAGE));
-      setCurrPage(0);
+      setCurrPage(1);
     } else {
       setDbProducts([]);
       setLabel({
@@ -82,22 +82,20 @@ export default function Products() {
   }, []);
 
   const handlePageChange = async (pageNumber: number) => {
-    if (pageNumber >= 0 && pageNumber < totalPages) {
-      const res = await getProducts(
-        [...filters],
-        PRODUCTS_PER_PAGE,
-        pageNumber * PRODUCTS_PER_PAGE,
-      );
+    const res = await getProducts(
+      [...filters],
+      PRODUCTS_PER_PAGE,
+      (pageNumber - 1) * PRODUCTS_PER_PAGE,
+    );
 
-      if (res.success) {
-        setDbProducts(res.products);
-        setCurrPage(pageNumber);
-      } else {
-        setLabel({
-          success: false,
-          message: 'Nu au fost găsit niciun produs',
-        });
-      }
+    if (res.success) {
+      setDbProducts(res.products);
+      setCurrPage(pageNumber);
+    } else {
+      setLabel({
+        success: false,
+        message: 'Nu au fost găsit niciun produs',
+      });
     }
   };
 
@@ -190,14 +188,12 @@ export default function Products() {
             ))}
           </List>
 
-          {!!totalPages && (
-            <Pagination
-              onPageChange={handlePageChange}
-              currPage={currPage}
-              min={0}
-              max={totalPages - 1}
-            />
-          )}
+          <Pagination
+            onPageChange={handlePageChange}
+            currPage={currPage}
+            min={1}
+            max={totalPages}
+          />
         </>
       )}
     </>

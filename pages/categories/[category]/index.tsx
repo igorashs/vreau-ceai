@@ -73,13 +73,10 @@ export default function Category({
   }, [category]);
 
   const handlePageChange = (page: number) => {
-    if (!router.query.page && page === 0) return;
-    if (router.query.page && +router.query.page === page + 1) return;
-
     const query: { [key: string]: string | string[] } = {};
 
     if (router.query.filters) query.filters = router.query.filters;
-    query.page = (page + 1).toString();
+    query.page = page.toString();
 
     router.replace({
       pathname: `/categories/${category}`,
@@ -142,14 +139,12 @@ export default function Category({
         ))}
       </List>
 
-      {totalPages && (
-        <Pagination
-          onPageChange={handlePageChange}
-          currPage={currPage - 1}
-          min={0}
-          max={totalPages - 1}
-        />
-      )}
+      <Pagination
+        onPageChange={handlePageChange}
+        currPage={currPage}
+        min={1}
+        max={totalPages}
+      />
     </>
   );
 }
@@ -202,7 +197,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     return {
       props: {
         category,
-        currPage: page,
+        currPage: +page,
         totalPages,
         products: JSON.parse(JSON.stringify(dbCategory.products)),
       },
