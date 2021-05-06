@@ -1,0 +1,209 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Pagination renders correctly 1`] = `
+.c1 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  gap: 7px;
+  padding: calc(var(--baseline) / 4) calc(var(--baseline) / 2);
+  border-radius: 4px;
+  border: 0;
+  color: var(--text-light);
+  background-color: var(--accent-dark);
+  box-shadow: 1px 1px 2px #00000066;
+  text-transform: lowercase;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 4px;
+  box-shadow: none;
+  padding: 0;
+}
+
+.c1:hover {
+  background-color: var(--accent);
+}
+
+.c2 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  gap: 7px;
+  padding: calc(var(--baseline) / 4) calc(var(--baseline) / 2);
+  border-radius: 4px;
+  border: 0;
+  color: var(--text-light);
+  background-color: var(--accent-dark);
+  box-shadow: 1px 1px 2px #00000066;
+  text-transform: lowercase;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  cursor: pointer;
+  background-color: transparent;
+  text-transform: initial;
+  box-shadow: none;
+  color: var(--text-dark);
+  padding: 0;
+}
+
+.c2:hover {
+  background-color: var(--accent);
+}
+
+.c2:hover {
+  background-color: transparent;
+  -webkit-filter: brightness(0.7);
+  filter: brightness(0.7);
+}
+
+.c2:disabled {
+  background-color: transparent !important;
+}
+
+.c4 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  gap: 7px;
+  padding: calc(var(--baseline) / 4) calc(var(--baseline) / 2);
+  border-radius: 4px;
+  border: 0;
+  color: var(--text-light);
+  background-color: var(--accent-dark);
+  box-shadow: 1px 1px 2px #00000066;
+  text-transform: lowercase;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  cursor: pointer;
+  background-color: transparent;
+  text-transform: initial;
+  box-shadow: none;
+  color: var(--accent-text-dark);
+  padding: 0;
+}
+
+.c4:hover {
+  background-color: var(--accent);
+}
+
+.c4:hover {
+  background-color: transparent;
+  -webkit-filter: brightness(0.7);
+  filter: brightness(0.7);
+}
+
+.c4:disabled {
+  background-color: transparent !important;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,24px);
+  grid-template-rows: 24px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  justify-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  gap: var(--baseline);
+}
+
+.c0 > * {
+  height: 24px;
+  width: 24px;
+}
+
+.c0 > button:first-child {
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.c3 {
+  font-weight: 500;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  font-size: var(--h5-font-size);
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+<div
+  class="c0"
+>
+  <button
+    class="c1"
+    data-testid="prev-page"
+    disabled=""
+  >
+    <svg />
+  </button>
+  <button
+    class="c2"
+    data-testid="first-page"
+    disabled=""
+  >
+    1
+  </button>
+  <p
+    class="c3"
+    data-testid="curr-page"
+  >
+    1
+  </p>
+  <button
+    class="c4"
+    data-testid="last-page"
+  >
+    3
+  </button>
+  <button
+    class="c1"
+    data-testid="next-page"
+  >
+    <svg />
+  </button>
+</div>
+`;
