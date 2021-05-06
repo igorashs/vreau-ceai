@@ -49,6 +49,10 @@ const textStyle = css`
     background-color: transparent;
     filter: brightness(0.7);
   }
+
+  :disabled {
+    background-color: transparent !important;
+  }
 `;
 
 const darkTextStyle = css`
