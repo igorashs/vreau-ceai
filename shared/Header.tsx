@@ -140,6 +140,7 @@ const Header = () => {
           <NavToggle>
             <Button
               icon
+              data-testid="toggle-btn"
               btnStyle="none"
               aria-label="Comutați Navigarea"
               onClick={() => setIsHidden((prev) => !prev)}
@@ -162,6 +163,7 @@ const Header = () => {
                   </Account>
                   <NavListItem key="user-logout">
                     <Button
+                      data-testid="logout-btn"
                       aria-label="Deconectare din account"
                       onClick={onLogoutClick}
                       btnStyle="danger-text"
