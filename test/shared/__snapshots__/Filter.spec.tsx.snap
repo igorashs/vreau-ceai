@@ -42,6 +42,10 @@ exports[`Filter renders correctly 1`] = `
   filter: brightness(0.7);
 }
 
+.c1:disabled {
+  background-color: transparent !important;
+}
+
 .c0 {
   display: -webkit-box;
   display: -webkit-flex;
