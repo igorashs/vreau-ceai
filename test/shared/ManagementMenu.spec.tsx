@@ -1,6 +1,5 @@
-import { render } from '@/utils/test-utils';
+import { renderWithSession } from '@/utils/test-utils';
 import ManagementMenu from '@/shared/ManagementMenu';
-import { SessionProvider } from 'contexts/SessionContext';
 import { managementLinks } from '@/utils/links';
 
 const { users, orders, products, categories } = managementLinks;
@@ -18,10 +17,9 @@ const session = {
 
 describe('ManagementMenu', () => {
   it('renders correctly', () => {
-    const { container, getByText, getAllByRole } = render(
-      <SessionProvider session={session}>
-        <ManagementMenu />
-      </SessionProvider>,
+    const { container, getByText, getAllByRole } = renderWithSession(
+      <ManagementMenu />,
+      session,
     );
 
     expect(getByText('Users management')).toBeVisible();
@@ -42,13 +40,10 @@ describe('ManagementMenu', () => {
 
   describe('when isAdmin is false', () => {
     it("doesn't render the admin links", () => {
-      const { queryByText } = render(
-        <SessionProvider
-          session={{ ...session, user: { ...session.user, isAdmin: false } }}
-        >
-          <ManagementMenu />
-        </SessionProvider>,
-      );
+      const { queryByText } = renderWithSession(<ManagementMenu />, {
+        ...session,
+        user: { ...session.user, isAdmin: false },
+      });
 
       expect(queryByText('Users management')).not.toBeInTheDocument();
       expect(queryByText(users[0].text)).not.toBeInTheDocument();
@@ -57,13 +52,10 @@ describe('ManagementMenu', () => {
 
   describe('when isManager is false', () => {
     it("doesn't render the manager links", () => {
-      const { queryByText } = render(
-        <SessionProvider
-          session={{ ...session, user: { ...session.user, isManager: false } }}
-        >
-          <ManagementMenu />
-        </SessionProvider>,
-      );
+      const { queryByText } = renderWithSession(<ManagementMenu />, {
+        ...session,
+        user: { ...session.user, isManager: false },
+      });
 
       expect(queryByText('Shop management')).not.toBeInTheDocument();
       expect(queryByText(orders[0].text)).not.toBeInTheDocument();
