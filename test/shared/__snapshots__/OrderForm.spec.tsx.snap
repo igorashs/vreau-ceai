@@ -1,0 +1,175 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OrderForm renders correctly 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: calc(var(--baseline) / 2);
+}
+
+.c1 {
+  margin-top: calc(var(--baseline) / 2);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+}
+
+.c3 {
+  font-weight: 500;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.c4 {
+  position: relative;
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+}
+
+.c5 {
+  width: 100%;
+  padding: 7px 38px 7px 14px;
+  border-radius: 4px;
+  border: 0;
+  color: var(--text-light);
+  background-color: var(--accent-dark);
+  box-shadow: 1px 1px 2px #00000066;
+  text-transform: lowercase;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.c5:hover {
+  background-color: var(--accent);
+}
+
+.c5 option {
+  padding: 7px 14px;
+}
+
+.c6 {
+  position: absolute;
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+  color: var(--text-light);
+  right: 7px;
+  top: calc(50% - 12px);
+  pointer-events: none;
+}
+
+.c7 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  gap: 7px;
+  padding: calc(var(--baseline) / 4) calc(var(--baseline) / 2);
+  border-radius: 4px;
+  border: 0;
+  color: var(--text-light);
+  background-color: var(--accent-dark);
+  box-shadow: 1px 1px 2px #00000066;
+  text-transform: lowercase;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.c7:hover {
+  background-color: var(--accent);
+}
+
+<form
+  class="c0"
+>
+  <div
+    class="c1"
+  >
+    <div
+      class="c2"
+    >
+      <label
+        class="c3"
+        for="order_id_1"
+      >
+        status
+      </label>
+      <div
+        class="c4"
+      >
+        <select
+          class="c5"
+          id="order_id_1"
+          name="status"
+        >
+          <option
+            value="processing"
+          >
+            procesare
+          </option>
+          <option
+            value="inDelivery"
+          >
+            în livrare
+          </option>
+          <option
+            value="canceled"
+          >
+            anulată
+          </option>
+          <option
+            value="completed"
+          >
+            finalizată
+          </option>
+        </select>
+        <svg
+          class="c6"
+        />
+      </div>
+    </div>
+    <button
+      class="c7"
+    >
+      salvează
+    </button>
+  </div>
+</form>
+`;
