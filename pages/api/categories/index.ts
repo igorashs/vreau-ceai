@@ -4,6 +4,7 @@ import { withSessionApi } from '@/utils/withSession';
 import * as validator from '@/utils/validator';
 import { ApiResponse, CategoryName } from 'types';
 import { getQueryElements } from '@/utils/getQueryElements';
+import { categoryMessages } from '@/utils/validator/schemas/category';
 
 export default withSessionApi<
   ApiResponse & {
@@ -67,7 +68,9 @@ export default withSessionApi<
 
     case 'POST':
       try {
-        if (req.session.isAuth && req.session.user?.isAdmin) {
+        const { isAuth, user } = req.session;
+
+        if (isAuth && (user?.isAdmin || user?.isManager)) {
           const { name }: CategoryName = req.body;
           const values = await validator.validateCategory({ name });
           const dbCategory: Category = await CategoryModel.findOne({
@@ -76,7 +79,7 @@ export default withSessionApi<
 
           if (dbCategory)
             validator.throwValidationError({
-              message: 'Categoria cu acest nume deja există',
+              message: categoryMessages.exists,
               key: 'name',
             });
 
