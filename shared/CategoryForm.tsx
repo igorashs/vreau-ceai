@@ -40,6 +40,8 @@ const CategoryForm = ({ onCategorySubmit, category }: CategoryFormProps) => {
         const { message, name } = error;
         if (name) setError(name, { message });
       });
+    } else {
+      reset();
     }
   };
 
