@@ -1,0 +1,125 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FindUserForm renders correctly 1`] = `
+.c2 {
+  font-weight: 500;
+}
+
+.c1 {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.c3 {
+  width: 100%;
+  background-color: var(--input);
+  border: 1px solid var(--layout-dark);
+  border-radius: 4px;
+  padding: calc(var(--baseline) / 4) 0 calc(var(--baseline) / 4) calc(var(--baseline) / 2);
+  color: var(--text-dark);
+}
+
+.c3::-webkit-outer-spin-button,
+.c3::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.c3[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.c5 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  gap: 7px;
+  padding: calc(var(--baseline) / 4) calc(var(--baseline) / 2);
+  border-radius: 4px;
+  border: 0;
+  color: var(--text-light);
+  background-color: var(--accent-dark);
+  box-shadow: 1px 1px 2px #00000066;
+  text-transform: lowercase;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.c5:hover {
+  background-color: var(--accent);
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: calc(var(--baseline) / 2);
+}
+
+.c4 {
+  margin-top: calc(var(--baseline) / 2);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+}
+
+<form
+  class="c0"
+>
+  <div
+    class="c1"
+  >
+    <label
+      class="c2"
+      for="email"
+    >
+      user email
+    </label>
+    <input
+      class="c3"
+      id="email"
+      name="email"
+      type="email"
+    />
+  </div>
+  <div
+    class="c4"
+  >
+    <button
+      class="c5"
+    >
+      caută
+    </button>
+  </div>
+</form>
+`;
