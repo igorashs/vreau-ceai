@@ -31,7 +31,7 @@ describe('FindCategoryForm', () => {
       fireEvent.submit(getByRole('button'));
 
       await waitFor(() =>
-        expect(getByText(categoryMessages.required)).toBeVisible(),
+        expect(getByText(categoryMessages.name.required)).toBeVisible(),
       );
       expect(onFindCategorySubmitMock).not.toBeCalled();
     });
@@ -45,7 +45,7 @@ describe('FindCategoryForm', () => {
       fireEvent.submit(getByRole('button'));
 
       await waitFor(() =>
-        expect(getByText(categoryMessages.max)).toBeVisible(),
+        expect(getByText(categoryMessages.name.max)).toBeVisible(),
       );
       expect(onFindCategorySubmitMock).not.toBeCalled();
     });
@@ -74,7 +74,7 @@ describe('FindCategoryForm', () => {
     it('should display max length error', async () => {
       // pretend user bypass client validation
       onFindCategorySubmitMock.mockResolvedValueOnce([
-        { message: categoryMessages.max, name: 'name' },
+        { message: categoryMessages.name.max, name: 'name' },
       ]);
 
       const { getByRole, getByText } = render(
@@ -86,7 +86,7 @@ describe('FindCategoryForm', () => {
 
       await waitFor(() => expect(onFindCategorySubmitMock).toBeCalledTimes(1));
       expect(onFindCategorySubmitMock).toBeCalledWith({ name: 'green' });
-      expect(getByText(categoryMessages.max)).toBeVisible();
+      expect(getByText(categoryMessages.name.max)).toBeVisible();
     });
   });
 });

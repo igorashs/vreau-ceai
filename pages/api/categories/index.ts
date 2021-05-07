@@ -79,7 +79,7 @@ export default withSessionApi<
 
           if (dbCategory)
             validator.throwValidationError({
-              message: categoryMessages.exists,
+              message: categoryMessages.name.exists,
               key: 'name',
             });
 

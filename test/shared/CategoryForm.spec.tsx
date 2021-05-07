@@ -42,7 +42,7 @@ describe('CategoryForm', () => {
       fireEvent.submit(getByRole('button'));
 
       await waitFor(() =>
-        expect(getByText(categoryMessages.required)).toBeVisible(),
+        expect(getByText(categoryMessages.name.required)).toBeVisible(),
       );
       expect(onCategorySubmitMock).not.toBeCalled();
     });
@@ -56,7 +56,7 @@ describe('CategoryForm', () => {
       fireEvent.submit(getByRole('button'));
 
       await waitFor(() =>
-        expect(getByText(categoryMessages.max)).toBeVisible(),
+        expect(getByText(categoryMessages.name.max)).toBeVisible(),
       );
       expect(onCategorySubmitMock).not.toBeCalled();
     });
@@ -82,7 +82,7 @@ describe('CategoryForm', () => {
   describe('server validation', () => {
     it('should display already exist error', async () => {
       onCategorySubmitMock.mockResolvedValueOnce([
-        { message: categoryMessages.exists, name: 'name' },
+        { message: categoryMessages.name.exists, name: 'name' },
       ]);
 
       const { getByRole, getByText } = render(
@@ -94,7 +94,7 @@ describe('CategoryForm', () => {
 
       await waitFor(() => expect(onCategorySubmitMock).toBeCalledTimes(1));
       expect(onCategorySubmitMock).toBeCalledWith({ name: 'green' });
-      expect(getByText(categoryMessages.exists)).toBeVisible();
+      expect(getByText(categoryMessages.name.exists)).toBeVisible();
     });
   });
 });
