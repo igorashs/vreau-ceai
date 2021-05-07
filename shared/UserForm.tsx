@@ -35,7 +35,7 @@ const UserForm = ({ onUserSubmit, user }: UserFormProps) => {
   }, [user]);
 
   return (
-    <Form onSubmit={handleSubmit(onUserSubmit)}>
+    <Form onSubmit={handleSubmit((data) => onUserSubmit(data))}>
       <div>
         <UserData>
           <Label>name</Label>
