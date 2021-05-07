@@ -11,7 +11,7 @@ type OrderFormProps = {
   onOrderSubmit: (
     data: OrderStatus,
   ) => Promise<OrderStatusErrorDetail[] | undefined>;
-  order?: OrderStatus & {
+  order: OrderStatus & {
     _id: string;
   };
 };
@@ -30,7 +30,7 @@ const OrderForm = ({ onOrderSubmit, order }: OrderFormProps) => {
 
   useEffect(() => {
     reset({
-      status: order?.status,
+      status: order.status,
     });
   }, [order]);
 
@@ -54,7 +54,7 @@ const OrderForm = ({ onOrderSubmit, order }: OrderFormProps) => {
           label="status"
           passRef={register}
           error={errors?.status?.message}
-          disabled={order?.status === 'completed'}
+          disabled={order.status === 'completed'}
         >
           <option value="processing">procesare</option>
           <option value="inDelivery">în livrare</option>
@@ -62,7 +62,7 @@ const OrderForm = ({ onOrderSubmit, order }: OrderFormProps) => {
           <option value="completed">finalizată</option>
         </Select>
 
-        <Button disabled={order?.status === 'completed'}>salvează</Button>
+        <Button disabled={order.status === 'completed'}>salvează</Button>
       </FormAction>
     </Form>
   );
