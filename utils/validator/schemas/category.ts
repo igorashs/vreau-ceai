@@ -10,7 +10,6 @@ export const categoryMessages = {
   },
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const categorySchema = Joi.object<CategoryName>({
   name: Joi.string().trim().max(30).required().messages({
     'string.base': categoryMessages.name.type,
