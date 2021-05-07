@@ -2,6 +2,7 @@ import UserModel, { User } from '@/models/User';
 import dbConnect from '@/utils/dbConnect';
 import { getQueryElements } from '@/utils/getQueryElements';
 import * as validator from '@/utils/validator';
+import { orderMessages } from '@/utils/validator/schemas/order';
 import { withSessionApi } from '@/utils/withSession';
 import { ApiResponse, UserPermissions } from 'types';
 
@@ -18,7 +19,7 @@ export default withSessionApi<ApiResponse & { user?: User }>(
 
             if (typeof isManager !== 'boolean')
               validator.throwValidationError({
-                message: 'valoare invalidă',
+                message: orderMessages.isManager.invalid,
                 key: 'isManager',
               });
 
