@@ -50,7 +50,7 @@ const ProductForm = ({
       description: product?.description ?? '',
       category_id: product?.category_id,
       recommend: product?.recommend ?? false,
-      src: undefined,
+      src: '',
     });
   }, [product, categories]);
 
@@ -63,6 +63,8 @@ const ProductForm = ({
         const { message, name } = error;
         if (name) setError(name, { message });
       });
+    } else {
+      reset();
     }
   };
 
@@ -115,7 +117,7 @@ const ProductForm = ({
         passRef={register}
         error={errors?.category_id?.message}
       >
-        {categories ? (
+        {categories.length ? (
           categories.map((c) => (
             <option key={c._id} value={c._id}>
               {c.name}
