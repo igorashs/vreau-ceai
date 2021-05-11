@@ -6,6 +6,7 @@ export const productMessages = {
     type: 'numele trebuie sa fie de tip text',
     max: 'numele este prea lung',
     required: 'numele este obligatoriu',
+    exists: 'produs cu acest nume deja există',
   },
 
   price: {
@@ -34,6 +35,12 @@ export const productMessages = {
 
   category_id: {
     required: 'categoria este obligatorie',
+    invalid: 'categorie greșită',
+  },
+
+  src: {
+    max: 'mărimea fișierului poate fi maximum 1MB',
+    invalid: 'sunt permise doar imagini .png, .jpg și .jpeg',
   },
 };
 
@@ -80,5 +87,7 @@ export const productSchema = Joi.object<ProductFields>({
 
   category_id: Joi.string().required().messages({
     'any.required': productMessages.category_id.required,
+    'string.empty': productMessages.category_id.required,
+    'any.only': productMessages.category_id.invalid,
   }),
 });
