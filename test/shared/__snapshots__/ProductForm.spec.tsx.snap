@@ -1,0 +1,399 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProductForm renders correctly 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: calc(var(--baseline) / 2);
+}
+
+.c13 {
+  margin-top: calc(var(--baseline) / 2);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+}
+
+.c2 {
+  font-weight: 500;
+}
+
+.c15 {
+  font-weight: 500;
+  color: var(--accent-text-dark);
+  font-weight: 400;
+}
+
+.c1 {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.c3 {
+  width: 100%;
+  background-color: var(--input);
+  border: 1px solid var(--layout-dark);
+  border-radius: 4px;
+  padding: calc(var(--baseline) / 4) 0 calc(var(--baseline) / 4) calc(var(--baseline) / 2);
+  color: var(--text-dark);
+}
+
+.c3::-webkit-outer-spin-button,
+.c3::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.c3[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.c14 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: 7px;
+}
+
+.c16 {
+  margin: 0;
+  width: 16px;
+  height: 16px;
+  -webkit-order: -1;
+  -ms-flex-order: -1;
+  order: -1;
+  cursor: pointer;
+}
+
+.c17 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  gap: 7px;
+  padding: calc(var(--baseline) / 4) calc(var(--baseline) / 2);
+  border-radius: 4px;
+  border: 0;
+  color: var(--text-light);
+  background-color: var(--accent-dark);
+  box-shadow: 1px 1px 2px #00000066;
+  text-transform: lowercase;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.c17:hover {
+  background-color: var(--accent);
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.c7 {
+  position: relative;
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+}
+
+.c8 {
+  width: 100%;
+  padding: 7px 38px 7px 14px;
+  border-radius: 4px;
+  border: 0;
+  color: var(--text-light);
+  background-color: var(--accent-dark);
+  box-shadow: 1px 1px 2px #00000066;
+  text-transform: lowercase;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.c8:hover {
+  background-color: var(--accent);
+}
+
+.c8 option {
+  padding: 7px 14px;
+}
+
+.c9 {
+  position: absolute;
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+  color: var(--text-light);
+  right: 7px;
+  top: calc(50% - 12px);
+  pointer-events: none;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.c11 {
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+  padding: calc(var(--baseline) / 4) calc(var(--baseline) / 2);
+  border-radius: 4px;
+  border: 0;
+  color: var(--text-light);
+  background-color: var(--accent-dark);
+  box-shadow: 1px 1px 2px #00000066;
+  text-transform: lowercase;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.c11:hover {
+  background-color: var(--accent);
+}
+
+.c12 {
+  display: none;
+}
+
+.c4 {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.c5 {
+  width: 100%;
+  background-color: var(--input);
+  border: 1px solid var(--layout-dark);
+  border-radius: 4px;
+  padding: calc(var(--baseline) / 4) 0 calc(var(--baseline) / 4) calc(var(--baseline) / 2);
+  color: var(--text-dark);
+  resize: none;
+}
+
+<form
+  class="c0"
+>
+  <div
+    class="c1"
+  >
+    <label
+      class="c2"
+      for="name"
+    >
+      nume produs
+    </label>
+    <input
+      class="c3"
+      id="name"
+      name="name"
+      type="text"
+    />
+  </div>
+  <div
+    class="c1"
+  >
+    <label
+      class="c2"
+      for="price"
+    >
+      preț (lei)
+    </label>
+    <input
+      class="c3"
+      id="price"
+      name="price"
+      type="number"
+    />
+  </div>
+  <div
+    class="c1"
+  >
+    <label
+      class="c2"
+      for="quantity"
+    >
+      preț per cantitate (g)
+    </label>
+    <input
+      class="c3"
+      id="quantity"
+      name="quantity"
+      type="number"
+    />
+  </div>
+  <div
+    class="c1"
+  >
+    <label
+      class="c2"
+      for="total_quantity"
+    >
+      cantitatea totală (g)
+    </label>
+    <input
+      class="c3"
+      id="total_quantity"
+      name="total_quantity"
+      type="number"
+    />
+  </div>
+  <div
+    class="c4"
+  >
+    <label
+      class="c2"
+      for="description"
+    >
+      descriere
+    </label>
+    <textarea
+      class="c5"
+      id="description"
+      name="description"
+      rows="7"
+    />
+  </div>
+  <div
+    class="c6"
+  >
+    <label
+      class="c2"
+      for="category_id"
+    >
+      categorie
+    </label>
+    <div
+      class="c7"
+    >
+      <select
+        class="c8"
+        id="category_id"
+        name="category_id"
+      >
+        <option
+          value="c1"
+        >
+          green
+        </option>
+        <option
+          value="c2"
+        >
+          fruit
+        </option>
+      </select>
+      <svg
+        class="c9"
+      />
+    </div>
+  </div>
+  <div
+    class="c10"
+  >
+    <label
+      class="c2"
+      for="src"
+    >
+      (max 1MB) imagine 
+    </label>
+    <label
+      class="c11"
+    >
+      <input
+        accept=".png, .jpg, .jpeg"
+        class="c12"
+        id="src"
+        name="src"
+        type="file"
+      />
+      Încarcă imagine
+    </label>
+  </div>
+  <div
+    class="c13"
+  >
+    <div
+      class="c14"
+    >
+      <label
+        class="c15"
+        for="recommend"
+      >
+        recomandată
+      </label>
+      <input
+        class="c16"
+        id="recommend"
+        name="recommend"
+        type="checkbox"
+      />
+    </div>
+    <button
+      class="c17"
+    >
+      salvează
+    </button>
+  </div>
+</form>
+`;
