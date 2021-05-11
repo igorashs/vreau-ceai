@@ -2,6 +2,7 @@ import { render, RenderOptions } from '@testing-library/react';
 import GlobalStyle from 'GlobalStyle';
 import { UserSession } from 'types';
 import { SessionProvider } from 'contexts/SessionContext';
+import userEvent from '@testing-library/user-event';
 
 const Wrapper: React.FC = ({ children }) => (
   <>
@@ -37,5 +38,6 @@ const renderWithSession = (
 };
 
 export * from '@testing-library/react';
+export * from '@testing-library/user-event';
 
-export { customRender as render, renderWithSession };
+export { customRender as render, renderWithSession, userEvent };
