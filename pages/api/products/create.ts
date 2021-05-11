@@ -7,6 +7,7 @@ import { Fields, Files, File, IncomingForm } from 'formidable';
 import { promises as fs } from 'fs';
 import { nanoid } from 'nanoid';
 import { ApiResponse, Formidable } from 'types';
+import { productMessages } from '@/utils/validator/schemas/product';
 
 export default withSessionApi<ApiResponse>(async function handler(req, res) {
   await dbConnect();
@@ -37,7 +38,7 @@ export default withSessionApi<ApiResponse>(async function handler(req, res) {
                   form.emit(
                     'error',
                     validator.createValidationError({
-                      message: 'sunt permise doar imagini .png, .jpg și .jpeg',
+                      message: productMessages.src.invalid,
                       key: 'src',
                     }),
                   );
@@ -52,7 +53,7 @@ export default withSessionApi<ApiResponse>(async function handler(req, res) {
                 if (err.message.includes('maxFileSize')) {
                   reject(
                     validator.createValidationError({
-                      message: 'mărimea fișierului poate fi maximum 1MB',
+                      message: productMessages.src.max,
                       key: 'src',
                     }),
                   );
@@ -82,11 +83,12 @@ export default withSessionApi<ApiResponse>(async function handler(req, res) {
 
           if (dbExistingProduct)
             validator.throwValidationError({
-              message: 'produs cu acest nume deja există',
+              message: productMessages.name.exists,
               key: 'name',
             });
 
           const product = new ProductModel(values);
+          // ! it might be wise to check if category_id is a valid id before querying?
           const dbCategory: Category = await CategoryModel.findByIdAndUpdate(
             values.category_id,
             { $push: { products: product._id } },
@@ -95,7 +97,7 @@ export default withSessionApi<ApiResponse>(async function handler(req, res) {
 
           if (!dbCategory)
             validator.throwValidationError({
-              message: 'categoria nu există',
+              message: productMessages.category_id.invalid,
               key: 'category',
             });
 
