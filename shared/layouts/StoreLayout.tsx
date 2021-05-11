@@ -22,7 +22,7 @@ const StoreContentWrapper = styled.div`
 `;
 
 type StoreLayoutProps = {
-  Menu?: React.FC;
+  Menu: React.FC;
 };
 
 const StoreLayout = ({
@@ -39,8 +39,8 @@ const StoreLayout = ({
   );
 };
 
-export const createStoreLayout: (Menu: React.FC) => React.FC = (Menu) => (
-  component,
+export const createStoreLayout = (Menu: React.FC) => (
+  component: React.ReactNode,
 ) => withBaseLayout(<StoreLayout Menu={Menu}>{component}</StoreLayout>);
 
 export const withManagementStoreLayout = createStoreLayout(ManagementMenu);
