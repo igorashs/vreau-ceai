@@ -1,0 +1,702 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createStoreLayout renders correctly 1`] = `
+.c5 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  gap: 7px;
+  padding: calc(var(--baseline) / 4) calc(var(--baseline) / 2);
+  border-radius: 4px;
+  border: 0;
+  color: var(--text-light);
+  background-color: var(--accent-dark);
+  box-shadow: 1px 1px 2px #00000066;
+  text-transform: lowercase;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  cursor: pointer;
+  background-color: transparent;
+  box-shadow: none;
+  padding: 4px;
+  box-shadow: none;
+}
+
+.c5:hover {
+  background-color: var(--accent);
+}
+
+.c5:hover {
+  background-color: #0000001a;
+}
+
+.c9 {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: 7px;
+  color: var(--text-light);
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c9:hover {
+  -webkit-filter: brightness(0.7);
+  filter: brightness(0.7);
+}
+
+.c10 {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: 7px;
+  color: var(--accent-text-light);
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c10:hover {
+  -webkit-filter: brightness(0.7);
+  filter: brightness(0.7);
+}
+
+.c15 {
+  margin-top: calc(var(--baseline) * 2);
+  padding: var(--baseline) 0;
+  color: var(--text-light);
+  background-color: var(--layout-dark);
+}
+
+.c16 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: calc(var(--baseline) / 2);
+}
+
+.c19 {
+  display: none;
+}
+
+.c20 {
+  margin-top: var(--baseline);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  gap: var(--baseline);
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 0.75rem;
+}
+
+.c22 {
+  color: var(--accent-text-light);
+}
+
+.c21 {
+  width: 1px;
+  background-color: var(--layout-light);
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: var(--layout-dark);
+}
+
+.c2 {
+  display: grid;
+  -webkit-column-gap: var(--baseline);
+  column-gap: var(--baseline);
+  grid-template-columns: auto 1fr;
+  grid-template-rows: calc(var(--baseline) * 2) auto;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  justify-items: end;
+}
+
+.c6 {
+  width: 100%;
+  justify-self: start;
+  grid-column: span 2;
+  padding-bottom: calc(var(--baseline) / 2);
+  display: none;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  border-bottom: 1px solid var(--layout);
+}
+
+.c8 {
+  border-top: 1px solid var(--layout);
+  padding: 7px 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: calc(var(--baseline) * 2);
+}
+
+.c3 {
+  justify-self: start;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 32px;
+  min-width: 158px;
+}
+
+.c11 {
+  min-height: calc(100vh - (var(--baseline) * 2));
+}
+
+.c12 {
+  padding-top: var(--baseline);
+}
+
+.c13 {
+  display: grid;
+  gap: calc(var(--baseline) * 2);
+}
+
+.c14 {
+  display: grid;
+  -webkit-align-content: start;
+  -ms-flex-line-pack: start;
+  align-content: start;
+  gap: var(--baseline);
+}
+
+@media (min-width:576px) {
+  .c1 {
+    width: 540px;
+    max-width: 540px;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width:768px) {
+  .c1 {
+    width: 720px;
+    max-width: 720px;
+  }
+}
+
+@media (min-width:992px) {
+  .c1 {
+    width: 960px;
+    max-width: 960px;
+  }
+}
+
+@media (min-width:1200px) {
+  .c1 {
+    width: 1140px;
+    max-width: 1140px;
+  }
+}
+
+@media (max-width:576px) {
+  .c1 {
+    width: 100%;
+    padding: 0 15px;
+  }
+}
+
+@media (min-width:992px) {
+  .c15 {
+    margin-top: calc(var(--baseline) * 4);
+    padding: calc(var(--baseline) * 2) 0;
+  }
+}
+
+@media (min-width:992px) {
+  .c16 {
+    display: grid;
+    -webkit-align-items: start;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: start;
+    grid-template-columns: repeat(3,224px);
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+  }
+}
+
+@media (min-width:992px) {
+  .c17 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    gap: 7px;
+  }
+}
+
+@media (min-width:992px) {
+  .c18 {
+    border-bottom: 1px solid #fff;
+    padding-bottom: 7px;
+  }
+}
+
+@media (min-width:992px) {
+  .c19 {
+    display: initial;
+  }
+}
+
+@media (min-width:992px) {
+  .c20 {
+    margin-top: calc(var(--baseline) * 2);
+  }
+}
+
+@media (min-width:992px) {
+  .c6 {
+    display: initial;
+    grid-column: 2;
+    grid-row: span 2;
+    padding: 0;
+    border: 0;
+  }
+}
+
+@media (min-width:992px) {
+  .c7 {
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-column-gap: var(--baseline);
+    column-gap: var(--baseline);
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: end;
+    -webkit-justify-content: flex-end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    border: 0;
+  }
+}
+
+@media (min-width:992px) {
+  .c8 {
+    border: 0;
+  }
+}
+
+@media (min-width:992px) {
+  .c4 {
+    display: none;
+  }
+}
+
+@media (min-width:992px) {
+  .c12 {
+    padding-top: calc(var(--baseline) * 2);
+  }
+}
+
+@media (min-width:992px) {
+  .c13 {
+    grid-template-columns: 224px 1fr;
+    gap: calc(var(--baseline) * 4);
+  }
+}
+
+<div>
+  <div
+    class="c0"
+  >
+    <div
+      class="c1"
+    >
+      <header
+        class="c2"
+      >
+        <div
+          class="c3"
+        >
+          <a
+            aria-label="Acasă"
+            href="/"
+          >
+            <div
+              style="display: inline-block; max-width: 100%; overflow: hidden; position: relative; box-sizing: border-box; margin: 0px;"
+            >
+              <div
+                style="box-sizing: border-box; display: block; max-width: 100%;"
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  role="presentation"
+                  src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTU4IiBoZWlnaHQ9IjMyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIvPg=="
+                  style="max-width: 100%; display: block;"
+                />
+              </div>
+              <img
+                alt="vreau ceai logo"
+                decoding="async"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                style="visibility: hidden; position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; box-sizing: border-box; padding: 0px; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%;"
+              />
+            </div>
+          </a>
+        </div>
+        <div
+          class="c4"
+        >
+          <button
+            aria-label="Comutați Navigarea"
+            class="c5"
+            data-testid="toggle-btn"
+          >
+            <svg />
+          </button>
+        </div>
+        <nav
+          class="c6"
+        >
+          <ul
+            class="c7"
+          >
+            <li
+              class="c8"
+            >
+              <a
+                aria-label="Deschideți pagina cu categorii"
+                class="c9"
+                href="/categories"
+                rel=""
+                target=""
+              >
+                Ceai
+              </a>
+            </li>
+            <li
+              class="c8"
+            >
+              <a
+                aria-label="Deschideți pagina cu informații despre noi"
+                class="c9"
+                href="/about"
+                rel=""
+                target=""
+              >
+                Despre
+              </a>
+            </li>
+            <li
+              class="c8"
+            >
+              <a
+                aria-label="Deschideți pagina cu contacte"
+                class="c9"
+                href="/contacts"
+                rel=""
+                target=""
+              >
+                Contacte
+              </a>
+            </li>
+            <li
+              class="c8"
+            >
+              <a
+                aria-label="Deschideți pagina cu coșul personal"
+                class="c9"
+                href="/cart"
+                rel=""
+                target=""
+              >
+                <svg />
+                Coș
+              </a>
+            </li>
+            <li
+              class="c8"
+            >
+              <a
+                aria-label="Deschideți pagina pentru conectare"
+                class="c10"
+                href="/login"
+                rel=""
+                target=""
+              >
+                <svg />
+                Conectați-vă
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </header>
+    </div>
+  </div>
+  <div
+    class="c11"
+  >
+    <div
+      class="c12"
+    >
+      <div
+        class="c1"
+      >
+        <main>
+          <div
+            class="c13"
+          >
+            <p>
+              menu
+            </p>
+            <div
+              class="c14"
+            >
+              <p>
+                content
+              </p>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+  <div
+    class="c15"
+  >
+    <div
+      class="c1"
+    >
+      <footer>
+        <ul
+          class="c16"
+        >
+          <li>
+            <ul
+              class="c17"
+            >
+              <li
+                class="c18"
+              >
+                <a
+                  aria-label="Deschideți pagina cu informații despre noi"
+                  class="c9"
+                  href="/about"
+                  rel=""
+                  target=""
+                >
+                  Despre
+                </a>
+              </li>
+              <li
+                class="c19"
+              >
+                <a
+                  aria-label="Deschideți pagina cu informații despre noi"
+                  class="c10"
+                  href="/about"
+                  rel=""
+                  target=""
+                >
+                  vreau ceai
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <ul
+              class="c17"
+            >
+              <li
+                class="c18"
+              >
+                <a
+                  aria-label="Deschideți pagina cu întrebări frecvente"
+                  class="c9"
+                  href="/faq"
+                  rel=""
+                  target=""
+                >
+                  FAQ
+                </a>
+              </li>
+              <li
+                class="c19"
+              >
+                <a
+                  aria-label="Deschideți pagina cu întrebarea cum comand"
+                  class="c10"
+                  href="/faq#cum-comand"
+                  rel=""
+                  target=""
+                >
+                  cum comand
+                </a>
+              </li>
+              <li
+                class="c19"
+              >
+                <a
+                  aria-label="Deschideți pagina cu întrebarea cum achit"
+                  class="c10"
+                  href="/faq#cum-achit"
+                  rel=""
+                  target=""
+                >
+                  cum achit
+                </a>
+              </li>
+              <li
+                class="c19"
+              >
+                <a
+                  aria-label="Deschideți pagina cu întrebarea despre cum are loc livrarea"
+                  class="c10"
+                  href="/faq#livrare"
+                  rel=""
+                  target=""
+                >
+                  cum are loc livrarea
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <ul
+              class="c17"
+            >
+              <li
+                class="c18"
+              >
+                <a
+                  aria-label="Deschideți pagina cu contacte"
+                  class="c9"
+                  href="/contacts"
+                  rel=""
+                  target=""
+                >
+                  Contacte
+                </a>
+              </li>
+              <li
+                class="c19"
+              >
+                <a
+                  aria-label="apelați nr de tel"
+                  class="c10"
+                  href="tel:062222222"
+                  rel=""
+                  target=""
+                >
+                  <svg />
+                  062222222
+                </a>
+              </li>
+              <li
+                class="c19"
+              >
+                <a
+                  aria-label="trimiteți email"
+                  class="c10"
+                  href="mailto:vreauceai@gmail.com"
+                  rel=""
+                  target=""
+                >
+                  <svg />
+                  vreauceai@gmail.com
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <div
+          class="c20"
+        >
+          <a
+            aria-label="Visit Project Repo"
+            class="c9"
+            href="https://github.com/igorashs/vreau-ceai"
+            rel="noreferrer"
+            target="_blank"
+          >
+            @Igorash
+          </a>
+          <span
+            class="c21"
+          />
+          <p>
+            made by 
+            <span
+              class="c22"
+            >
+              tea
+            </span>
+             nature
+          </p>
+        </div>
+      </footer>
+    </div>
+  </div>
+</div>
+`;
