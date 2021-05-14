@@ -97,6 +97,7 @@ export type UserSession = {
 
 type dataType = 'data' | 'error' | 'field' | 'fileBegin' | 'file' | 'progress';
 
+// fixing dataType
 export declare class Formidable extends FormidableLib {
   emit(name: dataType, data: FormidableLib.EmitData | ValidationError): void;
 }
@@ -162,3 +163,17 @@ export type Order = {
 export type UserOrders = { orders: Order[]; count: number };
 
 export type ManagementOrders = { orders: Order[]; count: number };
+
+export type OrderMatchFilter = {
+  status: ('processing' | 'inDelivery' | 'canceled' | 'completed')[];
+};
+
+export type OrderSortFilter = {
+  orderedAt?: -1 | 1;
+};
+
+export type ProductMatchFilter = {
+  recommend?: boolean;
+};
+
+export type ProductSortFilter = { price?: 1 | -1; total_quantity?: 1 | -1 };
