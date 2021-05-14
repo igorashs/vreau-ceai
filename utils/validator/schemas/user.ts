@@ -7,6 +7,8 @@ export const userMessages = {
     invalid: 'e-mailul nu este valid',
     max: 'e-mailul este prea lung',
     required: 'e-mailul este obligatoriu',
+    unknown: 'utilizatorul cu acest email nu există',
+    exists: 'utilizatorul cu acest e-mail deja există',
   },
 
   name: {
@@ -22,10 +24,15 @@ export const userMessages = {
     required: 'parola este obligatorie',
     invalid:
       "parola este invalidă, sunt permise caractere alfanumerice și '.', '_'",
+    wrong: 'parolă greșită',
   },
 
   repeat_password: {
     match: 'parola nu coincide',
+  },
+
+  isManager: {
+    invalid: 'valoare invalidă',
   },
 };
 

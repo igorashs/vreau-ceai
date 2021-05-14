@@ -21,10 +21,6 @@ export const orderMessages = {
     invalid: 'status greșit',
     required: 'statusul este obligatoriu',
   },
-
-  isManager: {
-    invalid: 'valoare invalidă',
-  },
 };
 
 export const orderSubmitSchema = Joi.object<OrderSubmit>({

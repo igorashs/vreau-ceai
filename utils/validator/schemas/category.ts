@@ -7,6 +7,7 @@ export const categoryMessages = {
     max: 'numele este prea lung',
     type: 'numele trebuie sa fie de tip text',
     exists: 'Categoria cu acest nume deja există',
+    wrong: 'Categorie greșită',
   },
 };
 

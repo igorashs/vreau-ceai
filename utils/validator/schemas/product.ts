@@ -7,6 +7,7 @@ export const productMessages = {
     max: 'numele este prea lung',
     required: 'numele este obligatoriu',
     exists: 'produs cu acest nume deja există',
+    wrong: 'produsul nu există',
   },
 
   price: {
