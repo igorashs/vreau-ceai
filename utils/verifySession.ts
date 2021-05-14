@@ -1,8 +1,8 @@
 import * as session from 'lib/session';
 import dbConnect from '@/utils/dbConnect';
-import UserModel, { User } from 'models/User';
-import SessionModel, { Session } from '@/models/Session';
 import { UserAuth } from 'types';
+import SessionService from 'services/SessionService';
+import UserService from 'services/UserService';
 
 type VerifySessionProps = {
   cookies: {
@@ -40,14 +40,13 @@ const verifySession = async ({
   await dbConnect();
 
   try {
+    // todo refactor all this IFS
     if (!refresh) throw new Error('Empty refresh token');
 
     const refreshClaims = session.verifyToken<RefreshClaims>(refresh);
     if (!refreshClaims) throw new Error('Invalidated refresh token');
 
-    const dbSession: Session = await SessionModel.findOne({
-      user_id: refreshClaims.user_id,
-    });
+    const dbSession = await SessionService.querySession(refreshClaims.user_id);
 
     if (!dbSession || dbSession.refresh_token !== refresh)
       throw new Error('Invalidated refresh token');
@@ -58,10 +57,11 @@ const verifySession = async ({
       if (accessClaims) return [{ isAuth: true, user: accessClaims }];
     }
 
-    const dbUser: User = await UserModel.findById(
+    const dbUser = await UserService.queryUserById(
       refreshClaims.user_id,
       'name isAdmin isManager',
     );
+
     if (!dbUser) throw new Error('Invalid user');
 
     const user = {
