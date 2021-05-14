@@ -7,7 +7,7 @@ import type {
 } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 
-type NextApiSessionRequest = NextApiRequest & {
+export type NextApiSessionRequest = NextApiRequest & {
   session: SessionAuth;
 };
 
