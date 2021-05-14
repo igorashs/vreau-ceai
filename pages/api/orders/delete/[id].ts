@@ -1,9 +1,9 @@
 import dbConnect from '@/utils/dbConnect';
-import OrderModel, { Order } from 'models/Order';
 import { withSessionApi } from '@/utils/withSession';
 import * as validator from '@/utils/validator';
 import { getQueryElements } from '@/utils/getQueryElements';
 import { ApiResponse } from 'types';
+import OrderService from 'services/OrderService';
 
 export default withSessionApi<ApiResponse>(async function handler(req, res) {
   await dbConnect();
@@ -13,52 +13,33 @@ export default withSessionApi<ApiResponse>(async function handler(req, res) {
       try {
         const { isAuth, user } = req.session;
 
-        if (isAuth) {
-          const { id } = getQueryElements(req.query);
+        // respond 401 Unauthorized if user is not authenticated
+        if (!isAuth || !user) {
+          res.status(401).json({ success: false, message: 'Unauthorized' });
 
-          const dbOrder: Order = await OrderModel.findById(
-            id,
-            'status',
-          ).populate({
-            path: 'user',
-            select: '_id',
-          });
+          return;
+        }
 
-          if (user?.isAdmin || user?.isManager) {
-            const deletedOrder: Order = await OrderModel.findByIdAndDelete(id, {
-              projection: '_id',
-            });
+        const { id } = getQueryElements(req.query);
 
-            if (deletedOrder) {
-              res.status(200).json({ success: true, message: 'Order deleted' });
-            } else {
-              res.status(404).json({ success: false, message: 'Not Found' });
-            }
-          } else if (dbOrder._id.toString() === user?._id) {
-            if (
-              dbOrder.status === 'completed' ||
-              dbOrder.status === 'canceled'
-            ) {
-              const deletedOrder: Order = await OrderModel.findByIdAndDelete(
-                id,
-                {
-                  projection: '_id',
-                },
-              );
+        if (user.isAdmin || user.isManager) {
+          // delete order
+          const deletedOrder = await OrderService.deleteOrder(id);
 
-              if (deletedOrder) {
-                res
-                  .status(200)
-                  .json({ success: true, message: 'Order deleted' });
-              } else {
-                res.status(404).json({ success: false, message: 'Not Found' });
-              }
-            } else {
-              res.status(401).json({ success: false, message: 'Unauthorized' });
-            }
+          if (deletedOrder) {
+            res.status(200).json({ success: true, message: 'Order deleted' });
+          } else {
+            res.status(404).json({ success: false, message: 'Not Found' });
           }
         } else {
-          res.status(401).json({ success: false, message: 'Unauthorized' });
+          // user deletes its own order
+          const deletedOrder = await OrderService.deleteUserOrder(id, user._id);
+
+          if (deletedOrder) {
+            res.status(200).json({ success: true, message: 'Order deleted' });
+          } else {
+            res.status(404).json({ success: false, message: 'Not Found' });
+          }
         }
       } catch (error) {
         const details = validator.getValidationErrorDetails(error);

@@ -18,7 +18,7 @@ export default async function handler(
 
         res.status(session.isAuth ? 200 : 401).json({
           success: session.isAuth,
-          message: session.isAuth ? 'auth updated' : 'unauthorized',
+          message: session.isAuth ? 'Auth Updated' : 'Unauthorized',
           session,
         });
       } catch (error) {

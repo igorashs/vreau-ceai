@@ -1,10 +1,12 @@
 import dbConnect from '@/utils/dbConnect';
-import CategoryModel, { Category } from '@/models/Category';
-import ProductModel, { Product } from '@/models/Product';
+import { Product } from '@/models/Product';
 import { withSessionApi } from '@/utils/withSession';
 import * as validator from '@/utils/validator';
 import { ApiResponse } from 'types';
 import { getQueryElements } from '@/utils/getQueryElements';
+import getProductFilters from '@/utils/getProductFilters';
+import CategoryService from 'services/CategoryService';
+import ProductService from 'services/ProductService';
 
 export default withSessionApi<
   ApiResponse & { products?: Product[]; product?: Product; count?: number }
@@ -23,22 +25,7 @@ export default withSessionApi<
           limit,
         } = getQueryElements(req.query);
 
-        const matchFilter: { recommend?: boolean } = {};
-        const sortFilter: { price?: 1 | -1; total_quantity?: 1 | -1 } = {};
-
-        if (filtersQuery) {
-          const filters = Object.fromEntries(
-            filtersQuery.split(' ').map((f) => [f, true]),
-          );
-
-          if (filters.recommend) matchFilter.recommend = true;
-
-          if (filters.ascPrice) sortFilter.price = 1;
-          else if (filters.descPrice) sortFilter.price = -1;
-
-          if (filters.ascQuantity) sortFilter.total_quantity = 1;
-          else if (filters.descQuantity) sortFilter.total_quantity = -1;
-        }
+        const { matchFilter, sortFilter } = getProductFilters(filtersQuery);
 
         const options = {
           limit: +limit || 3,
@@ -47,26 +34,23 @@ export default withSessionApi<
         };
 
         if (search) {
+          // find specific products
           if (byCategory) {
             // find products by category with filters
-            const { name } = await validator.validateCategory({
-              name: search,
-            });
-            const dbCategory: Category & {
-              products: Product[];
-            } = await CategoryModel.findOne({ name })
-              .populate({
-                path: 'products',
-                match: matchFilter,
-                options,
-              })
-              .lean();
+
+            // respond 400 Validation Error if name is invalid
+            const dbCategory = await CategoryService.queryCategoryWithProducts(
+              search,
+              matchFilter,
+              options,
+            );
 
             if (dbCategory) {
-              const count: number = await ProductModel.countDocuments({
-                ...matchFilter,
-                category_id: dbCategory._id,
-              });
+              // get products count
+              const count = await ProductService.countProductsByCategoryId(
+                dbCategory._id,
+                matchFilter,
+              );
 
               res.status(200).json({
                 success: true,
@@ -78,12 +62,8 @@ export default withSessionApi<
               res.status(404).json({ success: false, message: 'Not Found' });
             }
           } else {
-            // find product
-            const { name } = await validator.validateProductName({
-              name: search,
-            });
-
-            const dbProduct: Product = await ProductModel.findOne({ name });
+            // find product by name
+            const dbProduct = await ProductService.queryProduct(search);
 
             if (dbProduct) {
               res.status(200).json({
@@ -97,19 +77,13 @@ export default withSessionApi<
           }
         } else {
           // find products with filters
-          const dbProducts: Product[] = recommended
-            ? await ProductModel.find({ recommend: true }, null, options)
-                .populate({
-                  path: 'category_id',
-                  select: 'name',
-                })
-                .lean()
-            : await ProductModel.find(matchFilter, null, options).lean();
+          const dbProducts = recommended
+            ? await ProductService.listRecommendedProducts(options)
+            : await ProductService.listProducts(matchFilter, null, options);
 
           if (dbProducts.length) {
-            const count: number = await ProductModel.countDocuments(
-              matchFilter,
-            );
+            // get products count
+            const count = await ProductService.countProducts(matchFilter);
 
             res.status(200).json({
               success: true,

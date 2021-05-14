@@ -1,13 +1,14 @@
 import dbConnect from '@/utils/dbConnect';
-import ProductModel, { Product } from 'models/Product';
-import CategoryModel, { Category } from 'models/Category';
+import { Product } from 'models/Product';
 import { withSessionApi } from '@/utils/withSession';
 import * as validator from '@/utils/validator';
-import { Fields, File, Files, IncomingForm } from 'formidable';
 import { promises as fs } from 'fs';
-import { nanoid } from 'nanoid';
-import { ApiResponse, Formidable } from 'types';
+import { ApiResponse } from 'types';
 import { getQueryElements } from '@/utils/getQueryElements';
+import FormidableParser from '@/utils/FormidableParser';
+import generateUniqueFileName from '@/utils/generateUniqueFileName';
+import CategoryService from 'services/CategoryService';
+import ProductService from 'services/ProductService';
 
 export default withSessionApi<ApiResponse & { product?: Product }>(
   async function handler(req, res) {
@@ -19,150 +20,107 @@ export default withSessionApi<ApiResponse & { product?: Product }>(
         try {
           const { isAuth, user } = req.session;
 
-          if (isAuth && (user?.isAdmin || user?.isManager)) {
-            const { id } = getQueryElements(req.query);
+          // respond 401 Unauthorized if user doesn't have permission
+          if (!isAuth || (!user?.isAdmin && !user?.isManager)) {
+            res.status(401).json({ success: false, message: 'Unauthorized' });
 
-            const data: {
-              fields: Fields & { src?: string };
-              files: Files & { src?: File };
-            } = await new Promise((resolve, reject) => {
-              const form: Formidable = new IncomingForm({
-                uploadDir: `${process.cwd()}/public/uploads`,
-                maxFileSize: 1 * 1024 * 1024,
-                multiples: false,
-              });
+            return;
+          }
 
-              form.onPart = (part) => {
-                if (part.filename) {
-                  const fileType = part.mime?.split('/').pop() ?? '';
+          const { id } = getQueryElements(req.query);
 
-                  // validate allowed file types
-                  if (!['jpg', 'png', 'jpeg'].includes(fileType)) {
-                    form.emit(
-                      'error',
-                      validator.createValidationError({
-                        message:
-                          'sunt permise doar imagini .png, .jpg și .jpeg',
-                        key: 'src',
-                      }),
-                    );
-                  }
-                }
+          // get product form data
+          const { fields, files } = await FormidableParser.handleProductForm(
+            req,
+            {
+              uploadDir: `${process.cwd()}/public/uploads`,
+              maxFileSize: 1 * 1024 * 1024,
+              multiples: false,
+            },
+            ['jpg', 'png', 'jpeg'],
+          );
 
-                form.handlePart(part);
-              };
+          // set src file if exists
+          if (files.src && files.src.name) {
+            // create unique file name
+            fields.src = generateUniqueFileName(files.src.name);
 
-              form.parse(req, (err, fields, files) => {
-                if (err) {
-                  if (err.message.includes('maxFileSize')) {
-                    reject(
-                      validator.createValidationError({
-                        message: 'mărimea fișierului poate fi maximum 1MB',
-                        key: 'src',
-                      }),
-                    );
-                  } else {
-                    reject(err);
-                  }
-                }
+            // store name for unexpected errors
+            tmpSrc = fields.src;
+          }
 
-                resolve({ fields, files });
-              });
-            });
+          // find existing product
+          // respond 400 Validation Error if product doesn't exist
+          const dbExistingProduct = await ProductService.findProductById(id);
 
-            // set src img if exists
-            if (data.files.src) {
-              const matches = data.files?.src.name?.match(/\..+$/);
-              data.fields.src = nanoid() + (matches && matches[0]);
-              tmpSrc = data.files.src.path;
-            }
+          // respond with 400 Validation Error if product name is already used
+          await ProductService.throwIfProductExists(fields.name);
 
-            const values = await validator.validateProduct(data.fields);
-            const dbExistingProduct: Product = await ProductModel.findById(id);
-
-            if (!dbExistingProduct)
-              validator.throwValidationError({
-                message: 'categoria nu există',
-                key: 'category',
-              });
-
-            if (dbExistingProduct._id.toString() !== id)
-              validator.throwValidationError({
-                message: 'un produs cu acest nume deja există',
-                key: 'name',
-              });
-
-            if (
-              dbExistingProduct.category_id.toString() !== values.category_id
-            ) {
-              // add to new category product list
-              const dbCategory: Category = await CategoryModel.findByIdAndUpdate(
-                values.category_id,
-                { $push: { products: dbExistingProduct._id } },
-                { projection: 'name' },
-              );
-
-              if (!dbCategory)
-                validator.throwValidationError({
-                  message: 'categoria nu există',
-                  key: 'category',
-                });
-
-              // remove from prev category product list
-              await CategoryModel.findByIdAndUpdate(
-                dbExistingProduct.category_id,
-                { $pull: { products: dbExistingProduct._id } },
-                { projection: 'name' },
-              );
-            }
-
-            const defaultImg = 'placeholder.png';
-
-            // remove prev img if new img is provided
-            if (
-              values.src === defaultImg &&
-              dbExistingProduct.src !== defaultImg
-            ) {
-              values.src = dbExistingProduct.src;
-            } else if (
-              values.src !== defaultImg &&
-              dbExistingProduct.src !== defaultImg
-            ) {
-              await fs.unlink(
-                `${process.cwd()}/public/uploads/${dbExistingProduct.src}`,
-              );
-            }
-
-            // rename product img
-            if (data.files.src) {
-              await fs.rename(
-                data.files.src.path,
-                `${process.cwd()}/public/uploads/${data.fields.src}`,
-              );
-            }
-
-            const dbUpdatedProduct: Product = await ProductModel.findByIdAndUpdate(
-              id,
-              values,
-              {
-                new: true,
-              },
+          // ? changeProductCategory ?
+          // handle category change
+          if (
+            fields.category_id &&
+            dbExistingProduct.category_id.toString() !== fields.category_id
+          ) {
+            // add product to the new category
+            // respond 400 Validation Error if product doesn't exist
+            await CategoryService.addProductToCategory(
+              fields.category_id,
+              dbExistingProduct._id,
             );
 
-            if (dbUpdatedProduct) {
-              res.status(200).json({
-                success: true,
-                message: 'Success',
-                product: dbUpdatedProduct,
-              });
-            } else {
-              res.status(404).json({ success: false, message: 'Not Found' });
-            }
+            // delete product from previous category
+            await CategoryService.deleteProductFromCategory(
+              dbExistingProduct.category_id.toString(),
+              dbExistingProduct._id,
+            );
+          }
+
+          // hard coded :)
+          const defaultImg = 'placeholder.png';
+          const newImg = fields.src;
+
+          // if new img was provided and prevImg isn't default img
+          if (newImg && dbExistingProduct.src !== defaultImg) {
+            // delete prevImg
+            await fs.unlink(
+              `${process.cwd()}/public/uploads/${dbExistingProduct.src}`,
+            );
+            // if prevImg isn't default img
+          } else if (dbExistingProduct.src !== defaultImg) {
+            // use prevImg
+            fields.src = dbExistingProduct.src;
+          }
+
+          // rename product img if new img was provided
+          if (files.src) {
+            await fs.rename(
+              files.src.path,
+              `${process.cwd()}/public/uploads/${fields.src}`,
+            );
+          }
+
+          // update product and return updatedProduct
+          // respond 400 Validation Error if data is invalid
+          // respond 400 Validation Error if product doesn't exist
+          const dbUpdatedProduct = await ProductService.updateProduct(
+            id,
+            fields,
+            { new: true },
+          );
+
+          if (dbUpdatedProduct) {
+            res.status(200).json({
+              success: true,
+              message: 'Success',
+              product: dbUpdatedProduct,
+            });
           } else {
-            res.status(401).json({ success: false, message: 'Unauthorized' });
+            res.status(404).json({ success: false, message: 'Not Found' });
           }
         } catch (error) {
           try {
+            // remove temp img if something went wrong
             if (tmpSrc) await fs.unlink(tmpSrc);
           } catch (fsError) {
             // console.error(error);

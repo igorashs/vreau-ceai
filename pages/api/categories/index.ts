@@ -1,10 +1,10 @@
 import dbConnect from '@/utils/dbConnect';
-import CategoryModel, { Category } from '@/models/Category';
+import { Category } from '@/models/Category';
 import { withSessionApi } from '@/utils/withSession';
 import * as validator from '@/utils/validator';
 import { ApiResponse, CategoryName } from 'types';
 import { getQueryElements } from '@/utils/getQueryElements';
-import { categoryMessages } from '@/utils/validator/schemas/category';
+import CategoryService from 'services/CategoryService';
 
 export default withSessionApi<
   ApiResponse & {
@@ -20,13 +20,9 @@ export default withSessionApi<
         const { search } = getQueryElements(req.query);
 
         if (search) {
-          // query one item
-          const { name } = await validator.validateCategory({
-            name: search,
-          });
-          const dbCategory: Category = await CategoryModel.findOne({
-            name,
-          });
+          // find one category
+          // respond 400 Bad Request if the name is invalid
+          const dbCategory = await CategoryService.queryCategory(search);
 
           if (dbCategory) {
             res.status(200).json({
@@ -38,8 +34,8 @@ export default withSessionApi<
             res.status(404).json({ success: false, message: 'Not Found' });
           }
         } else {
-          // query all items
-          const dbCategories: Array<Category> = await CategoryModel.find({});
+          // list all categories
+          const dbCategories = await CategoryService.listCategories();
 
           if (dbCategories.length) {
             res.status(200).json({
@@ -70,26 +66,22 @@ export default withSessionApi<
       try {
         const { isAuth, user } = req.session;
 
-        if (isAuth && (user?.isAdmin || user?.isManager)) {
-          const { name }: CategoryName = req.body;
-          const values = await validator.validateCategory({ name });
-          const dbCategory: Category = await CategoryModel.findOne({
-            name: values.name,
-          });
-
-          if (dbCategory)
-            validator.throwValidationError({
-              message: categoryMessages.name.exists,
-              key: 'name',
-            });
-
-          const category: Category = new CategoryModel({ name: values.name });
-          await category.save();
-
-          res.status(201).json({ success: true, message: 'Success' });
-        } else {
+        // respond 401 Unauthorized if user doesn't have permission
+        if (!isAuth || (!user?.isAdmin && !user?.isManager)) {
           res.status(401).json({ success: false, message: 'Unauthorized' });
+
+          return;
         }
+
+        const { name }: CategoryName = req.body;
+
+        // respond 400 Bad Request if the name is invalid
+        // respond 400 Bad Request if the name is already used
+        const dbCategory = await CategoryService.createCategory(name);
+
+        res
+          .status(201)
+          .json({ success: true, message: 'Success', category: dbCategory });
       } catch (error) {
         const details = validator.getValidationErrorDetails(error);
 

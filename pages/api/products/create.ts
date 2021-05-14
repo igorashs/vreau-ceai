@@ -1,146 +1,110 @@
 import dbConnect from '@/utils/dbConnect';
-import ProductModel, { Product } from 'models/Product';
-import CategoryModel, { Category } from 'models/Category';
 import { withSessionApi } from '@/utils/withSession';
 import * as validator from '@/utils/validator';
-import { Fields, Files, File, IncomingForm } from 'formidable';
 import { promises as fs } from 'fs';
-import { nanoid } from 'nanoid';
-import { ApiResponse, Formidable } from 'types';
-import { productMessages } from '@/utils/validator/schemas/product';
+import { ApiResponse } from 'types';
+import FormidableParser from '@/utils/FormidableParser';
+import ProductService from 'services/ProductService';
+import CategoryService from 'services/CategoryService';
+import { Product } from '@/models/Product';
+import generateUniqueFileName from '@/utils/generateUniqueFileName';
 
-export default withSessionApi<ApiResponse>(async function handler(req, res) {
-  await dbConnect();
-  let tmpSrc;
+export default withSessionApi<ApiResponse & { product?: Product }>(
+  async function handler(req, res) {
+    await dbConnect();
+    let tmpSrc;
 
-  switch (req.method) {
-    case 'POST':
-      try {
-        const { isAuth, user } = req.session;
+    switch (req.method) {
+      case 'POST':
+        try {
+          const { isAuth, user } = req.session;
 
-        if (isAuth && (user?.isAdmin || user?.isManager)) {
-          const data: {
-            fields: Fields & { src?: string };
-            files: Files & { src?: File };
-          } = await new Promise((resolve, reject) => {
-            const form: Formidable = new IncomingForm({
+          // respond 401 Unauthorized if user doesn't have permission
+          if (!isAuth || (!user?.isAdmin && !user?.isManager)) {
+            res.status(401).json({ success: false, message: 'Unauthorized' });
+
+            return;
+          }
+
+          // get product form data
+          const { fields, files } = await FormidableParser.handleProductForm(
+            req,
+            {
               uploadDir: `${process.cwd()}/public/uploads`,
               maxFileSize: 1 * 1024 * 1024,
               multiples: false,
-            });
+            },
+            ['jpg', 'png', 'jpeg'],
+          );
 
-            form.onPart = (part) => {
-              if (part.filename) {
-                const fileType = part.mime?.split('/').pop() ?? '';
+          // set src file if exists
+          if (files.src && files.src.name) {
+            // create unique file name
+            fields.src = generateUniqueFileName(files.src.name);
 
-                // validate allowed file types
-                if (!['jpg', 'png', 'jpeg'].includes(fileType)) {
-                  form.emit(
-                    'error',
-                    validator.createValidationError({
-                      message: productMessages.src.invalid,
-                      key: 'src',
-                    }),
-                  );
-                }
-              }
-
-              form.handlePart(part);
-            };
-
-            form.parse(req, (err, fields, files) => {
-              if (err) {
-                if (err.message.includes('maxFileSize')) {
-                  reject(
-                    validator.createValidationError({
-                      message: productMessages.src.max,
-                      key: 'src',
-                    }),
-                  );
-                } else {
-                  reject(err);
-                }
-              }
-
-              resolve({ fields, files });
-            });
-          });
-
-          // set src img if exists
-          if (data.files.src) {
-            const matches = data.files?.src.name?.match(/\..+$/);
-            data.fields.src = nanoid() + (matches && matches[0]);
-            tmpSrc = data.files.src.path;
+            // store name for unexpected errors
+            tmpSrc = fields.src;
           }
 
-          const values = await validator.validateProduct(data.fields);
-          const dbExistingProduct: Product = await ProductModel.findOne(
-            {
-              name: values.name,
-            },
-            'name',
+          // respond 400 Validation Error if name is invalid
+          // respond 400 Validation Error if product exists
+          await ProductService.throwIfProductExists(fields.name);
+
+          // respond 400 Validation Error if category doesn't exist
+          const dbCategory = await CategoryService.findCategoryById(
+            fields.category_id,
           );
 
-          if (dbExistingProduct)
-            validator.throwValidationError({
-              message: productMessages.name.exists,
-              key: 'name',
-            });
+          // create new product
+          // respond 400 Validation Error if data is invalid
+          const dbProduct = await ProductService.createProduct(fields);
 
-          const product = new ProductModel(values);
-          // ! it might be wise to check if category_id is a valid id before querying?
-          const dbCategory: Category = await CategoryModel.findByIdAndUpdate(
-            values.category_id,
-            { $push: { products: product._id } },
-            { projection: 'name' },
+          // add product to category
+          // respond 400 Validation Error if category doesn't exist
+          await CategoryService.addProductToCategory(
+            dbCategory._id,
+            dbProduct._id,
           );
 
-          if (!dbCategory)
-            validator.throwValidationError({
-              message: productMessages.category_id.invalid,
-              key: 'category',
-            });
-
-          await product.save();
-
-          // rename product img
-          if (data.files.src) {
+          // rename product img if it was provided
+          if (files.src) {
             await fs.rename(
-              data.files.src.path,
-              `${process.cwd()}/public/uploads/${data.fields.src}`,
+              files.src.path,
+              `${process.cwd()}/public/uploads/${fields.src}`,
             );
           }
 
-          res.status(201).json({ success: true, message: 'Success' });
-        } else {
-          res.status(401).json({ success: false, message: 'Unauthorized' });
-        }
-      } catch (error) {
-        try {
-          if (tmpSrc) await fs.unlink(tmpSrc);
-        } catch (fsError) {
-          // console.error(fsError);
-        }
+          res
+            .status(201)
+            .json({ success: true, message: 'Success', product: dbProduct });
+        } catch (error) {
+          try {
+            // remove temp img if something went wrong
+            if (tmpSrc) await fs.unlink(tmpSrc);
+          } catch (fsError) {
+            // console.error(fsError);
+          }
 
-        const details = validator.getValidationErrorDetails(error);
+          const details = validator.getValidationErrorDetails(error);
 
-        if (details) {
-          res.status(400).json({
-            success: false,
-            message: 'Validation Errors',
-            errors: details,
-          });
-        } else {
-          res.status(400).json({ success: false, message: 'Bad Request' });
+          if (details) {
+            res.status(400).json({
+              success: false,
+              message: 'Validation Errors',
+              errors: details,
+            });
+          } else {
+            res.status(400).json({ success: false, message: 'Bad Request' });
+          }
         }
-      }
-      break;
+        break;
 
-    default:
-      res.status(400).json({ success: false, message: 'Bad Request' });
-      break;
-  }
-});
+      default:
+        res.status(400).json({ success: false, message: 'Bad Request' });
+        break;
+    }
+  },
+);
 
 export const config = {
   api: {
