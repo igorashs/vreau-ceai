@@ -1,14 +1,14 @@
 import mongoose, { Document } from 'mongoose';
 
 export interface Order extends Document {
-  user: mongoose.Schema.Types.ObjectId;
+  user: mongoose.Types.ObjectId;
   number: string;
   total_price: number;
   status: 'processing' | 'inDelivery' | 'canceled' | 'completed';
-  items: Array<{
+  items: {
     count: number;
     product: { name: string; price: number; quantity: number };
-  }>;
+  }[];
   address: string;
   tel: string;
   orderedAt: Date;

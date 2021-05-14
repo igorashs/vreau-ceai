@@ -2,7 +2,7 @@ import mongoose, { Document } from 'mongoose';
 
 export interface Category extends Document {
   name: string;
-  products: Array<mongoose.Schema.Types.ObjectId>;
+  products: mongoose.Types.ObjectId[];
 }
 
 const categorySchema = new mongoose.Schema<Category>({

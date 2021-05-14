@@ -1,7 +1,7 @@
 import mongoose, { Document } from 'mongoose';
 
 export interface Session extends Document {
-  user_id: mongoose.Schema.Types.ObjectId;
+  user_id: mongoose.Types.ObjectId;
   refresh_token: string;
   createdAt: Date;
 }

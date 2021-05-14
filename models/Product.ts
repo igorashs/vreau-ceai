@@ -2,7 +2,7 @@ import mongoose, { Document } from 'mongoose';
 
 export interface Product extends Document {
   name: string;
-  category_id: mongoose.Schema.Types.ObjectId;
+  category_id: mongoose.Types.ObjectId;
   src: string;
   price: number;
   quantity: number;
