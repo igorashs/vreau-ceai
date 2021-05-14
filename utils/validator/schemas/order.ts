@@ -15,6 +15,7 @@ export const orderMessages = {
   number: {
     length: 'numărul trebuie să aibă exact 16 caractere',
     required: 'numărul este obligatoriu',
+    wrong: 'numărul este greșit',
   },
 
   status: {
