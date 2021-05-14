@@ -17,10 +17,6 @@ import * as categoryValidation from './schemas/category';
 import * as productValidation from './schemas/product';
 import * as orderValidation from './schemas/order';
 
-type Fields = {
-  [key: string]: string | string[];
-};
-
 export const validateUserSignup = (user: UserSignup): Promise<UserSignup> =>
   userValidation.signupSchema.validateAsync(user);
 
@@ -33,7 +29,7 @@ export const validateCategory = (
   categoryValidation.categorySchema.validateAsync(category);
 
 export const validateProduct = (
-  product: ProductFields | Fields,
+  product: Partial<ProductFields>,
 ): Promise<ProductFields> =>
   productValidation.productSchema.validateAsync(product);
 
@@ -98,5 +94,6 @@ export const getValidationErrorDetails = (
 export const validateEmail = (email: UserEmail): Promise<UserEmail> =>
   userValidation.emailSchema.validateAsync(email);
 
-export const validateProductName = (name: ProductName): Promise<ProductName> =>
-  productValidation.nameSchema.validateAsync(name);
+export const validateProductName = (
+  name: Partial<ProductName>,
+): Promise<ProductName> => productValidation.nameSchema.validateAsync(name);
