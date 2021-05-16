@@ -22,6 +22,7 @@ import {
   ProductNameErrorDetail,
   CategoryName,
   CategoryNameErrorDetail,
+  SessionAuth,
 } from 'types';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
@@ -91,13 +92,15 @@ export const updateUserManagerPermission = async <
   return res.json() as Promise<R>;
 };
 
-export const refreshUser = async () => {
+export const refreshUser = async <
+  R extends ApiResponse & { session: SessionAuth }
+>() => {
   const res = await fetch(`${URL}/api/users/refresh`, {
     method: 'POST',
     credentials: 'same-origin',
   });
 
-  return res.json();
+  return res.json() as Promise<R>;
 };
 
 export const createCategory = async <
