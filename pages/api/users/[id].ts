@@ -1,62 +1,53 @@
 import { User } from '@/models/User';
 import dbConnect from '@/utils/dbConnect';
-import { getQueryElements } from '@/utils/getQueryElements';
-import * as validator from '@/utils/validator';
 import { withSessionApi } from '@/utils/withSession';
 import UserService from 'services/UserService';
-import { ApiResponse, UserPermissions } from 'types';
+import { UserPermissions } from 'types';
+import ApiRouteService from 'services/ApiRouteService';
 
-export default withSessionApi<ApiResponse & { user?: User }>(
-  async function handler(req, res) {
-    await dbConnect();
+export default withSessionApi(async function handler(req, res) {
+  await dbConnect();
+  const routeService = new ApiRouteService(req, res);
 
-    switch (req.method) {
-      case 'PUT':
-        try {
-          // respond 401 Unauthorized if user doesn't have permission
-          if (!req.session.isAuth || !req.session.user?.isAdmin) {
-            res.status(401).json({ success: false, message: 'Unauthorized' });
+  switch (req.method) {
+    case 'PUT':
+      await handlePut(routeService);
 
-            return;
-          }
+      break;
+    default:
+      routeService.resMethodNotAllowed(['PUT'], req.method);
 
-          const { id } = getQueryElements(req.query);
-          const { isManager }: UserPermissions = req.body;
+      break;
+  }
+});
 
-          // respond 400 Validation Error if data is invalid
-          const dbUser = await UserService.updateUserPermission(
-            id,
-            {
-              isManager,
-            },
-            'isManager _id name email',
-          );
+/**
+ * Update user Permission
+ */
+const handlePut = async (routeService: ApiRouteService<{ user?: User }>) => {
+  try {
+    // respond 401 Unauthorized if user is not authorized
+    // respond 403 Forbidden if user doesn't have permission
+    if (!routeService.isAuthorized({ isAdmin: true })) return;
 
-          if (dbUser) {
-            res
-              .status(200)
-              .json({ success: true, message: 'Success', user: dbUser });
-          } else {
-            res.status(404).json({ success: false, message: 'Not Found' });
-          }
-        } catch (error) {
-          const details = validator.getValidationErrorDetails(error);
+    const { id } = routeService.getQuery();
+    const { isManager }: UserPermissions = routeService.getBody();
 
-          if (details) {
-            res.status(400).json({
-              success: false,
-              message: 'Validation Errors',
-              errors: details,
-            });
-          } else {
-            res.status(400).json({ success: false, message: 'Bad Request' });
-          }
-        }
-        break;
+    // respond 400 Validation Error if data is invalid
+    const dbUser = await UserService.updateUserPermission(
+      id,
+      {
+        isManager,
+      },
+      'isManager _id name email',
+    );
 
-      default:
-        res.status(400).json({ success: false, message: 'Bad Request' });
-        break;
+    if (dbUser) {
+      routeService.resOk({ user: dbUser });
+    } else {
+      routeService.resNotFound();
     }
-  },
-);
+  } catch (error) {
+    routeService.handleApiError(error);
+  }
+};

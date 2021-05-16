@@ -1,51 +1,56 @@
 import dbConnect from '@/utils/dbConnect';
-import * as validator from '@/utils/validator';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { ApiResponse, UserSignup } from 'types';
 import UserService from 'services/UserService';
 import SessionService from 'services/SessionService';
+import ApiRouteService from 'services/ApiRouteService';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ApiResponse>,
 ) {
   await dbConnect();
+  const routeService = new ApiRouteService(req, res);
 
   switch (req.method) {
     case 'POST':
-      try {
-        const { name, email, password, repeat_password }: UserSignup = req.body;
-
-        // respond 400 Validation Error if data is invalid
-        // respond 400 Validation Error if email already exists
-        const newUser = await UserService.signupUser({
-          name,
-          email,
-          password,
-          repeat_password,
-        });
-        const cookies = await SessionService.createUserSession(newUser);
-
-        res.setHeader('Set-Cookie', cookies);
-        res.status(201).json({ success: true, message: 'Success' });
-      } catch (error) {
-        const details = validator.getValidationErrorDetails(error);
-
-        if (details) {
-          res.status(400).json({
-            success: false,
-            message: 'Validation Errors',
-            errors: details,
-          });
-        } else {
-          res.status(400).json({ success: false, message: 'Bad Request' });
-        }
-      }
+      await handlePost(routeService);
 
       break;
 
     default:
-      res.status(400).json({ success: false, message: 'Bad Request' });
+      routeService.resMethodNotAllowed(['POST'], req.method);
+
       break;
   }
 }
+
+/**
+ * SignUp user
+ *
+ */
+const handlePost = async (routeService: ApiRouteService) => {
+  try {
+    const {
+      name,
+      email,
+      password,
+      repeat_password,
+    }: UserSignup = routeService.getBody();
+
+    // respond 400 Validation Error if data is invalid
+    // respond 400 Validation Error if email already exists
+    const newUser = await UserService.signupUser({
+      name,
+      email,
+      password,
+      repeat_password,
+    });
+    const cookies = await SessionService.createUserSession(newUser);
+
+    routeService.res.setHeader('Set-Cookie', cookies);
+    routeService.resCreated();
+  } catch (error) {
+    routeService.handleApiError(error);
+  }
+};

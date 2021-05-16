@@ -1,58 +1,49 @@
 import { User } from '@/models/User';
 import dbConnect from '@/utils/dbConnect';
-import { getQueryElements } from '@/utils/getQueryElements';
-import * as validator from '@/utils/validator';
 import { withSessionApi } from '@/utils/withSession';
-import { ApiResponse } from 'types';
 import UserService from 'services/UserService';
+import ApiRouteService from 'services/ApiRouteService';
 
-export default withSessionApi<ApiResponse & { user?: User }>(
-  async function handler(req, res) {
-    await dbConnect();
+export default withSessionApi(async function handler(req, res) {
+  await dbConnect();
+  const routeService = new ApiRouteService(req, res);
 
-    switch (req.method) {
-      case 'GET':
-        try {
-          // respond 401 Unauthorized if user doesn't have permission
-          if (!req.session.isAuth || !req.session.user?.isAdmin) {
-            res.status(401).json({ success: false, message: 'Unauthorized' });
+  switch (req.method) {
+    case 'GET':
+      await handleGet(routeService);
 
-            return;
-          }
+      break;
 
-          const { search } = getQueryElements(req.query);
+    default:
+      routeService.resMethodNotAllowed(['GET'], req.method);
 
-          // respond 400 Validation Error if email is invalid
-          const dbUser = await UserService.queryUser(
-            search,
-            'isManager _id name email',
-          );
+      break;
+  }
+});
 
-          if (dbUser) {
-            res
-              .status(200)
-              .json({ success: true, message: 'Success', user: dbUser });
-          } else {
-            res.status(404).json({ success: false, message: 'Not Found' });
-          }
-        } catch (error) {
-          const details = validator.getValidationErrorDetails(error);
+/**
+ * Get User
+ */
+const handleGet = async (routeService: ApiRouteService<{ user?: User }>) => {
+  try {
+    // respond 401 Unauthorized if user is not authorized
+    // respond 403 Forbidden if user doesn't have permission
+    if (!routeService.isAuthorized({ isAdmin: true })) return;
 
-          if (details) {
-            res.status(400).json({
-              success: false,
-              message: 'Validation Errors',
-              errors: details,
-            });
-          } else {
-            res.status(400).json({ success: false, message: 'Bad Request' });
-          }
-        }
-        break;
+    const { search } = routeService.getQuery();
 
-      default:
-        res.status(400).json({ success: false, message: 'Bad Request' });
-        break;
+    // respond 400 Validation Error if email is invalid
+    const dbUser = await UserService.queryUser(
+      search,
+      'isManager _id name email',
+    );
+
+    if (dbUser) {
+      routeService.resOk({ user: dbUser });
+    } else {
+      routeService.resNotFound();
     }
-  },
-);
+  } catch (error) {
+    routeService.handleApiError(error);
+  }
+};

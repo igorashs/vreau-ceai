@@ -1,32 +1,39 @@
 import { withSessionApi } from '@/utils/withSession';
 import { ApiResponse } from 'types';
 import SessionService from 'services/SessionService';
+import ApiRouteService from 'services/ApiRouteService';
 
 export default withSessionApi<ApiResponse>(async function handler(req, res) {
+  const routeService = new ApiRouteService(req, res);
+
   switch (req.method) {
     case 'POST':
-      try {
-        // respond 401 Unauthorized if user is not authenticated
-        if (!req.session.isAuth || !req.session.user) {
-          res.status(401).json({ success: false, message: 'Unauthorized' });
-
-          return;
-        }
-
-        const cookies = await SessionService.deleteUserSession(
-          req.session.user?._id,
-        );
-
-        res.setHeader('Set-Cookie', cookies);
-        res.status(200).json({ success: true, message: 'Success' });
-      } catch (error) {
-        res.status(400).json({ success: false, message: 'Bad Request' });
-      }
+      await handlePost(routeService);
 
       break;
 
     default:
-      res.status(400).json({ success: false, message: 'Bad Request' });
+      routeService.resMethodNotAllowed(['POST'], req.method);
+
       break;
   }
 });
+
+/**
+ * Delete user session
+ *
+ */
+const handlePost = async (routeService: ApiRouteService) => {
+  try {
+    // respond 401 Unauthorized if user is not authorized
+    if (!routeService.isAuthorized()) return;
+
+    const session = routeService.getUserSession();
+    const cookies = await SessionService.deleteUserSession(session.user?._id);
+
+    routeService.res.setHeader('Set-Cookie', cookies);
+    routeService.resOk();
+  } catch (error) {
+    routeService.handleApiError(error);
+  }
+};

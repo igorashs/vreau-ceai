@@ -1,34 +1,42 @@
-import verifySession, { SessionAuth } from '@/utils/verifySession';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { ApiResponse } from 'types';
+import ApiRouteService from 'services/ApiRouteService';
+import { SessionAuth } from 'types';
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ApiResponse & { session?: SessionAuth }>,
+  res: NextApiResponse,
 ) {
+  const routeService = new ApiRouteService(req, res);
+
   switch (req.method) {
     case 'POST':
-      try {
-        const [session, cookies] = await verifySession({
-          cookies: req.cookies,
-          updateAccess: true,
-        });
-
-        if (cookies) res.setHeader('Set-Cookie', cookies);
-
-        res.status(session.isAuth ? 200 : 401).json({
-          success: session.isAuth,
-          message: session.isAuth ? 'Auth Updated' : 'Unauthorized',
-          session,
-        });
-      } catch (error) {
-        res.status(400).json({ success: false, message: 'Bad Request' });
-      }
+      await handlePost(routeService);
 
       break;
 
     default:
-      res.status(400).json({ success: false, message: 'Bad Request' });
+      routeService.resMethodNotAllowed(['POST'], req.method);
+
       break;
   }
 }
+
+/**
+ * Refresh user session (access token)
+ *
+ */
+const handlePost = async (
+  routeService: ApiRouteService<{ session?: SessionAuth }>,
+) => {
+  try {
+    const session = await routeService.refreshSession();
+
+    if (session.isAuth) {
+      routeService.resOk({ session });
+    } else {
+      routeService.resUnauthorized();
+    }
+  } catch (error) {
+    routeService.handleApiError(error);
+  }
+};
