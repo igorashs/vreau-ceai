@@ -41,7 +41,7 @@ const deleteUserSession = (SessionModel: Model<Session>) =>
    *
    * @returns invalidated cookies
    */
-  async (user_id: string) => {
+  async (user_id?: string) => {
     await SessionModel.findOneAndDelete({ user_id }, { returnOriginal: false });
     const cookies = removeSession();
 
