@@ -92,7 +92,7 @@ export type UserAuth = {
 export type UserSession = {
   isAuth: boolean;
   user: UserAuth | null;
-  needRefresh: boolean;
+  needRefresh?: boolean;
 };
 
 type dataType = 'data' | 'error' | 'field' | 'fileBegin' | 'file' | 'progress';
@@ -177,3 +177,8 @@ export type ProductMatchFilter = {
 };
 
 export type ProductSortFilter = { price?: 1 | -1; total_quantity?: 1 | -1 };
+
+export type SessionAuth = {
+  isAuth: boolean;
+  user: UserAuth | null;
+};
