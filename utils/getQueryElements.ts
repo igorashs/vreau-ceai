@@ -1,8 +1,16 @@
-// returns the string value or first string element if it is an array
+/**
+ * Get string value or first string value of an array
+ *
+ * @returns string value
+ */
 export const getQueryElement = (value: string | string[]) =>
   typeof value === 'string' ? value : value[0];
 
-// returns string values || first string element of an array omitting undefined values
+/**
+ * Get string values (also first string value of an array) omitting undefined values
+ *
+ * @returns query string values
+ */
 export const getQueryElements = (query: {
   [key: string]: string | string[] | undefined;
 }) =>
