@@ -1,4 +1,4 @@
-import verifySession, { SessionAuth } from '@/utils/verifySession';
+import verifySession from '@/utils/verifySession';
 import type {
   NextApiRequest,
   NextApiResponse,
@@ -6,9 +6,10 @@ import type {
   GetServerSidePropsContext,
 } from 'next';
 import { ParsedUrlQuery } from 'querystring';
+import { SessionAuth } from 'types';
 
 export type NextApiSessionRequest = NextApiRequest & {
-  session: SessionAuth;
+  session?: SessionAuth;
 };
 
 type ApiProps = [NextApiSessionRequest, NextApiResponse];
