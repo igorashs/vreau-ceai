@@ -28,7 +28,7 @@
 ```
 
 ```bash
-# DELETE an user by id (auth Admin)
+# DELETE an user by id (auth Admin) (not implemented)
 /api/users/:id
 ```
 
