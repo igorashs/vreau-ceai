@@ -20,6 +20,11 @@ type RefreshClaims = {
   isManager: boolean;
 };
 
+/**
+ * @deprecated
+ *
+ * use SessionAuth type from 'types'
+ */
 export type SessionAuth = {
   isAuth: boolean;
   user: UserAuth | null;
