@@ -1,93 +1,79 @@
 import dbConnect from '@/utils/dbConnect';
 import { Category } from '@/models/Category';
 import { withSessionApi } from '@/utils/withSession';
-import * as validator from '@/utils/validator';
-import { ApiResponse, CategoryName } from 'types';
-import { getQueryElements } from '@/utils/getQueryElements';
+import { CategoryName } from 'types';
 import CategoryService from 'services/CategoryService';
+import ApiRouteService from 'services/ApiRouteService';
 
-export default withSessionApi<ApiResponse & { category?: Category }>(
-  async function handler(req, res) {
-    await dbConnect();
+export default withSessionApi(async function handler(req, res) {
+  await dbConnect();
+  const routeService = new ApiRouteService(req, res);
 
-    switch (req.method) {
-      case 'PUT':
-        try {
-          const { isAuth, user } = req.session;
+  switch (req.method) {
+    case 'PUT':
+      await handlePut(routeService);
 
-          // respond 401 Unauthorized if user doesn't have permission
-          if (!isAuth || (!user?.isAdmin && !user?.isManager)) {
-            res.status(401).json({ success: false, message: 'Unauthorized' });
+      break;
 
-            return;
-          }
+    case 'DELETE':
+      await handleDelete(routeService);
 
-          const { id } = getQueryElements(req.query);
-          const { name }: CategoryName = req.body;
+      break;
 
-          // respond 400 Bad Request if name is invalid
-          // respond 400 Bad Request if name is already used
-          // respond 400 Bad Request if category doesn't exist
-          const dbUpdatedCategory = await CategoryService.updateCategory(
-            id,
-            name,
-          );
+    default:
+      routeService.resMethodNotAllowed(['PUT', 'DELETE'], req.method);
 
-          if (dbUpdatedCategory) {
-            res.status(200).json({
-              success: true,
-              message: 'Success',
-              category: dbUpdatedCategory,
-            });
-          } else {
-            res.status(404).json({ success: false, message: 'Not Found' });
-          }
-        } catch (error) {
-          const details = validator.getValidationErrorDetails(error);
+      break;
+  }
+});
 
-          if (details) {
-            res.status(400).json({
-              success: false,
-              message: 'Validation Errors',
-              errors: details,
-            });
-          } else {
-            res.status(400).json({ success: false, message: 'Bad Request' });
-          }
-        }
+/**
+ * Update category name
+ */
+const handlePut = async (
+  routeService: ApiRouteService<{ category?: Category }>,
+) => {
+  try {
+    // Respond 401 Unauthorized if user is not authorized
+    // Respond 403 Forbidden if user doesn't have required permissions
+    if (!routeService.isAuthorized({ isManager: true })) return;
 
-        break;
+    const { id } = routeService.getQuery();
+    const { name }: CategoryName = routeService.getBody();
 
-      case 'DELETE':
-        try {
-          const { isAuth, user } = req.session;
+    // respond 400 Bad Request if name is invalid
+    // respond 400 Bad Request if name is already used
+    // respond 400 Bad Request if category doesn't exist
+    const dbUpdatedCategory = await CategoryService.updateCategory(id, name);
 
-          // respond 401 Unauthorized if user doesn't have permission
-          if (!isAuth || (!user?.isAdmin && !user?.isManager)) {
-            res.status(401).json({ success: false, message: 'Unauthorized' });
-
-            return;
-          }
-
-          const { id } = getQueryElements(req.query);
-          const dbDeletedCategory = await CategoryService.deleteCategory(id);
-
-          if (dbDeletedCategory) {
-            res
-              .status(200)
-              .json({ success: true, message: 'Category deleted' });
-          } else {
-            res.status(404).json({ success: false, message: 'Not Found' });
-          }
-        } catch (error) {
-          res.status(400).json({ success: false, message: 'Bad Request' });
-        }
-
-        break;
-
-      default:
-        res.status(400).json({ success: false, message: 'Bad Request' });
-        break;
+    if (dbUpdatedCategory) {
+      routeService.resOk({ category: dbUpdatedCategory });
+    } else {
+      routeService.resNotFound();
     }
-  },
-);
+  } catch (error) {
+    routeService.handleApiError(error);
+  }
+};
+
+/**
+ * Delete category
+ */
+const handleDelete = async (routeService: ApiRouteService) => {
+  try {
+    // Respond 401 Unauthorized if user is not authorized
+    // Respond 403 Forbidden if user doesn't have required permissions
+    if (!routeService.isAuthorized({ isManager: true })) return;
+
+    const { id } = routeService.getQuery();
+    const dbDeletedCategory = await CategoryService.deleteCategory(id);
+
+    if (dbDeletedCategory) {
+      routeService.resOk();
+    } else {
+      routeService.resNotFound();
+    }
+  } catch (error) {
+    routeService.handleApiError(error);
+  }
+};
