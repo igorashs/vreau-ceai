@@ -26,9 +26,13 @@ export default class ApiRouteService<T = any> {
    * @returns session
    */
   getUserSession = () => {
-    if (!this.req.session) throw new Error('session required');
+    const { session } = this.req;
+    if (!session) throw new Error('session required');
 
-    return this.req.session;
+    const { isAuth, user } = session;
+    if (!user) throw new Error('session user required');
+
+    return { isAuth, user };
   };
 
   /**
