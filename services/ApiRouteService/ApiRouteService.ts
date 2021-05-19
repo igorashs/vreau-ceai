@@ -56,8 +56,8 @@ export default class ApiRouteService<T = any> {
   /**
    * Respond with 201 Created
    */
-  resCreated = () =>
-    this.res.status(201).json({ success: true, message: 'Created' });
+  resCreated = (data?: T) =>
+    this.res.status(201).json({ success: true, message: 'Created', ...data });
 
   /**
    * Respond with 400 Bad Request
@@ -149,7 +149,7 @@ export default class ApiRouteService<T = any> {
    * * Respond with Validation Errors if found
    *
    */
-  handleApiError = async (error: Error) => {
+  handleApiError = (error: Error) => {
     const details = getValidationErrorDetails(error);
 
     if (details) {
