@@ -1,64 +1,59 @@
 import dbConnect from '@/utils/dbConnect';
 import { withSessionApi } from '@/utils/withSession';
-import * as validator from '@/utils/validator';
-import { getQueryElements } from '@/utils/getQueryElements';
-import { ApiResponse } from 'types';
 import OrderService from 'services/OrderService';
+import ApiRouteService from 'services/ApiRouteService';
 
-export default withSessionApi<ApiResponse>(async function handler(req, res) {
+export default withSessionApi(async function handler(req, res) {
   await dbConnect();
+  const routeService = new ApiRouteService(req, res);
 
   switch (req.method) {
     case 'DELETE':
-      try {
-        const { isAuth, user } = req.session;
+      await handleDelete(routeService);
 
-        // respond 401 Unauthorized if user is not authenticated
-        if (!isAuth || !user) {
-          res.status(401).json({ success: false, message: 'Unauthorized' });
-
-          return;
-        }
-
-        const { id } = getQueryElements(req.query);
-
-        if (user.isAdmin || user.isManager) {
-          // delete order
-          const deletedOrder = await OrderService.deleteOrder(id);
-
-          if (deletedOrder) {
-            res.status(200).json({ success: true, message: 'Order deleted' });
-          } else {
-            res.status(404).json({ success: false, message: 'Not Found' });
-          }
-        } else {
-          // user deletes its own order
-          const deletedOrder = await OrderService.deleteUserOrder(id, user._id);
-
-          if (deletedOrder) {
-            res.status(200).json({ success: true, message: 'Order deleted' });
-          } else {
-            res.status(404).json({ success: false, message: 'Not Found' });
-          }
-        }
-      } catch (error) {
-        const details = validator.getValidationErrorDetails(error);
-
-        if (details) {
-          res.status(400).json({
-            success: false,
-            message: 'Validation Errors',
-            errors: details,
-          });
-        } else {
-          res.status(400).json({ success: false, message: 'Bad Request' });
-        }
-      }
       break;
 
     default:
-      res.status(400).json({ success: false, message: 'Bad Request' });
+      routeService.resMethodNotAllowed(['DELETE'], req.method);
 
       break;
   }
 });
+
+/**
+ * Delete order
+ * Delete user order (his own)
+ */
+const handleDelete = async (routeService: ApiRouteService) => {
+  try {
+    // Respond 401 Unauthorized if user is not authorized
+    if (!routeService.isAuthorized()) return;
+
+    const { id } = routeService.getQuery();
+    const { user } = routeService.getUserSession();
+
+    // delete order
+    if (user.isAdmin || user.isManager) {
+      const deletedOrder = await OrderService.deleteOrder(id);
+
+      if (deletedOrder) {
+        routeService.resOk();
+      } else {
+        routeService.resNotFound();
+      }
+
+      return;
+    }
+
+    // delete user order
+    const deletedOrder = await OrderService.deleteUserOrder(id, user._id);
+
+    if (deletedOrder) {
+      routeService.resOk();
+    } else {
+      routeService.resNotFound();
+    }
+  } catch (error) {
+    routeService.handleApiError(error);
+  }
+};
