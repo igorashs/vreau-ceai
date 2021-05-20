@@ -64,6 +64,16 @@ export default class ApiRouteService<T = any> {
     this.res.status(201).json({ success: true, message: 'Created', ...data });
 
   /**
+   * Respond with 303 Not Modified
+   */
+  resNotModified = (data?: T) =>
+    this.res.status(304).json({
+      success: true,
+      message: 'Not Modified',
+      ...data,
+    });
+
+  /**
    * Respond with 400 Bad Request
    */
   resBadRequest = () =>
