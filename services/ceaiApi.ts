@@ -263,7 +263,10 @@ export const getProductsByCategory = async <
   return res.json() as Promise<R>;
 };
 
-export const createOrder = async <P extends OrderFields, R extends ApiResponse>(
+export const createOrder = async <
+  P extends OrderFields,
+  R extends ApiResponse & { number: string }
+>(
   data: P,
 ) => {
   const res = await fetch(`${URL}/api/orders/create`, {
