@@ -52,7 +52,7 @@ export default function Order() {
     if (res.success) {
       setLabel({
         success: true,
-        message: res.message,
+        message: `comanda cu nr. ${res.number} a fost trimisă, un operator vă va contacta încurând.`,
       });
 
       cartDispatch({ type: 'clear-cart' });
