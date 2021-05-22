@@ -9,6 +9,7 @@ import dbConnect from '@/utils/dbConnect';
 import CategoryCard from '@/shared/CategoryCard';
 import breakpoints from 'GlobalStyle/breakpoints';
 import { Category } from 'types';
+import { GetServerSideProps } from 'next';
 
 const List = styled.ul`
   display: grid;
@@ -50,9 +51,8 @@ export default function Categories({ categories }: CategoriesProps) {
 
 Categories.withLayout = withCategoryStoreLayout;
 
-export const getStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   await dbConnect();
-
   try {
     const dbCategories: (CategoryModelType & {
       products: Product[];
@@ -75,14 +75,12 @@ export const getStaticProps = async () => {
       props: {
         categories,
       },
-      revalidate: 1,
     };
   } catch (error) {
     return {
       props: {
         categories: [],
       },
-      revalidate: 1,
     };
   }
 };
