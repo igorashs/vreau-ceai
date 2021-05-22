@@ -1,47 +1,50 @@
 import dbConnect from '@/utils/dbConnect';
 import { withSessionApi } from '@/utils/withSession';
-import { getQueryElements } from '@/utils/getQueryElements';
-import { ApiResponse } from 'types';
 import ProductService from 'services/ProductService';
 import CategoryService from 'services/CategoryService';
+import ApiRouteService from 'services/ApiRouteService';
 
-export default withSessionApi<ApiResponse>(async function handler(req, res) {
+export default withSessionApi(async function handler(req, res) {
   await dbConnect();
+  const routeService = new ApiRouteService(req, res);
 
   switch (req.method) {
     case 'DELETE':
-      try {
-        const { isAuth, user } = req.session;
+      await handleDelete(routeService);
 
-        // respond 401 Unauthorized if user doesn't have permission
-        if (!isAuth || (!user?.isAdmin && !user?.isManager)) {
-          res.status(401).json({ success: false, message: 'Unauthorized' });
-
-          return;
-        }
-
-        const { id } = getQueryElements(req.query);
-        const deletedProduct = await ProductService.deleteProduct(id);
-
-        if (deletedProduct) {
-          // remove from prev category product list
-          await CategoryService.deleteProductFromCategory(
-            deletedProduct.category_id.toString(),
-            deletedProduct._id,
-          );
-
-          res.status(200).json({ success: true, message: 'Success' });
-        } else {
-          res.status(404).json({ success: false, message: 'Not Found' });
-        }
-      } catch (error) {
-        res.status(400).json({ success: false, message: 'Bad Request' });
-      }
       break;
 
     default:
-      res.status(400).json({ success: false, message: 'Bad Request' });
+      routeService.resMethodNotAllowed(['DELETE'], req.method);
 
       break;
   }
 });
+
+/**
+ * Delete product
+ */
+const handleDelete = async (routeService: ApiRouteService) => {
+  try {
+    // respond 401 Unauthorized if user is not authorized
+    // respond 403 Forbidden if user doesn't have required permissions
+    if (!routeService.isAuthorized({ isManager: true })) return;
+
+    const { id } = routeService.getQuery();
+    const deletedProduct = await ProductService.deleteProduct(id);
+
+    if (deletedProduct) {
+      // remove from prev category product list
+      await CategoryService.deleteProductFromCategory(
+        deletedProduct.category_id.toString(),
+        deletedProduct._id,
+      );
+
+      routeService.resOk();
+    } else {
+      routeService.resNotFound();
+    }
+  } catch (error) {
+    routeService.handleApiError(error);
+  }
+};

@@ -1,9 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { ApiResponse } from 'types';
+import ApiRouteService from 'services/ApiRouteService';
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ApiResponse>,
+  res: NextApiResponse,
 ) {
-  res.status(400).json({ success: false, message: 'Bad Request' });
+  const routeService = new ApiRouteService(req, res);
+
+  routeService.resNotFound();
 }
