@@ -36,15 +36,13 @@ export default function Categories({ categories }: CategoriesProps) {
         <meta name="description" content="Toate categoriile de ceaiuri" />
       </Head>
 
-      {categories && (
-        <List>
-          {categories.map((c) => (
-            <li key={c.name}>
-              <CategoryCard category={c} />
-            </li>
-          ))}
-        </List>
-      )}
+      <List>
+        {categories.map((c) => (
+          <li key={c.name}>
+            <CategoryCard category={c} />
+          </li>
+        ))}
+      </List>
     </>
   );
 }
@@ -53,18 +51,17 @@ Categories.withLayout = withCategoryStoreLayout;
 
 export const getServerSideProps: GetServerSideProps = async () => {
   await dbConnect();
+
   try {
     const dbCategories: (CategoryModelType & {
       products: Product[];
-    })[] = await CategoryModel.find({})
-      .populate({
-        path: 'products',
-        select: 'src',
-        options: {
-          perDocumentLimit: 1,
-        },
-      })
-      .lean();
+    })[] = await CategoryModel.find({}).populate({
+      path: 'products',
+      select: 'src',
+      options: {
+        perDocumentLimit: 1,
+      },
+    });
 
     const categories = dbCategories.map((c) => ({
       name: c.name,
@@ -73,7 +70,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
     return {
       props: {
-        categories,
+        categories: JSON.parse(JSON.stringify(categories)),
       },
     };
   } catch (error) {
