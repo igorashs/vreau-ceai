@@ -6,19 +6,36 @@ const ACCESS_TIME = 300;
 
 type Payload = string | object | Buffer;
 
+/**
+ * Create jwt with given payload
+ * @returns jwt
+ */
 export const createToken = <T extends Payload>(payload: T, expiresIn: number) =>
   jwt.sign(payload, process.env.AUTH_TOKEN_SECRET as string, {
     expiresIn,
   });
 
-export const verifyToken = <T extends object>(token: string): T | null => {
+/**
+ * Verify jwt with `AUTH_TOKEN_SECRET` key
+ *
+ * @returns decoded token | null
+ */
+export const verifyToken = <T extends object>(token?: string): T | null => {
   try {
-    return jwt.verify(token, process.env.AUTH_TOKEN_SECRET as string) as T;
+    return jwt.verify(
+      token || '',
+      process.env.AUTH_TOKEN_SECRET as string,
+    ) as T;
   } catch (error) {
     return null;
   }
 };
 
+/**
+ * Serialize cookie
+ *
+ * @returns serialized cookie
+ */
 export const createCookie = (name: string, value: string, maxAge: number) =>
   cookie.serialize(name, value, {
     secure: process.env.NODE_ENV !== 'development',
@@ -28,6 +45,11 @@ export const createCookie = (name: string, value: string, maxAge: number) =>
     maxAge,
   });
 
+/**
+ * Remove cookie
+ *
+ * @returns serialized aged cookie
+ */
 export const removeCookie = (name: string) =>
   cookie.serialize(name, '', {
     secure: process.env.NODE_ENV !== 'development',
@@ -36,7 +58,12 @@ export const removeCookie = (name: string) =>
     maxAge: 0,
   });
 
-export const createAccessSession = <T extends Payload>(
+/**
+ * Create access cookie with jwt
+ *
+ * @returns [accessCookie, accessToken]
+ */
+export const createAccessCookie = <T extends Payload>(
   payload: T,
 ): [accessCookie: string, accessToken: string] => {
   const accessToken = createToken<T>(payload, ACCESS_TIME);
@@ -45,7 +72,12 @@ export const createAccessSession = <T extends Payload>(
   return [accessCookie, accessToken];
 };
 
-export const createRefreshSession = <T extends Payload>(
+/**
+ * Create refresh cookie with jwt
+ *
+ * @returns [refreshCookie, refreshToken]
+ */
+export const createRefreshCookie = <T extends Payload>(
   payload: T,
 ): [refreshCookie: string, refreshToken: string] => {
   const refreshToken = createToken<T>(payload, EXPIRE_TIME);
@@ -55,30 +87,32 @@ export const createRefreshSession = <T extends Payload>(
 };
 
 /**
+ * Create session Cookies
  *
- * @param accessClaims  The data to be signed to access token
- * @param refreshClaims The data to be signed to refresh token
+ * @param accessClaims  The data to be signed and provided to access cookie
+ * @param refreshClaims The data to be signed and provided to refresh cookie
  *
+ * @returns sessionCookies & refreshToken
  */
-export const createSession = <T extends Payload, E extends Payload>(
+export const createSessionCookies = <T extends Payload, E extends Payload>(
   accessClaims: T,
   refreshClaims: E,
 ): {
   cookies: [accessCookie: string, refreshCookie: string];
   refreshToken: string;
 } => {
-  const [accessCookie] = createAccessSession<T>(accessClaims);
-  const [refreshCookie, refreshToken] = createRefreshSession<E>(refreshClaims);
+  const [accessCookie] = createAccessCookie<T>(accessClaims);
+  const [refreshCookie, refreshToken] = createRefreshCookie<E>(refreshClaims);
 
   return { cookies: [accessCookie, refreshCookie], refreshToken };
 };
 
 /**
+ *  Remove session cookies
  *
  * @returns aged cookies [accessCookie, refreshCookie]
- *
  */
-export const removeSession = (): [
+export const removeSessionCookies = (): [
   accessCookie: string,
   refreshCookie: string,
 ] => {
@@ -86,4 +120,22 @@ export const removeSession = (): [
   const refreshCookie = removeCookie('refresh');
 
   return [accessCookie, refreshCookie];
+};
+
+/**
+ * Verify refresh & access tokens
+ *
+ * @returns \{isAuth: boolean; claims: T}
+ */
+export const validateSession = <T extends object>(
+  access?: string,
+  refresh?: string,
+) => {
+  const refreshClaims = verifyToken(refresh);
+
+  if (!refreshClaims) return { isAuth: false, claims: null };
+
+  const claims = verifyToken<T>(access);
+
+  return { isAuth: true, claims };
 };

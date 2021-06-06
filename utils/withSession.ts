@@ -62,32 +62,11 @@ export const withSessionServerSideProps = <
 
     if (req.cookies) {
       const [session, cookies] = await verifySession({ cookies: req.cookies });
+
       if (cookies) res.setHeader('Set-Cookie', cookies);
       context.req.session = session;
     }
 
     return cb(context);
-  };
-};
-
-/**
- *
- * @deprecated
- */
-export const withSession = (cb: any) => {
-  return async (...args: any) => {
-    const req: {
-      cookies: { [key: string]: string };
-      session: SessionAuth;
-    } = args[0] && args[1] ? args[0] : args[0].req;
-    const res = args[0] && args[1] ? args[1] : args[0].res;
-
-    if (req) {
-      const [session, cookies] = await verifySession({ cookies: req.cookies });
-      if (cookies) res.setHeader('Set-Cookie', cookies);
-      req.session = session;
-    }
-
-    return cb(...args);
   };
 };

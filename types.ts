@@ -182,3 +182,8 @@ export type SessionAuth = {
   isAuth: boolean;
   user: UserAuth | null;
 };
+
+export type RefreshClaims = {
+  user_id: string;
+  refresh_token: string;
+};

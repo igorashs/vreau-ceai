@@ -1,6 +1,6 @@
 import { Model } from 'mongoose';
 import { Session } from '@/models/Session';
-import { createSession, removeSession } from 'lib/session';
+import { createSessionCookies, removeSessionCookies } from 'lib/session';
 import { User } from '@/models/User';
 
 const createUserSession = (SessionModel: Model<Session>) =>
@@ -17,7 +17,7 @@ const createUserSession = (SessionModel: Model<Session>) =>
       isManager: dbUser.isManager,
     };
 
-    const { cookies, refreshToken } = createSession(user, {
+    const { cookies, refreshToken } = createSessionCookies(user, {
       user_id: dbUser._id,
     });
 
@@ -43,7 +43,7 @@ const deleteUserSession = (SessionModel: Model<Session>) =>
    */
   async (user_id?: string) => {
     await SessionModel.findOneAndDelete({ user_id }, { returnOriginal: false });
-    const cookies = removeSession();
+    const cookies = removeSessionCookies();
 
     return cookies;
   };

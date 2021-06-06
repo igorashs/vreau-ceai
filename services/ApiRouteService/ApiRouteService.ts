@@ -7,7 +7,7 @@ import { ApiResponse } from 'types';
 
 type Permissions = { isManager?: boolean; isAdmin?: boolean };
 
-export default class ApiRouteService<T = any> {
+export default class ApiRouteService<T> {
   req: NextApiSessionRequest;
 
   res: NextApiResponse<ApiResponse>;
@@ -149,7 +149,7 @@ export default class ApiRouteService<T = any> {
   refreshSession = async () => {
     const [session, cookies] = await verifySession({
       cookies: this.req.cookies,
-      updateAccess: true,
+      toUpdate: true,
     });
 
     if (cookies) this.res.setHeader('Set-Cookie', cookies);

@@ -2,13 +2,13 @@ import withPageLayout from '@/layouts/Layout';
 import Head from 'next/head';
 import App, { AppContext, AppProps } from 'next/app';
 import { SessionProvider } from 'contexts/SessionContext';
-import { verifyToken } from 'lib/session';
 import { refreshUser } from 'services/ceaiApi';
 import { useEffect, useState } from 'react';
 import { CartProvider } from 'contexts/CartContext';
 import dynamic from 'next/dynamic';
 import GlobalStyle from 'GlobalStyle';
 import { UserAuth, UserSession } from 'types';
+import { validateSession } from 'lib/session';
 
 const TopProgressBar = dynamic(() => import('@/shared/TopProgressBar'), {
   ssr: false,
@@ -67,7 +67,7 @@ export default function MyApp({
 type InitialProps = AppContext & {
   ctx: {
     req: {
-      cookies?: { [key: string]: any };
+      cookies?: { [key: string]: string | undefined };
     };
   };
 };
@@ -79,25 +79,15 @@ MyApp.getInitialProps = async (appContext: InitialProps) => {
     needRefresh: false,
   };
 
+  // we are on server side
   if (appContext.ctx.req && appContext.ctx.req.cookies) {
     const { access, refresh } = appContext.ctx.req.cookies;
+    const { isAuth, claims } = validateSession<UserAuth>(access, refresh);
 
-    if (refresh) {
-      const refreshClaims = verifyToken(refresh);
+    session.isAuth = isAuth;
+    session.user = claims;
 
-      if (refreshClaims) {
-        const accessClaims = verifyToken<UserAuth>(access);
-        session.isAuth = true;
-
-        if (accessClaims) {
-          session.user = accessClaims;
-        } else {
-          session.needRefresh = true;
-        }
-      } else {
-        session.needRefresh = true;
-      }
-    }
+    if (isAuth && !claims) session.needRefresh = true;
   }
 
   // calls page's `getInitialProps` and fills `appProps.pageProps`
