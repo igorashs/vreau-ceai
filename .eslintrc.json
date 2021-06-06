@@ -25,6 +25,8 @@
   "extends": [
     "plugin:react/recommended",
     "airbnb",
+    "plugin:@typescript-eslint/recommended",
+    "prettier/prettier",
     "plugin:prettier/recommended"
   ],
   "parser": "@typescript-eslint/parser",
@@ -51,9 +53,9 @@
     "react/prop-types": 0,
     "no-unused-vars": "off",
     "no-use-before-define": "off",
-    "@typescript-eslint/no-unused-vars": "error",
     "react/require-default-props": "off",
     "no-underscore-dangle": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
     "jsx-a11y/anchor-is-valid": [
       "error",
       {
@@ -72,6 +74,14 @@
       1,
       {
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    ],
+    "@typescript-eslint/ban-types": [
+      "error",
+      {
+        "types": {
+          "object": false
+        }
       }
     ]
   },
