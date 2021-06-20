@@ -79,7 +79,7 @@ exports[`CategoryCard renders correctly 1`] = `
         <img
           alt="my-category"
           height="700"
-          src="/uploads/category.png"
+          src="category.png"
           width="700"
         />
       </div>

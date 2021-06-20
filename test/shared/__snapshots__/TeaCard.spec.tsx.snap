@@ -118,7 +118,7 @@ exports[`TeaCard renders correctly 1`] = `
     <img
       alt="green-tea"
       height="700"
-      src="/uploads/tea.png"
+      src="tea.png"
       width="700"
     />
   </figure>

@@ -178,7 +178,7 @@ export const deleteCategory = async <R extends ApiResponse>(id: string) => {
 };
 
 export const createProduct = async <
-  R extends ApiResponse & { errors?: ProductErrorDetail[] }
+  R extends ApiResponse & { product: Product; errors?: ProductErrorDetail[] }
 >(
   data: FormData,
 ) => {

@@ -169,7 +169,9 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       else if (filters.descPrice) sortFilter.price = -1;
     }
 
-    const dbCategory: CategoryModelType = await CategoryModel.findOne({
+    const dbCategory: CategoryModelType & {
+      products: Product[];
+    } = await CategoryModel.findOne({
       name: category,
     })
       .populate({
@@ -193,6 +195,12 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     });
 
     const totalPages = Math.ceil(count / PRODUCTS_PER_PAGE);
+
+    (dbCategory.products as Product[]).forEach((product) => {
+      if (product.src === 'placeholder.png')
+        // eslint-disable-next-line no-param-reassign
+        product.src = `/uploads/${product.src}`;
+    });
 
     return {
       props: {

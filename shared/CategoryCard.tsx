@@ -49,7 +49,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
             <Image
               width={700}
               height={700}
-              src={`/uploads/${category.src}`}
+              src={category.src}
               alt={category.name}
             />
           </ImgContainer>

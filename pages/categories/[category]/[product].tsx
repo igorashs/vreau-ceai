@@ -88,7 +88,7 @@ export default function Product({ product }: ProductProps) {
           <Image
             width={700}
             height={700}
-            src={`/uploads/${product.src}`}
+            src={product.src}
             alt={product.name}
           />
         </ImgContainer>
@@ -141,6 +141,10 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       { name: query.product },
       'name description price quantity src',
     );
+
+    // todo Service
+    if (dbProduct.src === 'placeholder.png')
+      dbProduct.src = `/uploads/${dbProduct.src}`;
 
     if (!dbProduct) {
       return {

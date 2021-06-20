@@ -63,10 +63,15 @@ export const getServerSideProps: GetServerSideProps = async () => {
       },
     });
 
-    const categories = dbCategories.map((c) => ({
-      name: c.name,
-      src: c.products.length ? c.products[0].src : 'placeholder.png',
-    }));
+    const categories = dbCategories.map((c) => {
+      let src = c.products.length ? c.products[0].src : 'placeholder.png';
+      if (src === 'placeholder.png') src = `/uploads/${src}`;
+
+      return {
+        name: c.name,
+        src,
+      };
+    });
 
     return {
       props: {

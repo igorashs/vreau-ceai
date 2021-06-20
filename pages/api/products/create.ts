@@ -5,7 +5,6 @@ import FormidableParser from '@/utils/FormidableParser';
 import ProductService from 'services/ProductService';
 import CategoryService from 'services/CategoryService';
 import { Product } from '@/models/Product';
-import generateUniqueFileName from '@/utils/generateUniqueFileName';
 import ApiRouteService from 'services/ApiRouteService';
 
 export default withSessionApi(async function handler(req, res) {
@@ -38,19 +37,15 @@ export const config = {
 const handlePost = async (
   routeService: ApiRouteService<{ product?: Product }>,
 ) => {
-  let tmpSrc;
-
   try {
     // respond 401 Unauthorized if user is not authorized
     // respond 403 Forbidden if user doesn't have required permissions
     if (!routeService.isAuthorized({ isManager: true })) return;
 
-    // TODO Images API, (Store Images in MongoDB)
     // get product form data
     const { fields, files } = await FormidableParser.handleProductForm(
       routeService.req,
       {
-        uploadDir: `${process.cwd()}/public/uploads`,
         maxFileSize: 1 * 1024 * 1024,
         multiples: false,
       },
@@ -59,11 +54,11 @@ const handlePost = async (
 
     // set src file if exists
     if (files.src && files.src.name) {
-      // create unique file name
-      fields.src = generateUniqueFileName(files.src.name);
+      const data = await fs.readFile(files.src.path);
 
-      // store name for unexpected errors
-      tmpSrc = fields.src;
+      fields.src = `data:${files.src.type};base64,${Buffer.from(data).toString(
+        'base64',
+      )}`;
     }
 
     // respond 400 Validation Error if name is invalid
@@ -83,22 +78,9 @@ const handlePost = async (
     // respond 400 Validation Error if category doesn't exist
     await CategoryService.addProductToCategory(dbCategory._id, dbProduct._id);
 
-    // rename product img if it was provided
-    if (files.src) {
-      await fs.rename(
-        files.src.path,
-        `${process.cwd()}/public/uploads/${fields.src}`,
-      );
-    }
-
     routeService.resCreated({ product: dbProduct });
   } catch (error) {
-    try {
-      // remove temp img if something went wrong
-      if (tmpSrc) await fs.unlink(tmpSrc);
-    } catch (fsError) {
-      // console.error(fsError);
-    }
+    console.error(error);
 
     routeService.handleApiError(error);
   }

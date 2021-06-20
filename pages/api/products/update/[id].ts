@@ -3,7 +3,6 @@ import { Product } from 'models/Product';
 import { withSessionApi } from '@/utils/withSession';
 import { promises as fs } from 'fs';
 import FormidableParser from '@/utils/FormidableParser';
-import generateUniqueFileName from '@/utils/generateUniqueFileName';
 import CategoryService from 'services/CategoryService';
 import ProductService from 'services/ProductService';
 import ApiRouteService from 'services/ApiRouteService';
@@ -38,8 +37,6 @@ export const config = {
 const handlePut = async (
   routeService: ApiRouteService<{ product?: Product }>,
 ) => {
-  let tmpSrc;
-
   try {
     // respond 401 Unauthorized if user is not authorized
     // respond 403 Forbidden if user doesn't have required permissions
@@ -47,12 +44,10 @@ const handlePut = async (
 
     const { id } = routeService.getQuery();
 
-    // TODO Images API, (Store Images in MongoDB)
     // get product form data
     const { fields, files } = await FormidableParser.handleProductForm(
       routeService.req,
       {
-        uploadDir: `${process.cwd()}/public/uploads`,
         maxFileSize: 1 * 1024 * 1024,
         multiples: false,
       },
@@ -61,11 +56,11 @@ const handlePut = async (
 
     // set src file if exists
     if (files.src && files.src.name) {
-      // create unique file name
-      fields.src = generateUniqueFileName(files.src.name);
+      const data = await fs.readFile(files.src.path);
 
-      // store name for unexpected errors
-      tmpSrc = fields.src;
+      fields.src = `data:${files.src.type};base64,${Buffer.from(data).toString(
+        'base64',
+      )}`;
     }
 
     // find existing product
@@ -101,25 +96,8 @@ const handlePut = async (
     const defaultImg = 'placeholder.png';
     const newImg = fields.src;
 
-    // if new img was provided and prevImg isn't default img
-    if (newImg && dbExistingProduct.src !== defaultImg) {
-      // delete prevImg
-      await fs.unlink(
-        `${process.cwd()}/public/uploads/${dbExistingProduct.src}`,
-      );
-      // if prevImg isn't default img
-    } else if (dbExistingProduct.src !== defaultImg) {
-      // use prevImg
+    if (!newImg && dbExistingProduct.src !== defaultImg)
       fields.src = dbExistingProduct.src;
-    }
-
-    // rename product img if new img was provided
-    if (files.src) {
-      await fs.rename(
-        files.src.path,
-        `${process.cwd()}/public/uploads/${fields.src}`,
-      );
-    }
 
     // update product and return updatedProduct
     // respond 400 Validation Error if data is invalid
@@ -134,12 +112,7 @@ const handlePut = async (
       routeService.resNotFound();
     }
   } catch (error) {
-    try {
-      // remove temp img if something went wrong
-      if (tmpSrc) await fs.unlink(tmpSrc);
-    } catch (fsError) {
-      // console.error(error);
-    }
+    console.error(error);
 
     routeService.handleApiError(error);
   }
