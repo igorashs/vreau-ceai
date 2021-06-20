@@ -52,12 +52,7 @@ const TeaRecommendation = ({ tea }: TeaRecommendationProps) => {
   return (
     <Wrapper>
       <ImgContainer>
-        <Image
-          width={700}
-          height={700}
-          src={`/uploads/${tea.src}`}
-          alt={tea.name}
-        />
+        <Image width={700} height={700} src={tea.src} alt={tea.name} />
       </ImgContainer>
       <Title>{tea.name}</Title>
       <Description>{tea.description}</Description>
