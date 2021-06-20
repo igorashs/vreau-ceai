@@ -2,6 +2,7 @@ import { withSessionApi } from '@/utils/withSession';
 import { ApiResponse } from 'types';
 import SessionService from 'services/SessionService';
 import ApiRouteService from 'services/ApiRouteService';
+import { Session } from '@/models/Session';
 
 export default withSessionApi<ApiResponse>(async function handler(req, res) {
   const routeService = new ApiRouteService(req, res);
@@ -23,7 +24,9 @@ export default withSessionApi<ApiResponse>(async function handler(req, res) {
  * Delete user session
  *
  */
-const handlePost = async (routeService: ApiRouteService) => {
+const handlePost = async (
+  routeService: ApiRouteService<{ session?: Session }>,
+) => {
   try {
     // respond 401 Unauthorized if user is not authorized
     if (!routeService.isAuthorized()) return;

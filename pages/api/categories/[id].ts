@@ -59,7 +59,9 @@ const handlePut = async (
 /**
  * Delete category
  */
-const handleDelete = async (routeService: ApiRouteService) => {
+const handleDelete = async (
+  routeService: ApiRouteService<{ category?: Category }>,
+) => {
   try {
     // Respond 401 Unauthorized if user is not authorized
     // Respond 403 Forbidden if user doesn't have required permissions

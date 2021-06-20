@@ -4,6 +4,7 @@ import { ApiResponse, UserLogin } from 'types';
 import UserService from 'services/UserService';
 import SessionService from 'services/SessionService';
 import ApiRouteService from 'services/ApiRouteService';
+import { Session } from '@/models/Session';
 
 export default async function handler(
   req: NextApiRequest,
@@ -29,7 +30,9 @@ export default async function handler(
  * Login user and create user session
  *
  */
-const handlePost = async (routeService: ApiRouteService) => {
+const handlePost = async (
+  routeService: ApiRouteService<{ session?: Session }>,
+) => {
   try {
     const { email, password }: UserLogin = routeService.getBody();
 

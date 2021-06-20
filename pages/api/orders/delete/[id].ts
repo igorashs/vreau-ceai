@@ -2,6 +2,7 @@ import dbConnect from '@/utils/dbConnect';
 import { withSessionApi } from '@/utils/withSession';
 import OrderService from 'services/OrderService';
 import ApiRouteService from 'services/ApiRouteService';
+import { Order } from '@/models/Order';
 
 export default withSessionApi(async function handler(req, res) {
   await dbConnect();
@@ -24,7 +25,9 @@ export default withSessionApi(async function handler(req, res) {
  * Delete order
  * Delete user order (his own)
  */
-const handleDelete = async (routeService: ApiRouteService) => {
+const handleDelete = async (
+  routeService: ApiRouteService<{ order?: Order }>,
+) => {
   try {
     // Respond 401 Unauthorized if user is not authorized
     if (!routeService.isAuthorized()) return;
