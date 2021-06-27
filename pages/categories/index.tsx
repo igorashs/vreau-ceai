@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import CategoryModel, {
   Category as CategoryModelType,
 } from '@/models/Category';
-import { Product } from '@/models/Product';
+import ProductModel, { Product } from '@/models/Product';
 import dbConnect from '@/utils/dbConnect';
 import CategoryCard from '@/shared/CategoryCard';
 import breakpoints from 'GlobalStyle/breakpoints';
@@ -58,6 +58,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     })[] = await CategoryModel.find({}).populate({
       path: 'products',
       select: 'src',
+      model: ProductModel,
       options: {
         perDocumentLimit: 1,
       },
@@ -75,7 +76,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
     return {
       props: {
-        categories: JSON.parse(JSON.stringify(categories)),
+        categories,
       },
     };
   } catch (error) {
