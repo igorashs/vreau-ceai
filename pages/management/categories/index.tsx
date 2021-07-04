@@ -20,7 +20,7 @@ const List = styled.ul`
 
 export default function Categories() {
   const [dbCategories, setDbCategories] = useState<Category[]>([]);
-  const [label, setLabel] = useState<LabelMessage>();
+  const [label, setLabel] = useState<LabelMessage | null>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,6 +28,7 @@ export default function Categories() {
 
       if (res.success) {
         setDbCategories(res.categories);
+        setLabel(null);
       } else {
         setLabel({
           success: false,

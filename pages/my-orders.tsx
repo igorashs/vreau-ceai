@@ -52,7 +52,7 @@ const ORDERS_PER_PAGE = 3;
 export default function MyOrders() {
   const [filters, setFilters] = useState(new Set<string>());
   const [dbOrders, setDbOrders] = useState<Order[]>([]);
-  const [label, setLabel] = useState<LabelMessage>();
+  const [label, setLabel] = useState<LabelMessage | null>();
   const [totalPages, setTotalPages] = useState(0);
   const [currPage, setCurrPage] = useState(1);
 
@@ -62,6 +62,7 @@ export default function MyOrders() {
     if (res.success) {
       setDbOrders(res.orders);
       setTotalPages(Math.ceil(res.count / ORDERS_PER_PAGE));
+      setLabel(null);
       setCurrPage(1);
     } else {
       setDbOrders([]);

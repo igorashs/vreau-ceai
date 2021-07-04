@@ -16,7 +16,6 @@ export default function Create() {
     if (res.success) {
       setLabel({ success: true, message: 'categoria a fost creată ^-^' });
     } else {
-      setLabel(null);
       setLabel({ success: false, message: 'categoria nu fost creată :(' });
     }
 

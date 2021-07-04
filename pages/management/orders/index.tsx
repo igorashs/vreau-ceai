@@ -54,7 +54,7 @@ const ORDERS_PER_PAGE = 5;
 export default function Orders() {
   const [filters, setFilters] = useState(new Set<string>());
   const [dbOrders, setDbOrders] = useState<Order[]>([]);
-  const [label, setLabel] = useState<LabelMessage>();
+  const [label, setLabel] = useState<LabelMessage | null>();
   const [totalPages, setTotalPages] = useState(0);
   const [currPage, setCurrPage] = useState(1);
 
@@ -65,8 +65,10 @@ export default function Orders() {
       setDbOrders(res.orders);
       setTotalPages(Math.ceil(res.count / ORDERS_PER_PAGE));
       setCurrPage(1);
+      setLabel(null);
     } else {
       setDbOrders([]);
+      setTotalPages(0);
       setLabel({
         success: false,
         message: 'Nu au fost găsit nicio comandă',
@@ -89,6 +91,7 @@ export default function Orders() {
       setDbOrders(res.orders);
       setCurrPage(pageNumber);
     } else {
+      setTotalPages(0);
       setLabel({
         success: false,
         message: 'Nu au fost găsit nicio comandă',

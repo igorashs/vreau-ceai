@@ -49,7 +49,7 @@ export default function Products() {
   const [filters, setFilters] = useState(new Set<string>());
   const [dbProducts, setDbProducts] = useState<Product[]>([]);
   const [dbCategories, setDbCategories] = useState<Category[]>([]);
-  const [label, setLabel] = useState<LabelMessage>();
+  const [label, setLabel] = useState<LabelMessage | null>();
   const [totalPages, setTotalPages] = useState(0);
   const [currPage, setCurrPage] = useState(1);
 
@@ -60,6 +60,7 @@ export default function Products() {
       setDbProducts(res.products);
       setTotalPages(Math.ceil(res.count / PRODUCTS_PER_PAGE));
       setCurrPage(1);
+      setLabel(null);
     } else {
       setDbProducts([]);
       setLabel({
