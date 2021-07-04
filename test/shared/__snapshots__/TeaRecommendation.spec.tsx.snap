@@ -32,6 +32,7 @@ exports[`TeaRecommendation renders correctly 1`] = `
 }
 
 .c0 {
+  height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -59,6 +60,9 @@ exports[`TeaRecommendation renders correctly 1`] = `
 }
 
 .c3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
@@ -88,7 +92,7 @@ exports[`TeaRecommendation renders correctly 1`] = `
     <img
       alt="green-tea"
       height="700"
-      src="/uploads/tea.png"
+      src="tea.png"
       width="700"
     />
   </figure>
