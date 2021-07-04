@@ -4,6 +4,7 @@ import StyledLink from '@/shared/StyledLink';
 import { ProductWithCategory } from 'types';
 
 const Wrapper = styled.div`
+  height: 100%;
   display: flex;
   flex-direction: column;
   gap: calc(var(--baseline) / 2);
@@ -26,6 +27,7 @@ const Title = styled.h5`
 `;
 
 const Description = styled.p`
+  flex: 1;
   align-self: center;
   overflow: hidden;
   text-overflow: ellipsis;
