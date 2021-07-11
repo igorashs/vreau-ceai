@@ -138,9 +138,6 @@ const deleteProduct = (ProductModel: Model<Product>) =>
       projection: 'src category_id',
     });
 
-    if (dbProduct && dbProduct.src !== 'placeholder.png')
-      await fs.unlink(`${process.cwd()}/public/uploads/${dbProduct.src}`);
-
     return dbProduct;
   };
 
