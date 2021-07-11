@@ -1,7 +1,6 @@
 import { Model, QueryOptions } from 'mongoose';
 import { Product } from '@/models/Product';
 import { OrderItem, ProductFields, ProductMatchFilter } from 'types';
-import { promises as fs } from 'fs';
 import * as validator from '@/utils/validator';
 import { productMessages } from '@/utils/validator/schemas/product';
 
