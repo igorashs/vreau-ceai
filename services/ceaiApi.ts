@@ -25,7 +25,7 @@ import {
   SessionAuth,
 } from 'types';
 
-const URL = process.env.NEXT_PUBLIC_API_URL;
+const URL = process.env.VERCEL_URL || 'http://localhost:3000';
 
 export const login = async <P extends UserLogin, R extends ApiResponse>(
   data: P,
