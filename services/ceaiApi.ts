@@ -25,12 +25,10 @@ import {
   SessionAuth,
 } from 'types';
 
-const URL = process.env.NEXT_PUBLIC_API_URL;
-
 export const login = async <P extends UserLogin, R extends ApiResponse>(
   data: P,
 ): Promise<R> => {
-  const res = await fetch(`${URL}/api/users/login`, {
+  const res = await fetch(`/api/users/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -44,7 +42,7 @@ export const login = async <P extends UserLogin, R extends ApiResponse>(
 export const signup = async <P extends UserSignup, R extends ApiResponse>(
   data: P,
 ) => {
-  const res = await fetch(`${URL}/api/users/signup`, {
+  const res = await fetch(`/api/users/signup`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -56,7 +54,7 @@ export const signup = async <P extends UserSignup, R extends ApiResponse>(
 };
 
 export const logout = async <R extends ApiResponse>() => {
-  const res = await fetch(`${URL}/api/users/logout`, {
+  const res = await fetch(`/api/users/logout`, {
     method: 'POST',
   });
 
@@ -69,7 +67,7 @@ export const findUser = async <
 >({
   email,
 }: P) => {
-  const res = await fetch(`${URL}/api/users?search=${email}`);
+  const res = await fetch(`/api/users?search=${email}`);
 
   return res.json() as Promise<R>;
 };
@@ -81,7 +79,7 @@ export const updateUserManagerPermission = async <
   id: string,
   data: P,
 ) => {
-  const res = await fetch(`${URL}/api/users/${id}`, {
+  const res = await fetch(`/api/users/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -95,7 +93,7 @@ export const updateUserManagerPermission = async <
 export const refreshUser = async <
   R extends ApiResponse & { session: SessionAuth }
 >() => {
-  const res = await fetch(`${URL}/api/users/refresh`, {
+  const res = await fetch(`/api/users/refresh`, {
     method: 'POST',
     credentials: 'same-origin',
   });
@@ -112,7 +110,7 @@ export const createCategory = async <
 >(
   data: P,
 ) => {
-  const res = await fetch(`${URL}/api/categories`, {
+  const res = await fetch(`/api/categories`, {
     method: 'POST',
     credentials: 'same-origin',
     headers: {
@@ -127,7 +125,7 @@ export const createCategory = async <
 export const getCategories = async <
   R extends ApiResponse & { categories: Category[] }
 >() => {
-  const res = await fetch(`${URL}/api/categories`);
+  const res = await fetch(`/api/categories`);
 
   return res.json() as Promise<R>;
 };
@@ -141,7 +139,7 @@ export const findCategory = async <
 >({
   name,
 }: P) => {
-  const res = await fetch(`${URL}/api/categories?search=${name}`);
+  const res = await fetch(`/api/categories?search=${name}`);
 
   return res.json() as Promise<R>;
 };
@@ -156,7 +154,7 @@ export const updateCategory = async <
   id: string,
   data: P,
 ) => {
-  const res = await fetch(`${URL}/api/categories/${id}`, {
+  const res = await fetch(`/api/categories/${id}`, {
     method: 'PUT',
     credentials: 'same-origin',
     headers: {
@@ -169,7 +167,7 @@ export const updateCategory = async <
 };
 
 export const deleteCategory = async <R extends ApiResponse>(id: string) => {
-  const res = await fetch(`${URL}/api/categories/${id}`, {
+  const res = await fetch(`/api/categories/${id}`, {
     method: 'DELETE',
     credentials: 'same-origin',
   });
@@ -182,7 +180,7 @@ export const createProduct = async <
 >(
   data: FormData,
 ) => {
-  const res = await fetch(`${URL}/api/products/create`, {
+  const res = await fetch(`/api/products/create`, {
     method: 'POST',
     credentials: 'same-origin',
     body: data,
@@ -197,7 +195,7 @@ export const updateProduct = async <
   id: string,
   data: FormData,
 ) => {
-  const res = await fetch(`${URL}/api/products/update/${id}`, {
+  const res = await fetch(`/api/products/update/${id}`, {
     method: 'PUT',
     credentials: 'same-origin',
     body: data,
@@ -207,7 +205,7 @@ export const updateProduct = async <
 };
 
 export const deleteProduct = async <R extends ApiResponse>(id: string) => {
-  const res = await fetch(`${URL}/api/products/delete/${id}`, {
+  const res = await fetch(`/api/products/delete/${id}`, {
     method: 'DELETE',
     credentials: 'same-origin',
   });
@@ -223,7 +221,7 @@ export const findProduct = async <
 >({
   name,
 }: ProductName) => {
-  const res = await fetch(`${URL}/api/products?search=${name}`);
+  const res = await fetch(`/api/products?search=${name}`);
 
   return res.json() as Promise<R>;
 };
@@ -237,7 +235,7 @@ export const getProducts = async <
   offset = 0,
 ) => {
   const res = await fetch(
-    `${URL}/api/products${
+    `/api/products${
       filters ? `?filters=${filters.join(' ')}` : ''
     }&limit=${limit}&offset=${offset}`,
   );
@@ -255,7 +253,7 @@ export const getProductsByCategory = async <
   offset = 0,
 ) => {
   const res = await fetch(
-    `${URL}/api/products?search=${name}&byCategory=true${
+    `/api/products?search=${name}&byCategory=true${
       filters ? `&filters=${filters.join(' ')}` : ''
     }&limit=${limit}&offset=${offset}`,
   );
@@ -269,7 +267,7 @@ export const createOrder = async <
 >(
   data: P,
 ) => {
-  const res = await fetch(`${URL}/api/orders/create`, {
+  const res = await fetch(`/api/orders/create`, {
     method: 'POST',
     credentials: 'same-origin',
     headers: {
@@ -286,7 +284,7 @@ export const findOrder = async <
 >({
   number,
 }: OrderNumber) => {
-  const res = await fetch(`${URL}/api/orders?search=${number}`, {
+  const res = await fetch(`/api/orders?search=${number}`, {
     credentials: 'same-origin',
   });
 
@@ -300,7 +298,7 @@ export const updateOrder = async <
   id: string,
   data: P,
 ) => {
-  const res = await fetch(`${URL}/api/orders/update/${id}`, {
+  const res = await fetch(`/api/orders/update/${id}`, {
     credentials: 'same-origin',
     method: 'PUT',
     headers: {
@@ -313,7 +311,7 @@ export const updateOrder = async <
 };
 
 export const deleteOrder = async <R extends ApiResponse>(id: string) => {
-  const res = await fetch(`${URL}/api/orders/delete/${id}`, {
+  const res = await fetch(`/api/orders/delete/${id}`, {
     method: 'DELETE',
     credentials: 'same-origin',
   });
@@ -330,7 +328,7 @@ export const getOrders = async <
   offset = 0,
 ) => {
   const res = await fetch(
-    `${URL}/api/orders${
+    `/api/orders${
       filters ? `?filters=${filters.join(' ')}` : ''
     }&limit=${limit}&offset=${offset}`,
     { credentials: 'same-origin' },
@@ -348,7 +346,7 @@ export const getUserOrders = async <
   offset = 0,
 ) => {
   const res = await fetch(
-    `${URL}/api/orders${
+    `/api/orders${
       filters ? `?filters=${filters.join(' ')}` : ''
     }&limit=${limit}&offset=${offset}&byUserId=true`,
     { credentials: 'same-origin' },
@@ -364,7 +362,7 @@ export const getRecommendedProducts = async <
   offset = 0,
 ) => {
   const res = await fetch(
-    `${URL}/api/products?recommended=true&limit=${limit}&offset=${offset}`,
+    `/api/products?recommended=true&limit=${limit}&offset=${offset}`,
   );
 
   return res.json() as Promise<R>;
